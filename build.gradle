@@ -6,18 +6,40 @@ version = '1.0'
 
 sourceSets.main.java.srcDirs = ["src/"]
 
-repositories {
-    mavenLocal()
-    mavenCentral()
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-    maven { url "https://oss.sonatype.org/content/repositories/releases/" }
-    maven { url 'https://jitpack.io' }
-    jcenter()
+allprojects{
+    repositories{
+        mavenLocal()
+        mavenCentral()
+        maven{ url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven{ url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven{ url 'https://jitpack.io' }
+        jcenter()
+    }
 }
 
 task run(dependsOn: classes, type: JavaExec) {
-    main = "io.anuke.wikigen.Main"
+    main = "io.anuke.wikigen.MainLauncher"
+    workingDir = new File("../Mindustry/core/assets")
     classpath = sourceSets.main.runtimeClasspath
+}
+
+project(":Mindustry:core"){
+    apply plugin: "java"
+
+    dependencies {
+        compile project(":Arc:arc-core")
+        compile project(":Arc:extensions:freetype")
+        compileOnly project(":Mindustry:annotations")
+        annotationProcessor project(":Mindustry:annotations")
+    }
+}
+
+project(":Mindustry:annotations"){
+    apply plugin: "java"
+
+    dependencies {
+        compile 'com.squareup:javapoet:1.11.0'
+    }
 }
 
 dependencies {
