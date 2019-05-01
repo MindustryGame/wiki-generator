@@ -1,0 +1,27 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+sourceCompatibility = 1.8
+version = '1.0'
+
+sourceSets.main.java.srcDirs = ["src/"]
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+    maven { url 'https://jitpack.io' }
+    jcenter()
+}
+
+task run(dependsOn: classes, type: JavaExec) {
+    main = "io.anuke.wikigen.Main"
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+dependencies {
+    compile project(":Arc:arc-core")
+    compile project(":Arc:backends:backend-headless")
+    compile project(":Mindustry:core")
+}

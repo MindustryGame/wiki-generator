@@ -1,0 +1,17 @@
+rootProject.name = 'CoreBot'
+
+def use = { String name, String path ->
+    include(name)
+    project(name).projectDir = new File(settingsDir, path)
+}
+
+//arc base
+use(':Arc', '../Arc')
+use(':Arc:arc-core', '../Arc/arc-core')
+
+//mindustry base
+use(':Mindustry:core', '../Mindustry/core')
+
+//backend for launching mindustry stub
+use(':Arc:backends', '../Arc/backends')
+use(':Arc:backends:backend-headless', '../Arc/backends/backend-headless')
