@@ -43,8 +43,8 @@ public class TextureUnpacker{
 
                 // check if the page this region is in is currently loaded in a Buffered Image
                 if(region.page == page){
-                    BufferedImage splitImage = null;
-                    String extension = null;
+                    BufferedImage splitImage;
+                    String extension;
 
                     // check if the region is a ninepatch or a normal image and delegate accordingly
                     if(region.splits == null){
