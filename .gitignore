@@ -8,5 +8,6 @@
 .project
 /.idea/
 /out/
-CoreBot.iml
+*.iml
+output/
 prefs.properties

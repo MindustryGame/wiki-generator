@@ -12,7 +12,7 @@ public class PageGenerator{
         reflections.getTypesAnnotatedWith(Generates.class).forEach(type -> {
             try{
                 ContentType content = type.getAnnotation(Generates.class).value();
-                Log.info("Generating content of type {0}...", content);
+                Log.info("Generating content of type '{0}'...", content);
                 FileGenerator<?> generator = (FileGenerator)type.newInstance();
                 generator.generate(Vars.content.getBy(content));
             }catch(Exception e){
