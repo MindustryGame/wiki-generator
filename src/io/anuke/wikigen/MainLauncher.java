@@ -8,6 +8,7 @@ import io.anuke.mindustry.core.World;
 import io.anuke.mindustry.game.Content;
 import io.anuke.mindustry.game.Version;
 import io.anuke.mindustry.io.BundleLoader;
+import io.anuke.wikigen.image.MockScene;
 
 public class MainLauncher{
 
@@ -31,6 +32,8 @@ public class MainLauncher{
                 Vars.world = new World();
                 Vars.logic = new Logic();
                 Vars.content.initialize(Content::init);
+                MockScene.init();
+                Vars.content.initialize(Content::load);
                 PageGenerator.generate();
                 System.exit(0);
             }

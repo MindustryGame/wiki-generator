@@ -1,4 +1,4 @@
-# ![$name](../images/item-$internalname.png) $name 
+# ![$name](../images/liquid-$internalname.png) $name 
 
 ---
 
@@ -8,9 +8,7 @@
 |Type|$type|
 |Flammability|$flammability|
 |Explosiveness|$explosiveness|
-|Radioactivity|$radioactivity|
-|Build Cost|$cost|
-|Hardness|$hardness|
+|Heat Capacity|$heatcapacity|
 
 *"$description"*
 
@@ -19,5 +17,3 @@
 ##### Produced in: <br>$produced
 
 ##### Required for: <br>$crafting
-
-##### Used to build: <br>$used
