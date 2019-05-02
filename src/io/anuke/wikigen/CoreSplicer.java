@@ -34,7 +34,7 @@ public class CoreSplicer{
                     FileHandle dest = Config.fileDirectory.child(file.path().substring(Config.outputDirectory.path().length()));
                     file.copyTo(dest);
                     //append comment to end of file so it can be used later
-
+                    dest.writeString("\n" + comment + "\n", true);
                     Log.info("> Created new file {0}", dest.path());
                 }
             }
