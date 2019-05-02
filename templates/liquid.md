@@ -1,7 +1,5 @@
 # ![$name](../images/liquid-$internalname.png) $name 
 
----
-
 | Property      | Value |
 | ----------- | ----------- |
 |Internal Name|`$internalname`|

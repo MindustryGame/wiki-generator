@@ -1,5 +1,6 @@
 package io.anuke.wikigen.generators;
 
+import io.anuke.arc.Core;
 import io.anuke.arc.collection.ObjectMap;
 import io.anuke.arc.graphics.g2d.TextureAtlas.AtlasRegion;
 import io.anuke.arc.scene.Element;
@@ -7,6 +8,7 @@ import io.anuke.arc.scene.Group;
 import io.anuke.arc.scene.style.TextureRegionDrawable;
 import io.anuke.arc.scene.ui.Image;
 import io.anuke.arc.scene.ui.Label;
+import io.anuke.arc.scene.ui.layout.Cell;
 import io.anuke.arc.scene.ui.layout.Table;
 import io.anuke.arc.util.Strings;
 import io.anuke.mindustry.type.ContentType;
@@ -58,7 +60,7 @@ public class BlockGenerator extends FileGenerator<Block>{
         });
 
         values.put("stats", stats.toString());
-        template(block.buildCategory.name() + "/" + block.name, values);
+        template(linkPath(block), values);
     }
 
     @Override
@@ -75,21 +77,36 @@ public class BlockGenerator extends FileGenerator<Block>{
         Table dummy = new Table();
         value.display(dummy);
         StringBuilder result = new StringBuilder();
-
-        for(Element e : dummy.getChildren()){
-            display(e, result);
-        }
+        display(dummy, result);
         return result.toString();
     }
 
     void display(Element e, StringBuilder result){
         if(e instanceof Label){
-            result.append(((Label)e).getText());
-            result.append(" ");
+            String text = ((Label)e).getText().toString();
+            if(text.startsWith("$")){
+                text = Core.bundle.get(text.substring(1));
+            }
+            boolean stat = text.contains("[stat]") || text.contains("[lightgray]");
+            if(text.contains("[stat]") && !text.contains("[lightgray]")){
+                text += "**";
+            }
+            text = text.replace("[stat]", "**").replace("[lightgray]", "**");
+            if(stat){
+                result.append("<br> • ");
+            }
+            result.append(text).append(" ");
         }else if(e instanceof Image){
             AtlasRegion region = (AtlasRegion)((TextureRegionDrawable)((Image)e).getDrawable()).getRegion();
             result.append(Strings.format("![{0}](../../images/{0}.png)", region.name));
             result.append(" ");
+        }else if(e instanceof Table){
+            for(Cell cell : ((Table)e).getCells()){
+                display(cell.get(), result);
+                if(cell.isEndRow() && e.getParent() == null){
+                    result.append("<br>");
+                }
+            }
         }else if(e instanceof Group){
             for(Element child : ((Group)e).getChildren()){
                 display(child, result);
