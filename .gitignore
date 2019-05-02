@@ -10,4 +10,5 @@
 /out/
 *.iml
 output/
+wiki-files/
 prefs.properties

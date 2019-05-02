@@ -35,6 +35,7 @@ public class MainLauncher{
                 MockScene.init();
                 Vars.content.initialize(Content::load);
                 CoreGenerator.generate();
+                CoreSplicer.splice();
                 System.exit(0);
             }
         });
