@@ -21,6 +21,7 @@ public class BlockGenerator extends FileGenerator<Block>{
 
     @Override
     public void generate(Block block){
+        //skip hidden blocks
         if(block.isHidden() || !block.isVisible()){
             return;
         }
@@ -36,9 +37,11 @@ public class BlockGenerator extends FileGenerator<Block>{
 
         StringBuilder stats = new StringBuilder();
 
+        //add all in-game stats to block info
         block.stats.toMap().each((category, map) -> {
             if(map.isEmpty()) return;
             stats.append("\n|").append(category.localized()).append("||\n| --- | --- |\n");
+            //general category has additional info
             if(category == StatCategory.general){
                 stats.append("|Internal Name|`").append(block.name).append("`|\n");
                 stats.append("|Solid|").append(str(block.solid)).append("|\n");
@@ -60,7 +63,7 @@ public class BlockGenerator extends FileGenerator<Block>{
 
     @Override
     protected String linkImage(Block content){
-        return content.name + "-icon-small";//(content.size == 1 ? content.getGeneratedIcons().length == 1 ? "" : "-icon-full" : "-icon-medium");
+        return content.name + "-icon-small";
     }
 
     @Override

@@ -10,6 +10,7 @@ import io.anuke.arc.scene.Skin;
 
 import java.nio.*;
 
+/** Mocks scene2D stuff so information can be extracted from layouts. */
 public class MockScene{
 
     public static void init(){

@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/** Unpacks the default Mindustry atlas. Code taken and modified from libGDX source. */
 public class TextureUnpacker{
     private static final int NINEPATCH_PADDING = 1;
     private static final String OUTPUT_TYPE = "png";

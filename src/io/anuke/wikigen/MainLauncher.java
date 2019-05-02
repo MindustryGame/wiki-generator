@@ -34,7 +34,7 @@ public class MainLauncher{
                 Vars.content.initialize(Content::init);
                 MockScene.init();
                 Vars.content.initialize(Content::load);
-                PageGenerator.generate();
+                CoreGenerator.generate();
                 System.exit(0);
             }
         });

@@ -13,6 +13,8 @@ import io.anuke.mindustry.type.ContentType;
 
 import java.io.PrintWriter;
 
+/** Represents a generator for a type of content.
+ * Each subclass should be placed in generators/ and annotated with {@link Generates} to indicate its content type.*/
 public abstract class FileGenerator<T extends Content>{
 
     public ContentType type(){
@@ -40,7 +42,8 @@ public abstract class FileGenerator<T extends Content>{
 
     /** Loads a template using this generator's type name,
      * then uses the provided map of values to write the result to the provided {@link io.anuke.wikigen.FileGenerator#file} by name.
-     * Strings in the template are replaced in the format $key -> value.*/
+     * Strings in the template are replaced in the format $key -> value.
+     * If a line contains a template string (e.g. a string with $ in it), and no key is provided, that line is automatically removed. */
     public void template(String name, ObjectMap<String, Object> values){
         StringBuilder template = new StringBuilder(Core.files.internal("../../../Mindustry-Wiki-Generator/templates/" + type().name() + ".md").readString());
         values.each((key, val) -> {
@@ -57,18 +60,21 @@ public abstract class FileGenerator<T extends Content>{
         return Strings.format("[![{0}]({5}/{1}.png)]({3}/{4}/{2}.md)", name, linkImage(content), linkPath(content), Config.outputDirectory.path(), content.getContentType().name(), Config.imageDirectory.path());
     }
 
+    /** @return the name of the image this content should use in links without an extension or additional paths.*/
     protected abstract String linkImage(T content);
 
-    protected  String linkPath(T content){
+    /** @return the file name of this content in its folder, without the `type/` prefix or extension.*/
+    protected String linkPath(T content){
         return ((UnlockableContent)content).name;
     }
 
-    /** Returns a markdown image link to this content.*/
+    /** @return a markdown image link to this content.*/
     @SuppressWarnings("unchecked")
     public final String link(Content content){
-        return PageGenerator.typeGenerator(content.getContentType()).makeLink(content);
+        return CoreGenerator.typeGenerator(content.getContentType()).makeLink(content);
     }
 
+    /** @return a string representing a list of links to related content. */
     public String links(Iterable<? extends Content> list){
         StringBuilder build = new StringBuilder();
         for(Content c : list){
@@ -92,5 +98,6 @@ public abstract class FileGenerator<T extends Content>{
         });
     }
 
+    /** This method should generate a page for this content.*/
     public abstract void generate(T content);
 }

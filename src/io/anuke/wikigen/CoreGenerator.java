@@ -8,9 +8,10 @@ import io.anuke.mindustry.type.ContentType;
 import io.anuke.wikigen.image.TextureUnpacker;
 import org.reflections.Reflections;
 
-public class PageGenerator{
+public class CoreGenerator{
     private static ObjectMap<ContentType, FileGenerator<?>> generators = new ObjectMap<>();
 
+    /** Generates all the pages, loads the classes. */
     public static void generate(){
         Config.outputDirectory.deleteDirectory();
         new TextureUnpacker().split(Core.files.local("sprites/sprites.atlas"), Config.imageDirectory);
