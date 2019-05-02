@@ -1,13 +1,18 @@
 package io.anuke.wikigen;
 
+import io.anuke.arc.Core;
 import io.anuke.arc.util.Log;
 import io.anuke.mindustry.Vars;
 import io.anuke.mindustry.type.ContentType;
+import io.anuke.wikigen.image.TextureUnpacker;
 import org.reflections.Reflections;
 
 public class PageGenerator{
 
     public static void generate(){
+        Config.imageDirectory.deleteDirectory();
+        new TextureUnpacker().split(Core.files.local("sprites/sprites.atlas"), Config.imageDirectory);
+
         Reflections reflections = new Reflections("io.anuke.wikigen.generators");
         reflections.getTypesAnnotatedWith(Generates.class).forEach(type -> {
             try{

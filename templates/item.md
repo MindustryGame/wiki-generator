@@ -1,4 +1,4 @@
-# ![$name](item-$internalname.png) $name 
+# ![$name](../images/item-$internalname.png) $name 
 
 ---
 
