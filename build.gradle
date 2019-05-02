@@ -46,4 +46,5 @@ dependencies {
     compile project(":Arc:arc-core")
     compile project(":Arc:backends:backend-headless")
     compile project(":Mindustry:core")
+    compile "org.reflections:reflections:0.9.11"
 }
