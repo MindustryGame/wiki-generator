@@ -3,10 +3,12 @@
 | Property      | Value |
 | ----------- | ----------- |
 |Internal Name|`$internalname`|
+|Color|`$color`|
 |Type|$type|
 |Flammability|$flammability|
 |Explosiveness|$explosiveness|
 |Radioactivity|$radioactivity|
+|Naturally Occurring|$drillable
 |Build Cost|$cost|
 |Hardness|$hardness|
 

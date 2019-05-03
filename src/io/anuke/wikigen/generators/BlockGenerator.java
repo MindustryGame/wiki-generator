@@ -1,6 +1,7 @@
 package io.anuke.wikigen.generators;
 
 import io.anuke.arc.Core;
+import io.anuke.arc.collection.Array;
 import io.anuke.arc.collection.ObjectMap;
 import io.anuke.arc.graphics.g2d.TextureAtlas.AtlasRegion;
 import io.anuke.arc.scene.Element;
@@ -30,7 +31,8 @@ public class BlockGenerator extends FileGenerator<Block>{
 
         ObjectMap<String, Object> values = ObjectMap.of(
             "name", block.localizedName,
-            "internalname", block.name
+            "internalname", block.name,
+            "requirements", block.buildRequirements == null ? "" : Array.with(block.buildRequirements).reduce("", (stack, r) -> r + link(stack.item) + "x" + stack.amount + " ").replace("../../../Mindustry-Wiki-Generator/output/", "../../")
         );
 
         if(block.description != null){

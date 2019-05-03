@@ -25,7 +25,7 @@ public class CoreSplicer{
                         Log.err("File '{0}' has no generated comment! Has a user removed it? Check this file manually.", target.path());
                     }else{
                         //everything after the comment is kept, everything before it is replaced
-                        String result = genString + comment + sourceString.substring(idx + comment.length());
+                        String result = genString + "\n" + comment + "\n" + sourceString.substring(idx + comment.length());
                         target.writeString(result);
                         Log.info("> Spliced file {0}", target.path());
                     }
@@ -34,7 +34,7 @@ public class CoreSplicer{
                     FileHandle dest = Config.fileDirectory.child(file.path().substring(Config.outputDirectory.path().length()));
                     file.copyTo(dest);
                     //append comment to end of file so it can be used later
-                    dest.writeString(comment + "\n", true);
+                    dest.writeString("\n" + comment + "\n", true);
                     Log.info("> Created new file {0}", dest.path());
                 }
             }

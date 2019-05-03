@@ -29,6 +29,8 @@ public class ItemGenerator extends FileGenerator<Item>{
             "radioactivity", (int)(item.radioactivity * 100) + "%",
             "cost", item.type == ItemType.material ? (int)(item.cost * 100) + "%" : "",
             "hardness", item.hardness,
+            "drillable", drillable,
+            "color", item.color.toString().substring(0, 6),
             "produced", links(Vars.content.blocks().select(b -> (drillable && b instanceof Drill && ((Drill)b).tier() >= item.hardness) || (b instanceof GenericCrafter && ((GenericCrafter)b).outputItem() == item))),
             "used", links(Vars.content.blocks().select(b -> b.buildRequirements != null && Structs.contains(b.buildRequirements, i -> i.item == item))),
             "crafting", links(Vars.content.blocks().select(b -> b.consumes.all() != null && Structs.contains(b.consumes.all(), c -> (c instanceof ConsumeItemFilter && ((ConsumeItemFilter)c).filter.test(item))
@@ -38,6 +40,6 @@ public class ItemGenerator extends FileGenerator<Item>{
 
     @Override
     protected String linkImage(Item content){
-        return "item-" + content;
+        return "item-" + content.name + "-medium";
     }
 }
