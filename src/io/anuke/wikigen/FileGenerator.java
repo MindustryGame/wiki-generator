@@ -23,8 +23,8 @@ public abstract class FileGenerator<T extends Content>{
 
     /** Returns a markdown file with this name in the output directory with this generator's type name.*/
     public FileHandle file(String name){
-        Config.outputDirectory.mkdirs();
-        return Config.outputDirectory.child(displayType(type())).child(name + ".md");
+        Config.tmpDirectory.mkdirs();
+        return Config.tmpDirectory.child(displayType(type())).child(name + ".md");
     }
 
     /** Creates a writer for writing to this {@link io.anuke.wikigen.FileGenerator#file}.*/
@@ -57,7 +57,7 @@ public abstract class FileGenerator<T extends Content>{
     /** @return an image link for this content with a correct icon and path. */
     public final String makeLink(T content){
         String name = content instanceof UnlockableContent ? ((UnlockableContent)content).localizedName : "";
-        return Strings.format("[![{0}]({5}/{1}.png)]({3}/{4}/{2}.md)", name, linkImage(content), linkPath(content), Config.outputDirectory.path(), displayType(content.getContentType()), Config.imageDirectory.path());
+        return Strings.format("[![{0}]({5}/{1}.png)]({3}/{4}/{2}.md)", name, linkImage(content), linkPath(content), Config.tmpDirectory.path(), displayType(content.getContentType()), Config.imageDirectory.path());
     }
 
     /** @return the name of the image this content should use in links without an extension or additional paths.*/

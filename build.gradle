@@ -39,6 +39,7 @@ project(":Mindustry:annotations"){
 
     dependencies {
         compile 'com.squareup:javapoet:1.11.0'
+        compile files("${System.getProperty('java.home')}/../lib/tools.jar")
     }
 }
 

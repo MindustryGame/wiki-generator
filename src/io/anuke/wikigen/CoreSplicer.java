@@ -10,9 +10,9 @@ public class CoreSplicer{
 
     /** Begins recursively splicing generated files with base, edited files.*/
     public static void splice(){
-        Log.info("Splicing files from {0} into {1}...", Config.outputDirectory.path(), Config.fileDirectory.path());
-        Config.fileDirectory.walk(f -> targets.put(f.name(), f));
-        Config.outputDirectory.walk(file -> {
+        Log.info("Splicing files from {0} into {1}...", Config.tmpDirectory.path(), Config.fileOutDirectory.path());
+        Config.fileOutDirectory.walk(f -> targets.put(f.name(), f));
+        Config.tmpDirectory.walk(file -> {
             //only look at markdown files.
             if(file.extension().equals("md")){
                 //splice if target is found
@@ -31,7 +31,7 @@ public class CoreSplicer{
                     }
                 }else{
                     //else create a new file in the file directory
-                    FileHandle dest = Config.fileDirectory.child(file.path().substring(Config.outputDirectory.path().length()));
+                    FileHandle dest = Config.fileOutDirectory.child(file.path().substring(Config.tmpDirectory.path().length()));
                     file.copyTo(dest);
                     //append comment to end of file so it can be used later
                     dest.writeString("\n" + comment + "\n", true);
@@ -43,7 +43,7 @@ public class CoreSplicer{
         //copy images
         //TODO later, just unpack them in this directory to begin with to save time
         for(FileHandle file : Config.imageDirectory.list()){
-            file.copyTo(Config.fileDirectory.child("images").child(file.name()));
+            file.copyTo(Config.fileOutDirectory.child("images").child(file.name()));
         }
     }
 }

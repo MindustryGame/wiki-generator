@@ -13,7 +13,7 @@ public class CoreGenerator{
 
     /** Generates all the pages, loads the classes. */
     public static void generate(){
-        Config.outputDirectory.deleteDirectory();
+        Config.tmpDirectory.deleteDirectory();
         new TextureUnpacker().split(Core.files.local("sprites/sprites.atlas"), Config.imageDirectory);
 
         Reflections reflections = new Reflections("io.anuke.wikigen.generators");
