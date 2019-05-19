@@ -1,4 +1,5 @@
-# ![$name](../images/liquid-$internalname.png) $name 
+# $name 
+![$name](../images/liquid-$internalname.png)  
 
 | Property      | Value |
 | ----------- | ----------- |

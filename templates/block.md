@@ -1,5 +1,6 @@
-# ![$name](../../images/$internalname-icon-large.png) $name 
-##### $requirements
+# $name 
+![$name](../../images/$internalname-icon-large.png)   
+$requirements
 
 *"$description"*
 

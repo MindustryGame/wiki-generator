@@ -32,7 +32,7 @@ public class BlockGenerator extends FileGenerator<Block>{
         ObjectMap<String, Object> values = ObjectMap.of(
             "name", block.localizedName,
             "internalname", block.name,
-            "requirements", block.buildRequirements == null ? "" : Array.with(block.buildRequirements).reduce("", (stack, r) -> r + link(stack.item) + "x" + stack.amount + " ").replace("../../../Mindustry-Wiki-Generator/output/", "../../")
+            "requirements", block.buildRequirements == null ? "" : Array.with(block.buildRequirements).reduce("", (stack, r) -> r + link(stack.item) + "x" + stack.amount + " ")
         );
 
         if(block.description != null){
