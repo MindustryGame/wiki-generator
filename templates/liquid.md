@@ -1,5 +1,5 @@
-# $name 
-![$name](../images/liquid-$internalname.png)  
+# <img id="spr" src="/wiki/images/liquid-$internalname.png"></img> $name 
+
 
 | Property      | Value |
 | ----------- | ----------- |
@@ -13,6 +13,6 @@
 
 --- 
 
-##### Produced in: <br>$produced
+##### Produced in <br>$produced
 
-##### Required for: <br>$crafting
+##### Required for <br>$crafting

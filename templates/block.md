@@ -1,5 +1,5 @@
-# $name 
-![$name](../../images/$internalname-icon-large.png)   
+# <img id="spr" src="/wiki/images/$internalname-icon-large.png"></img> $name 
+
 $requirements
 
 *"$description"*

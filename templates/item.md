@@ -1,5 +1,7 @@
-# $name 
-![$name](../images/item-$internalname.png)  
+# <img id="spr" src="/wiki/images/item-$internalname.png"></img> $name 
+
+
+*"$description"*  
 
 | Property      | Value |
 | ----------- | ----------- |
@@ -9,16 +11,14 @@
 |Flammability|$flammability|
 |Explosiveness|$explosiveness|
 |Radioactivity|$radioactivity|
-|Naturally Occurring|$drillable
+|Naturally Occurring|$drillable|
 |Build Cost|$cost|
 |Hardness|$hardness|
 
-*"$description"*
-
 --- 
 
-##### Produced in: <br>$produced
+##### Produced in <br>$produced
 
-##### Required for: <br>$crafting
+##### Required for <br>$crafting
 
-##### Used to build: <br>$used
+##### Used to build <br>$used

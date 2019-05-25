@@ -7,7 +7,6 @@ import io.anuke.arc.files.FileHandle;
 import io.anuke.arc.function.Consumer;
 import io.anuke.arc.util.Log;
 import io.anuke.arc.util.Strings;
-import io.anuke.mindustry.Vars;
 import io.anuke.mindustry.game.Content;
 import io.anuke.mindustry.game.UnlockableContent;
 import io.anuke.mindustry.type.ContentType;
@@ -57,16 +56,7 @@ public abstract class FileGenerator<T extends Content>{
 
     /** @return an image link for this content with a correct icon and path. */
     public final String makeLink(T content){
-        //depth of the CURRENT content generator
-        int depth = linkPath(Vars.content.getByID(type(), 0)).contains("/") ? 1 : 2;
-        StringBuilder depthStr = new StringBuilder();
-        for(int i = 0; i < depth; i++){
-            depthStr.append("../");
-        }
-        String relpath = depthStr.toString();
-
-        String name = content instanceof UnlockableContent ? ((UnlockableContent)content).localizedName : "";
-        return Strings.format("[![{0}]({5}images/{1}.png)]({3}{4}/{2}.md)", name, linkImage(content), linkPath(content), relpath, displayType(content.getContentType()), relpath);
+        return Strings.format("<a href=\"/wiki/{0}\"><img id=\"spr\" src=\"/wiki/images/{1}.png\"/></a>", displayType(content.getContentType()) + "/" + linkPath(content), linkImage(content));
     }
 
     /** @return the name of the image this content should use in links without an extension or additional paths.*/

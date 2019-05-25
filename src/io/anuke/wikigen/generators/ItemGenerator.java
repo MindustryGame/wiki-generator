@@ -40,6 +40,6 @@ public class ItemGenerator extends FileGenerator<Item>{
 
     @Override
     protected String linkImage(Item content){
-        return "item-" + content.name + "-medium";
+        return "item-" + content.name + "-xlarge";
     }
 }
