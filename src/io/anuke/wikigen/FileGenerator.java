@@ -77,7 +77,7 @@ public abstract class FileGenerator<T extends Content>{
     public String links(Iterable<? extends Content> list){
         StringBuilder build = new StringBuilder();
         for(Content c : list){
-            build.append(link(c)).append(" ");
+            build.append(link(c).replace("\"spr\"", "\"sprlist\"")).append(" ");
         }
         return build.toString();
     }

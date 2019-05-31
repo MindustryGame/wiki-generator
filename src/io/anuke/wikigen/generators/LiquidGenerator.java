@@ -34,6 +34,6 @@ public class LiquidGenerator extends FileGenerator<Liquid>{
 
     @Override
     protected String linkImage(Liquid content){
-        return "liquid-" + content;
+        return "liquid-" + content.name;
     }
 }

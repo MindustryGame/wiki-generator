@@ -13,6 +13,8 @@ import io.anuke.arc.scene.ui.layout.Cell;
 import io.anuke.arc.scene.ui.layout.Table;
 import io.anuke.arc.util.Strings;
 import io.anuke.mindustry.type.ContentType;
+import io.anuke.mindustry.ui.ItemDisplay;
+import io.anuke.mindustry.ui.LiquidDisplay;
 import io.anuke.mindustry.world.Block;
 import io.anuke.mindustry.world.meta.StatCategory;
 import io.anuke.mindustry.world.meta.StatValue;
@@ -98,6 +100,27 @@ public class BlockGenerator extends FileGenerator<Block>{
                 result.append("<br> • ");
             }
             result.append(text).append(" ");
+        }else if(e instanceof ItemDisplay){
+            ItemDisplay d = (ItemDisplay)e;
+            result.append(link(d.item));
+            if(d.amount > 0){
+                result.append("x");
+                result.append(d.amount);
+            }
+            result.append(" ");
+        }else if(e instanceof LiquidDisplay){
+            LiquidDisplay d = (LiquidDisplay)e;
+            result.append(link(d.liquid));
+            if(d.amount > 0){
+                if(d.perSecond){
+                    result.append(Strings.autoFixed(d.amount, 1));
+                    result.append("/sec");
+                }else{
+                    result.append("x");
+                    result.append(Strings.autoFixed(d.amount, 1));
+                }
+            }
+            result.append(" ");
         }else if(e instanceof Image){
             AtlasRegion region = (AtlasRegion)((TextureRegionDrawable)((Image)e).getDrawable()).getRegion();
             result.append(Strings.format("![{0}](../../images/{0}.png)", region.name));
