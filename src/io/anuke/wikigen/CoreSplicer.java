@@ -25,7 +25,7 @@ public class CoreSplicer{
                         Log.err("File '{0}' has no generated comment! Has a user removed it? Check this file manually.", target.path());
                     }else{
                         //everything after the comment is kept, everything before it is replaced
-                        String result = genString + "\n" + comment + "\n" + sourceString.substring(idx + comment.length());
+                        String result = genString + "\n" + comment + sourceString.substring(idx + comment.length()).replaceAll("[\r\n]+$", "");;
                         target.writeString(result);
                         Log.info("> Spliced file {0}", target.path());
                     }
