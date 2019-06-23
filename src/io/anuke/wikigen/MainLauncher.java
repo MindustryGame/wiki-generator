@@ -1,6 +1,7 @@
 package io.anuke.wikigen;
 
 import io.anuke.arc.ApplicationListener;
+import io.anuke.arc.Core;
 import io.anuke.arc.backends.headless.HeadlessApplication;
 import io.anuke.mindustry.Vars;
 import io.anuke.mindustry.core.Logic;
@@ -23,6 +24,11 @@ public class MainLauncher{
 
             @Override
             public void init(){
+                //generate locale file manually
+                if(!Core.files.local("locales").exists()){
+                    Core.files.local("locales").writeString("en");
+                }
+
                 Version.enabled = false;
                 Vars.init();
                 BundleLoader.load();
