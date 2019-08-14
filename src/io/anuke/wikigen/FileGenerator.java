@@ -1,17 +1,16 @@
 package io.anuke.wikigen;
 
-import io.anuke.arc.Core;
+import io.anuke.arc.*;
 import io.anuke.arc.collection.Array;
-import io.anuke.arc.collection.ObjectMap;
-import io.anuke.arc.files.FileHandle;
-import io.anuke.arc.function.Consumer;
-import io.anuke.arc.util.Log;
-import io.anuke.arc.util.Strings;
-import io.anuke.mindustry.game.Content;
-import io.anuke.mindustry.game.UnlockableContent;
-import io.anuke.mindustry.type.ContentType;
+import io.anuke.arc.collection.*;
+import io.anuke.arc.files.*;
+import io.anuke.arc.function.*;
+import io.anuke.arc.util.*;
+import io.anuke.mindustry.game.*;
+import io.anuke.mindustry.type.*;
 
-import java.io.PrintWriter;
+import java.io.*;
+import java.lang.reflect.*;
 
 /** Represents a generator for a type of content.
  * Each subclass should be placed in generators/ and annotated with {@link Generates} to indicate its content type.*/
@@ -86,6 +85,8 @@ public abstract class FileGenerator<T extends Content>{
     public String str(Object obj){
         if(obj instanceof Boolean){
             return (Boolean)obj ? "Yes" : "No";
+        }else if(obj instanceof Float){
+            return Strings.autoFixed((float)obj, 3);
         }
         return obj + "";
     }
@@ -103,4 +104,15 @@ public abstract class FileGenerator<T extends Content>{
 
     /** This method should generate a page for this content.*/
     public abstract void generate(T content);
+
+    /** Utility method for getting block via reflection.*/
+    protected static <T> T getPrivate(Object object, Class<?> type, String field){
+        try{
+            Field f = type.getDeclaredField(field);
+            f.setAccessible(true);
+            return (T)f.get(object);
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
+    }
 }
