@@ -11,6 +11,8 @@ public class UnitGenerator extends FileGenerator<UnitType>{
     @Override
     public void generate(UnitType content){
         template(content.name,
+        "icon", linkImage(content),
+        "description", content.description,
         "name", content.localizedName(),
         "internalname", content.name,
         "health", content.health,
@@ -24,6 +26,7 @@ public class UnitGenerator extends FileGenerator<UnitType>{
 
     @Override
     protected String linkImage(UnitType content){
-        return "unit-icon-" + content.name;
+        String baseName = "unit-icon-" + content.name;
+        return Config.imageDirectory.child(baseName+ ".png").exists() ? baseName : content.name;
     }
 }

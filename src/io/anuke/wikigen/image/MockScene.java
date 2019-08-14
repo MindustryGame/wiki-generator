@@ -7,6 +7,7 @@ import io.anuke.arc.graphics.g2d.TextureAtlas.AtlasRegion;
 import io.anuke.arc.graphics.g2d.TextureRegion;
 import io.anuke.arc.scene.Scene;
 import io.anuke.arc.scene.Skin;
+import io.anuke.wikigen.*;
 
 import java.nio.*;
 

@@ -12,6 +12,7 @@ public class MechGenerator extends FileGenerator<Mech>{
     public void generate(Mech content){
         template(content.name,
         "name", content.localizedName(),
+        "description", content.description,
         "internalname", content.name,
         "health", content.health,
         "flying", content.flying,

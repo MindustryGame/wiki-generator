@@ -87,6 +87,8 @@ public abstract class FileGenerator<T extends Content>{
             return (Boolean)obj ? "Yes" : "No";
         }else if(obj instanceof Float){
             return Strings.autoFixed((float)obj, 3);
+        }else if(obj == null){
+            return "Unknown...";
         }
         return obj + "";
     }

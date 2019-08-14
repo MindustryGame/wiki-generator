@@ -1,4 +1,4 @@
-# <img id="spr" src="/wiki/images/item-$internalname.png"></img> $name 
+# <img id="spr" src="/wiki/images/$icon.png"></img> $name 
 
 
 *"$description"*  
