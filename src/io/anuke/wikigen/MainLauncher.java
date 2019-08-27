@@ -1,15 +1,11 @@
 package io.anuke.wikigen;
 
-import io.anuke.arc.ApplicationListener;
-import io.anuke.arc.Core;
-import io.anuke.arc.backends.headless.HeadlessApplication;
-import io.anuke.mindustry.Vars;
-import io.anuke.mindustry.core.Logic;
-import io.anuke.mindustry.core.World;
-import io.anuke.mindustry.game.Content;
-import io.anuke.mindustry.game.Version;
-import io.anuke.mindustry.io.BundleLoader;
-import io.anuke.wikigen.image.MockScene;
+import io.anuke.arc.*;
+import io.anuke.arc.backends.headless.*;
+import io.anuke.mindustry.*;
+import io.anuke.mindustry.core.*;
+import io.anuke.mindustry.game.*;
+import io.anuke.wikigen.image.*;
 
 public class MainLauncher{
 
@@ -30,16 +26,14 @@ public class MainLauncher{
                 }
 
                 Version.enabled = false;
-                Vars.init();
-                BundleLoader.load();
                 Vars.headless = true;
-                Vars.content.verbose(false);
-                Vars.content.load();
+                Vars.loadSettings();
+                Vars.init();
                 Vars.world = new World();
                 Vars.logic = new Logic();
-                Vars.content.initialize(Content::init);
+                Vars.content.init();
                 MockScene.init();
-                Vars.content.initialize(Content::load);
+                Vars.content.load();
                 CoreGenerator.generate();
                 CoreSplicer.splice();
                 System.exit(0);
