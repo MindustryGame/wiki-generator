@@ -29,6 +29,7 @@ public class MainLauncher{
                 Vars.headless = true;
                 Vars.loadSettings();
                 Vars.init();
+                Vars.content.createContent();
                 Vars.world = new World();
                 Vars.logic = new Logic();
                 Vars.content.init();
