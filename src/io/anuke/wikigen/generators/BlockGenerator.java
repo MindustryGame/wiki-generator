@@ -27,7 +27,7 @@ public class BlockGenerator extends FileGenerator<Block>{
     @Override
     public void generate(Block block){
         //skip hidden blocks
-        if(block.isHidden() || !block.isVisible()){
+        if(!block.isBuildable()){
             return;
         }
 

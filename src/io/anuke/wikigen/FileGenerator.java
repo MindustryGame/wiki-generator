@@ -55,7 +55,11 @@ public abstract class FileGenerator<T extends Content>{
 
     /** @return an image link for this content with a correct icon and path. */
     public final String makeLink(T content){
-        return Strings.format("<a href=\"/wiki/{0}\"><img id=\"spr\" src=\"/wiki/images/{1}.png\"/></a>", displayType(content.getContentType()) + "/" + linkPath(content), linkImage(content));
+        return Strings.format("<a href=\"/wiki/{0}\"><img id=\"{2}\" src=\"/wiki/images/{1}.png\"/></a>", displayType(content.getContentType()) + "/" + linkPath(content), linkImage(content), imageStyle());
+    }
+
+    public String imageStyle(){
+        return "spr";
     }
 
     /** @return the name of the image this content should use in links without an extension or additional paths.*/

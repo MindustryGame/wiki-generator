@@ -1,13 +1,9 @@
 package io.anuke.wikigen.image;
 
-import io.anuke.arc.Core;
-import io.anuke.arc.graphics.GL20;
-import io.anuke.arc.graphics.g2d.TextureAtlas;
-import io.anuke.arc.graphics.g2d.TextureAtlas.AtlasRegion;
-import io.anuke.arc.graphics.g2d.TextureRegion;
-import io.anuke.arc.scene.Scene;
-import io.anuke.arc.scene.Skin;
-import io.anuke.wikigen.*;
+import io.anuke.arc.*;
+import io.anuke.arc.graphics.*;
+import io.anuke.arc.graphics.g2d.*;
+import io.anuke.arc.scene.*;
 
 import java.nio.*;
 
@@ -30,25 +26,11 @@ public class MockScene{
             }
         };
 
-        Core.scene = new Scene(new Skin(){
+        Core.scene = new Scene(){
             @Override
-            public TextureRegion getRegion(String name){
-                String fname = name;
-                return new AtlasRegion(){{
-                    this.name = fname;
-                }};
+            public <T> T getStyle(Class<T> type){
+                return null;
             }
-
-            @Override
-            public <T> T get(String name, Class<T> type){
-                try{
-                    return null;
-                }catch(Exception e){
-                    throw new RuntimeException(e);
-                }
-            }
-        }){
-
         };
     }
 }

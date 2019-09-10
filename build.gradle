@@ -29,6 +29,7 @@ project(":Mindustry:core"){
     dependencies {
         compile project(":Arc:arc-core")
         compile project(":Arc:extensions:freetype")
+        compile project(":Arc:extensions:arcnet")
         compileOnly project(":Mindustry:annotations")
         annotationProcessor project(":Mindustry:annotations")
         compile "org.lz4:lz4-java:1.4.1"
