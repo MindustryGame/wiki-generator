@@ -20,7 +20,7 @@ public class UnitGenerator extends FileGenerator<UnitType>{
         "speed", content.speed,
         "mass", content.mass,
         "maxvelocity", content.maxVelocity,
-        "created", links(Vars.content.blocks().select(b -> b instanceof UnitFactory && getPrivate(b, UnitFactory.class, "type") == content))
+        "created", links(Vars.content.blocks().select(b -> b instanceof UnitFactory && getPrivate(b, UnitFactory.class, "unitType") == content))
         );
     }
 

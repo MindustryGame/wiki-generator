@@ -80,6 +80,7 @@ public abstract class FileGenerator<T extends Content>{
     public String links(Iterable<? extends Content> list){
         StringBuilder build = new StringBuilder();
         for(Content c : list){
+            if(c == null) continue;
             build.append(link(c).replace("\"spr\"", "\"sprlist\"")).append(" ");
         }
         return build.toString();
