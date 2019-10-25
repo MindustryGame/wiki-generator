@@ -6,7 +6,7 @@ import io.anuke.arc.collection.*;
 import io.anuke.arc.files.*;
 import io.anuke.arc.function.*;
 import io.anuke.arc.util.*;
-import io.anuke.mindustry.game.*;
+import io.anuke.mindustry.ctype.*;
 import io.anuke.mindustry.type.*;
 
 import java.io.*;

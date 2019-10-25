@@ -34,7 +34,7 @@ public class BlockGenerator extends FileGenerator<Block>{
         ObjectMap<String, Object> values = ObjectMap.of(
             "name", block.localizedName,
             "internalname", block.name,
-            "requirements", block.buildRequirements == null ? "" : Array.with(block.buildRequirements).reduce("", (stack, r) -> r + link(stack.item) + "x" + stack.amount + " ")
+            "requirements", block.requirements == null ? "" : Array.with(block.requirements).reduce("", (stack, r) -> r + link(stack.item) + "x" + stack.amount + " ")
         );
 
         if(block.description != null){
@@ -74,7 +74,7 @@ public class BlockGenerator extends FileGenerator<Block>{
 
     @Override
     protected String linkPath(Block content){
-        return content.buildCategory + "/" + content.name;
+        return content.category + "/" + content.name;
     }
 
     String strStat(StatValue value){

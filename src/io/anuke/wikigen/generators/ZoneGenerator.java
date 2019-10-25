@@ -3,6 +3,7 @@ package io.anuke.wikigen.generators;
 import io.anuke.arc.collection.*;
 import io.anuke.arc.util.*;
 import io.anuke.mindustry.*;
+import io.anuke.mindustry.game.*;
 import io.anuke.mindustry.type.*;
 import io.anuke.wikigen.*;
 
@@ -29,8 +30,8 @@ public class ZoneGenerator extends FileGenerator<Zone>{
         "mode", !zone.getRules().attackMode ? "Survival" : "Attack",
         "launchwave", zone.conditionWave == Integer.MAX_VALUE ? "none" : zone.conditionWave,
         "loadout", Array.with(zone.getStartingItems()).reduce("", (stack, r) -> r + link(stack.item) + "x" + stack.amount + " "),
-        "required", links(Vars.content.zones().select(z -> Structs.contains(z.zoneRequirements, r -> r.zone == zone))),
-        "preceded", links(Array.with(zone.zoneRequirements).map(z -> z.zone)),
+        "required", links(Vars.content.zones().select(z -> z.requirements.contains(r -> r.zone() == zone))),
+        "preceded", links(Array.with(zone.requirements).map(Objective::zone)),
         "resources", links(Array.with(zone.resources))
         );
     }

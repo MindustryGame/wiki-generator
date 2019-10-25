@@ -16,7 +16,7 @@ public class UnitGenerator extends FileGenerator<UnitType>{
         "name", content.localizedName(),
         "internalname", content.name,
         "health", content.health,
-        "flying", content.isFlying,
+        "flying", content.flying,
         "speed", content.speed,
         "mass", content.mass,
         "maxvelocity", content.maxVelocity,
