@@ -69,7 +69,7 @@ public class BlockGenerator extends FileGenerator<Block>{
 
     @Override
     protected String linkImage(Block content){
-        return content.name + "-icon-small";
+        return "block-" + content.name + "-small";
     }
 
     @Override
