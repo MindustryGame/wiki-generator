@@ -4,7 +4,7 @@ import io.anuke.arc.*;
 import io.anuke.arc.collection.Array;
 import io.anuke.arc.collection.*;
 import io.anuke.arc.files.*;
-import io.anuke.arc.function.*;
+import io.anuke.arc.func.*;
 import io.anuke.arc.util.*;
 import io.anuke.mindustry.ctype.*;
 import io.anuke.mindustry.type.*;
@@ -27,10 +27,10 @@ public abstract class FileGenerator<T extends Content>{
     }
 
     /** Creates a writer for writing to this {@link io.anuke.wikigen.FileGenerator#file}.*/
-    public void write(String name, Consumer<PrintWriter> consumer){
+    public void write(String name, Cons<PrintWriter> consumer){
         FileHandle file = file(name);
         PrintWriter writer = new PrintWriter(file.writer(false));
-        consumer.accept(writer);
+        consumer.get(writer);
         writer.close();
     }
 
