@@ -13,7 +13,7 @@ public class UnitGenerator extends FileGenerator<UnitType>{
         template(content.name,
         "icon", linkImage(content),
         "description", content.description,
-        "name", content.localizedName(),
+        "name", content.localizedName,
         "internalname", content.name,
         "health", content.health,
         "flying", content.flying,

@@ -23,7 +23,7 @@ public class ZoneGenerator extends FileGenerator<Zone>{
     @Override
     public void generate(Zone zone){
         template(zone.name,
-        "name", zone.localizedName(),
+        "name", zone.localizedName,
         "internalname", zone.name,
         "description", zone.description.replace("[lightgray]", "").replace("[accent]", ""),
         "launchperiod", zone.launchPeriod,

@@ -11,7 +11,7 @@ public class MechGenerator extends FileGenerator<Mech>{
     @Override
     public void generate(Mech content){
         template(content.name,
-        "name", content.localizedName(),
+        "name", content.localizedName,
         "description", content.description,
         "internalname", content.name,
         "health", content.health,
