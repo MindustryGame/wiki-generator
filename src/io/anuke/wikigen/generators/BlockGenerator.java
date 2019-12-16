@@ -12,7 +12,7 @@ import io.anuke.arc.scene.ui.Label;
 import io.anuke.arc.scene.ui.layout.Cell;
 import io.anuke.arc.scene.ui.layout.Table;
 import io.anuke.arc.util.Strings;
-import io.anuke.mindustry.type.ContentType;
+import io.anuke.mindustry.ctype.ContentType;
 import io.anuke.mindustry.ui.ItemDisplay;
 import io.anuke.mindustry.ui.LiquidDisplay;
 import io.anuke.mindustry.world.Block;

@@ -1,6 +1,6 @@
 package io.anuke.wikigen.image;
 
-import io.anuke.arc.files.FileHandle;
+import io.anuke.arc.files.Fi;
 import io.anuke.arc.graphics.g2d.TextureAtlas.TextureAtlasData;
 import io.anuke.arc.graphics.g2d.TextureAtlas.TextureAtlasData.Page;
 import io.anuke.arc.graphics.g2d.TextureAtlas.TextureAtlasData.Region;
@@ -18,7 +18,7 @@ public class TextureUnpacker{
     private static final int NINEPATCH_PADDING = 1;
     private static final String OUTPUT_TYPE = "png";
 
-    public void split(FileHandle atlasFile, FileHandle output){
+    public void split(Fi atlasFile, Fi output){
         try{
             new TextureUnpacker().splitAtlas(new TextureAtlasData(atlasFile, atlasFile.parent(), false), output.file().getAbsolutePath());
         }catch(IOException e){

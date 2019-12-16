@@ -2,7 +2,7 @@ package io.anuke.wikigen.generators;
 
 import io.anuke.arc.util.Structs;
 import io.anuke.mindustry.Vars;
-import io.anuke.mindustry.type.ContentType;
+import io.anuke.mindustry.ctype.ContentType;
 import io.anuke.mindustry.type.Liquid;
 import io.anuke.mindustry.world.blocks.Floor;
 import io.anuke.mindustry.world.blocks.production.GenericCrafter;

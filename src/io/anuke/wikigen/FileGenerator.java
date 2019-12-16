@@ -21,14 +21,14 @@ public abstract class FileGenerator<T extends Content>{
     }
 
     /** Returns a markdown file with this name in the output directory with this generator's type name.*/
-    public FileHandle file(String name){
+    public Fi file(String name){
         Config.tmpDirectory.mkdirs();
         return Config.tmpDirectory.child(displayType(type())).child(name + ".md");
     }
 
     /** Creates a writer for writing to this {@link io.anuke.wikigen.FileGenerator#file}.*/
     public void write(String name, Cons<PrintWriter> consumer){
-        FileHandle file = file(name);
+        Fi file = file(name);
         PrintWriter writer = new PrintWriter(file.writer(false));
         consumer.get(writer);
         writer.close();

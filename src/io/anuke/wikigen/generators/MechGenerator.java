@@ -1,6 +1,7 @@
 package io.anuke.wikigen.generators;
 
 import io.anuke.mindustry.*;
+import io.anuke.mindustry.ctype.*;
 import io.anuke.mindustry.type.*;
 import io.anuke.mindustry.world.blocks.units.*;
 import io.anuke.wikigen.*;

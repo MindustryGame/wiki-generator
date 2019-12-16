@@ -3,6 +3,7 @@ package io.anuke.wikigen.generators;
 import io.anuke.arc.collection.*;
 import io.anuke.arc.util.*;
 import io.anuke.mindustry.*;
+import io.anuke.mindustry.ctype.*;
 import io.anuke.mindustry.game.*;
 import io.anuke.mindustry.type.*;
 import io.anuke.wikigen.*;

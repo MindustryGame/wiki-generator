@@ -4,7 +4,7 @@ import io.anuke.arc.Core;
 import io.anuke.arc.collection.ObjectMap;
 import io.anuke.arc.util.Log;
 import io.anuke.mindustry.Vars;
-import io.anuke.mindustry.type.ContentType;
+import io.anuke.mindustry.ctype.ContentType;
 import io.anuke.wikigen.image.TextureUnpacker;
 import org.reflections.Reflections;
 

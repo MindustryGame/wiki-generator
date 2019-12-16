@@ -3,6 +3,7 @@ package io.anuke.wikigen.generators;
 import io.anuke.arc.util.Strings;
 import io.anuke.arc.util.Structs;
 import io.anuke.mindustry.Vars;
+import io.anuke.mindustry.ctype.*;
 import io.anuke.mindustry.type.*;
 import io.anuke.mindustry.world.blocks.Floor;
 import io.anuke.mindustry.world.blocks.production.Drill;
