@@ -43,7 +43,7 @@ project(":Mindustry:annotations"){
     task cleanGen{
         doFirst{
             delete{
-                delete "../core/src/io/anuke/mindustry/gen/"
+                delete "../core/src/mindustry/gen/"
             }
         }
     }
