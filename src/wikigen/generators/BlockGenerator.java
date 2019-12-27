@@ -1,25 +1,25 @@
-package io.anuke.wikigen.generators;
+package wikigen.generators;
 
-import io.anuke.arc.Core;
-import io.anuke.arc.collection.Array;
-import io.anuke.arc.collection.ObjectMap;
-import io.anuke.arc.graphics.g2d.TextureAtlas.AtlasRegion;
-import io.anuke.arc.scene.Element;
-import io.anuke.arc.scene.Group;
-import io.anuke.arc.scene.style.TextureRegionDrawable;
-import io.anuke.arc.scene.ui.Image;
-import io.anuke.arc.scene.ui.Label;
-import io.anuke.arc.scene.ui.layout.Cell;
-import io.anuke.arc.scene.ui.layout.Table;
-import io.anuke.arc.util.Strings;
-import io.anuke.mindustry.ctype.ContentType;
-import io.anuke.mindustry.ui.ItemDisplay;
-import io.anuke.mindustry.ui.LiquidDisplay;
-import io.anuke.mindustry.world.Block;
-import io.anuke.mindustry.world.meta.StatCategory;
-import io.anuke.mindustry.world.meta.StatValue;
-import io.anuke.wikigen.FileGenerator;
-import io.anuke.wikigen.Generates;
+import arc.Core;
+import arc.struct.Array;
+import arc.struct.ObjectMap;
+import arc.graphics.g2d.TextureAtlas.AtlasRegion;
+import arc.scene.Element;
+import arc.scene.Group;
+import arc.scene.style.TextureRegionDrawable;
+import arc.scene.ui.Image;
+import arc.scene.ui.Label;
+import arc.scene.ui.layout.Cell;
+import arc.scene.ui.layout.Table;
+import arc.util.Strings;
+import mindustry.ctype.ContentType;
+import mindustry.ui.ItemDisplay;
+import mindustry.ui.LiquidDisplay;
+import mindustry.world.Block;
+import mindustry.world.meta.StatCategory;
+import mindustry.world.meta.StatValue;
+import wikigen.FileGenerator;
+import wikigen.Generates;
 
 @Generates(ContentType.block)
 public class BlockGenerator extends FileGenerator<Block>{

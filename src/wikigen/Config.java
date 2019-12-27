@@ -1,7 +1,7 @@
-package io.anuke.wikigen;
+package wikigen;
 
-import io.anuke.arc.Core;
-import io.anuke.arc.files.Fi;
+import arc.Core;
+import arc.files.Fi;
 
 /** General configuration. */
 public class Config{

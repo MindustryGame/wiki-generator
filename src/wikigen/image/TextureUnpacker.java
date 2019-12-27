@@ -1,9 +1,9 @@
-package io.anuke.wikigen.image;
+package wikigen.image;
 
-import io.anuke.arc.files.Fi;
-import io.anuke.arc.graphics.g2d.TextureAtlas.TextureAtlasData;
-import io.anuke.arc.graphics.g2d.TextureAtlas.TextureAtlasData.Page;
-import io.anuke.arc.graphics.g2d.TextureAtlas.TextureAtlasData.Region;
+import arc.files.Fi;
+import arc.graphics.g2d.TextureAtlas.TextureAtlasData;
+import arc.graphics.g2d.TextureAtlas.TextureAtlasData.Page;
+import arc.graphics.g2d.TextureAtlas.TextureAtlasData.Region;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

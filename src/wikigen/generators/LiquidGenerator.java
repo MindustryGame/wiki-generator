@@ -1,16 +1,16 @@
-package io.anuke.wikigen.generators;
+package wikigen.generators;
 
-import io.anuke.arc.util.Structs;
-import io.anuke.mindustry.Vars;
-import io.anuke.mindustry.ctype.ContentType;
-import io.anuke.mindustry.type.Liquid;
-import io.anuke.mindustry.world.blocks.Floor;
-import io.anuke.mindustry.world.blocks.production.GenericCrafter;
-import io.anuke.mindustry.world.blocks.production.Pump;
-import io.anuke.mindustry.world.consumers.ConsumeLiquid;
-import io.anuke.mindustry.world.consumers.ConsumeLiquidFilter;
-import io.anuke.wikigen.FileGenerator;
-import io.anuke.wikigen.Generates;
+import arc.util.Structs;
+import mindustry.Vars;
+import mindustry.ctype.ContentType;
+import mindustry.type.Liquid;
+import mindustry.world.blocks.Floor;
+import mindustry.world.blocks.production.GenericCrafter;
+import mindustry.world.blocks.production.Pump;
+import mindustry.world.consumers.ConsumeLiquid;
+import mindustry.world.consumers.ConsumeLiquidFilter;
+import wikigen.FileGenerator;
+import wikigen.Generates;
 
 @Generates(ContentType.liquid)
 public class LiquidGenerator extends FileGenerator<Liquid>{

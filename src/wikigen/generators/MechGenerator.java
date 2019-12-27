@@ -1,10 +1,10 @@
-package io.anuke.wikigen.generators;
+package wikigen.generators;
 
-import io.anuke.mindustry.*;
-import io.anuke.mindustry.ctype.*;
-import io.anuke.mindustry.type.*;
-import io.anuke.mindustry.world.blocks.units.*;
-import io.anuke.wikigen.*;
+import mindustry.*;
+import mindustry.ctype.*;
+import mindustry.type.*;
+import mindustry.world.blocks.units.*;
+import wikigen.*;
 
 @Generates(ContentType.mech)
 public class MechGenerator extends FileGenerator<Mech>{

@@ -1,12 +1,12 @@
-package io.anuke.wikigen.generators;
+package wikigen.generators;
 
-import io.anuke.arc.collection.*;
-import io.anuke.arc.util.*;
-import io.anuke.mindustry.*;
-import io.anuke.mindustry.ctype.*;
-import io.anuke.mindustry.game.*;
-import io.anuke.mindustry.type.*;
-import io.anuke.wikigen.*;
+import arc.struct.*;
+import arc.util.*;
+import mindustry.*;
+import mindustry.ctype.*;
+import mindustry.game.*;
+import mindustry.type.*;
+import wikigen.*;
 
 @Generates(ContentType.zone)
 public class ZoneGenerator extends FileGenerator<Zone>{

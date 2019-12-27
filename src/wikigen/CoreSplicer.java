@@ -1,8 +1,8 @@
-package io.anuke.wikigen;
+package wikigen;
 
-import io.anuke.arc.collection.ObjectMap;
-import io.anuke.arc.files.Fi;
-import io.anuke.arc.util.Log;
+import arc.struct.ObjectMap;
+import arc.files.Fi;
+import arc.util.Log;
 
 public class CoreSplicer{
     private static final ObjectMap<String, Fi> targets = new ObjectMap<>();

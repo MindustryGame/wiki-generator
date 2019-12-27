@@ -1,6 +1,6 @@
-package io.anuke.wikigen;
+package wikigen;
 
-import io.anuke.mindustry.ctype.ContentType;
+import mindustry.ctype.ContentType;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

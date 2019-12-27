@@ -1,11 +1,11 @@
-package io.anuke.wikigen;
+package wikigen;
 
-import io.anuke.arc.Core;
-import io.anuke.arc.collection.ObjectMap;
-import io.anuke.arc.util.Log;
-import io.anuke.mindustry.Vars;
-import io.anuke.mindustry.ctype.ContentType;
-import io.anuke.wikigen.image.TextureUnpacker;
+import arc.Core;
+import arc.struct.ObjectMap;
+import arc.util.Log;
+import mindustry.Vars;
+import mindustry.ctype.ContentType;
+import wikigen.image.*;
 import org.reflections.Reflections;
 
 public class CoreGenerator{
@@ -16,7 +16,7 @@ public class CoreGenerator{
         Config.tmpDirectory.deleteDirectory();
         new TextureUnpacker().split(Core.files.local("sprites/sprites.atlas"), Config.imageDirectory);
 
-        Reflections reflections = new Reflections("io.anuke.wikigen.generators");
+        Reflections reflections = new Reflections("wikigen.generators");
         reflections.getTypesAnnotatedWith(Generates.class).forEach(type -> {
             try{
                 ContentType content = type.getAnnotation(Generates.class).value();

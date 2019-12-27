@@ -18,7 +18,7 @@ allprojects{
 }
 
 task run(dependsOn: classes, type: JavaExec) {
-    main = "io.anuke.wikigen.MainLauncher"
+    main = "wikigen.MainLauncher"
     workingDir = new File("../Mindustry/core/assets")
     classpath = sourceSets.main.runtimeClasspath
 }

@@ -1,9 +1,9 @@
-package io.anuke.wikigen.image;
+package wikigen.image;
 
-import io.anuke.arc.*;
-import io.anuke.arc.graphics.*;
-import io.anuke.arc.graphics.g2d.*;
-import io.anuke.arc.scene.*;
+import arc.*;
+import arc.graphics.*;
+import arc.graphics.g2d.*;
+import arc.scene.*;
 
 import java.nio.*;
 

@@ -1,11 +1,10 @@
-package io.anuke.wikigen;
+package wikigen;
 
-import io.anuke.arc.*;
-import io.anuke.arc.backends.headless.*;
-import io.anuke.mindustry.*;
-import io.anuke.mindustry.core.*;
-import io.anuke.mindustry.game.*;
-import io.anuke.wikigen.image.*;
+import arc.*;
+import arc.backend.headless.*;
+import mindustry.*;
+import mindustry.core.*;
+import wikigen.image.*;
 
 public class MainLauncher{
 

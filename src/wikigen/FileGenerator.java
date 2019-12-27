@@ -1,13 +1,12 @@
-package io.anuke.wikigen;
+package wikigen;
 
-import io.anuke.arc.*;
-import io.anuke.arc.collection.Array;
-import io.anuke.arc.collection.*;
-import io.anuke.arc.files.*;
-import io.anuke.arc.func.*;
-import io.anuke.arc.util.*;
-import io.anuke.mindustry.ctype.*;
-import io.anuke.mindustry.type.*;
+import arc.*;
+import arc.struct.Array;
+import arc.struct.*;
+import arc.files.*;
+import arc.func.*;
+import arc.util.*;
+import mindustry.ctype.*;
 
 import java.io.*;
 import java.lang.reflect.*;
@@ -26,7 +25,7 @@ public abstract class FileGenerator<T extends Content>{
         return Config.tmpDirectory.child(displayType(type())).child(name + ".md");
     }
 
-    /** Creates a writer for writing to this {@link io.anuke.wikigen.FileGenerator#file}.*/
+    /** Creates a writer for writing to this {@link wikigen.FileGenerator#file}.*/
     public void write(String name, Cons<PrintWriter> consumer){
         Fi file = file(name);
         PrintWriter writer = new PrintWriter(file.writer(false));
@@ -40,7 +39,7 @@ public abstract class FileGenerator<T extends Content>{
     }
 
     /** Loads a template using this generator's type name,
-     * then uses the provided map of values to write the result to the provided {@link io.anuke.wikigen.FileGenerator#file} by name.
+     * then uses the provided map of values to write the result to the provided {@link wikigen.FileGenerator#file} by name.
      * Strings in the template are replaced in the format $key -> value.
      * If a line contains a template string (e.g. a string with $ in it), and no key is provided, that line is automatically removed. */
     public void template(String name, ObjectMap<String, Object> values){
