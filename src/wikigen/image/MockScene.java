@@ -4,6 +4,7 @@ import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.scene.*;
+import wikigen.*;
 
 import java.nio.*;
 
@@ -23,6 +24,14 @@ public class MockScene{
                 return new AtlasRegion(){{
                     this.name = fname;
                 }};
+            }
+
+            @Override
+            public TextureRegion find(String name, TextureRegion def){
+                if(Config.imageDirectory.child(name + ".png").exists()){
+                    return find(name);
+                }
+                return def;
             }
         };
 

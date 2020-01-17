@@ -32,7 +32,7 @@ public class ItemGenerator extends FileGenerator<Item>{
             "hardness", item.hardness,
             "drillable", drillable,
             "color", item.color.toString().substring(0, 6),
-            "produced", links(Vars.content.blocks().select(b -> (drillable && b instanceof Drill && ((Drill)b).tier() >= item.hardness) || (b instanceof GenericCrafter && ((GenericCrafter)b).outputItem() == item))),
+            "produced", links(Vars.content.blocks().select(b -> (drillable && b instanceof Drill && ((Drill)b).tier() >= item.hardness) || (b instanceof GenericCrafter && ((GenericCrafter)b).outputItem != null && ((GenericCrafter)b).outputItem.item == item))),
             "used", links(Vars.content.blocks().select(b -> b.requirements != null && Structs.contains(b.requirements, i -> i.item == item))),
             "crafting", links(Vars.content.blocks().select(b -> b.consumes.all() != null && Structs.contains(b.consumes.all(), c -> (c instanceof ConsumeItemFilter && ((ConsumeItemFilter)c).filter.get(item))
                                                                                 || (c instanceof ConsumeItems && Structs.contains(((ConsumeItems)c).items, s -> s.item == item)))))

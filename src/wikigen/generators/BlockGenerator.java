@@ -123,7 +123,7 @@ public class BlockGenerator extends FileGenerator<Block>{
             result.append(" ");
         }else if(e instanceof Image){
             AtlasRegion region = (AtlasRegion)((TextureRegionDrawable)((Image)e).getDrawable()).getRegion();
-            result.append(Strings.format("![{0}](../../images/{0}.png)", region.name));
+            result.append(Strings.format("![{0}](/wiki/images/{0}.png)", region.name));
             result.append(" ");
         }else if(e instanceof Table){
             for(Cell cell : ((Table)e).getCells()){

@@ -26,7 +26,7 @@ public class LiquidGenerator extends FileGenerator<Liquid>{
             "flammability", (int)(liquid.flammability * 100) + "%",
             "explosiveness", (int)(liquid.explosiveness * 100) + "%",
             "heatcapacity", (int)(liquid.heatCapacity * 100) + "%",
-            "produced", links(Vars.content.blocks().select(b -> (pumpable && b instanceof Pump) || (b instanceof GenericCrafter && ((GenericCrafter)b).outputLiquid() == liquid))),
+            "produced", links(Vars.content.blocks().select(b -> (pumpable && b instanceof Pump) || (b instanceof GenericCrafter && ((GenericCrafter)b).outputLiquid != null && ((GenericCrafter)b).outputLiquid.liquid == liquid))),
             "crafting", links(Vars.content.blocks().select(b -> b.consumes.all() != null && Structs.contains(b.consumes.all(), c -> (c instanceof ConsumeLiquidFilter && ((ConsumeLiquidFilter)c).filter.get(liquid))
                                                                                 || (c instanceof ConsumeLiquid && ((ConsumeLiquid)c).liquid == liquid))))
         );
