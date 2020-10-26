@@ -1,15 +1,12 @@
-# <img id="spr" src="/wiki/images/liquid-$internalname.png"></img> $name 
+# <img id="spr" src="/wiki/images/liquid-$name.png"></img> $localizedName 
 
+*"$description"*
 
 | Property      | Value |
 | ----------- | ----------- |
-|Internal Name|`$internalname`|
-|Type|$type|
-|Flammability|$flammability|
-|Explosiveness|$explosiveness|
-|Heat Capacity|$heatcapacity|
-
-*"$description"*
+|Internal Name|`$name`|
+|Color|`$color`|
+$stats
 
 --- 
 

@@ -1,4 +1,4 @@
-# <img id="spr" src="/wiki/images/$icon.png"></img> $name 
+# <img id="spr" src="/wiki/images/$icon.png"></img> $localizedName
 
 
 *"$description"*  
@@ -6,11 +6,8 @@
 | Property      | Value |
 | ----------- | ----------- |
 |Internal Name|`$internalname`|
-|Health|$health|
-|Flying|$|
-|Speed|$speed|
-|Mass|$mass|
-|Max Velocity|$maxvelocity|
+|Flying|$flying|
+$stats
 
 --- 
 

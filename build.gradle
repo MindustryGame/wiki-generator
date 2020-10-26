@@ -1,7 +1,8 @@
 apply plugin: 'java'
 apply plugin: 'maven'
 
-sourceCompatibility = 1.8
+sourceCompatibility = 14
+targetCompatibility = 14
 version = '1.0'
 
 sourceSets.main.java.srcDirs = ["src/"]
@@ -15,51 +16,21 @@ allprojects{
         maven{ url 'https://jitpack.io' }
         jcenter()
     }
+
+    tasks.withType(JavaCompile).each{it.options.compilerArgs.add('--enable-preview')}
 }
 
-task run(dependsOn: classes, type: JavaExec) {
-    main = "wikigen.MainLauncher"
+task run(dependsOn: classes, type: JavaExec){
+    main = "wikigen.Generator"
     workingDir = new File("../Mindustry/core/assets")
     classpath = sourceSets.main.runtimeClasspath
+    jvmArgs += "--enable-preview"
 }
 
-project(":Mindustry:core"){
-    apply plugin: "java"
-
-    dependencies {
-        compile project(":Arc:arc-core")
-        compile project(":Arc:extensions:freetype")
-        compile project(":Arc:extensions:arcnet")
-        compileOnly project(":Mindustry:annotations")
-        annotationProcessor project(":Mindustry:annotations")
-        compile "org.mozilla:rhino:1.7.11"
-        compile "org.lz4:lz4-java:1.4.1"
-    }
-}
-
-project(":Mindustry:annotations"){
-    apply plugin: "java"
-
-    task cleanGen{
-        doFirst{
-            delete{
-                delete "../core/src/mindustry/gen/"
-            }
-        }
-    }
-
-    compileJava.dependsOn(cleanGen)
-
-    dependencies {
-        compile 'com.squareup:javapoet:1.11.0'
-        compile project(":Arc:arc-core")
-        compile files("${System.getProperty('java.home')}/../lib/tools.jar")
-    }
-}
-
-dependencies {
-    compile project(":Arc:arc-core")
-    compile project(":Arc:backends:backend-headless")
-    compile project(":Mindustry:core")
-    compile "org.reflections:reflections:0.9.11"
+dependencies{
+    implementation project(":Arc:arc-core")
+    implementation project(":Arc:backends:backend-headless")
+    implementation project(":Arc:natives:natives-desktop")
+    implementation "org.reflections:reflections:0.9.11"
+    implementation files("../Mindustry/desktop/build/libs/Mindustry.jar")
 }

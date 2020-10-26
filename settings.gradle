@@ -1,21 +1,22 @@
 rootProject.name = 'Mindustry-Wiki-Generator'
 
-def use = { String name, String path ->
-    include(name)
-    project(name).projectDir = new File(settingsDir, path)
+def use = { ... names ->
+    for(String name : names){
+        include(name)
+        project(name).projectDir = new File(settingsDir, "../${name.substring(1).replace(":", "/")}")
+    }
 }
 
-//arc base
-use(':Arc', '../Arc')
-use(':Arc:arc-core', '../Arc/arc-core')
-use(':Arc:extensions', '../Arc/extensions')
-use(':Arc:extensions:freetype', '../Arc/extensions/freetype')
-use(':Arc:extensions:arcnet', '../Arc/extensions/arcnet')
 
-//mindustry base
-use(':Mindustry:core', '../Mindustry/core')
-use(':Mindustry:annotations', '../Mindustry/annotations')
+//arc base
+use(':Arc')
+use(':Arc:arc-core')
+use(':Arc:extensions')
+use(':Arc:extensions:freetype')
+use(':Arc:extensions:arcnet')
+use(':Arc:natives')
+use(':Arc:natives:natives-desktop')
 
 //backend for launching mindustry stub
-use(':Arc:backends', '../Arc/backends')
-use(':Arc:backends:backend-headless', '../Arc/backends/backend-headless')
+use(':Arc:backends')
+use(':Arc:backends:backend-headless')

@@ -3,12 +3,21 @@ package wikigen.image;
 import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
+import arc.graphics.g2d.TextureAtlas.*;
 import arc.scene.*;
+import arc.scene.style.*;
+import arc.scene.ui.*;
+import arc.scene.ui.layout.*;
+import arc.util.*;
+import mindustry.ctype.*;
+import mindustry.ui.*;
+import mindustry.world.meta.*;
 import wikigen.*;
 
 import java.nio.*;
 
 /** Mocks scene2D stuff so information can be extracted from layouts. */
+@SuppressWarnings("unchecked")
 public class MockScene{
 
     public static void init(){
@@ -41,5 +50,92 @@ public class MockScene{
                 return null;
             }
         };
+    }
+
+    public static String scrapeStats(UnlockableContent content){
+        StringBuilder stats = new StringBuilder();
+
+        content.checkStats();
+
+        //add all in-game stats to block info
+        content.stats.toMap().each((category, map) -> {
+            if(map.isEmpty()) return;
+            if(content.stats.useCategories) stats.append("\n|").append(category.localized()).append("||\n| --- | --- |\n");
+
+            map.each((stat, statValues) -> {
+                stats.append("|").append(stat.localized()).append("|");
+                for(StatValue value : statValues){
+                    stats.append(strStat(value));
+                    stats.append(" ");
+                }
+                stats.append("|\n");
+            });
+        });
+
+        return stats.toString();
+    }
+
+    static String strStat(StatValue value){
+        Table dummy = new Table();
+        value.display(dummy);
+        StringBuilder result = new StringBuilder();
+        display(dummy, result);
+        return result.toString();
+    }
+
+    static String link(UnlockableContent content){
+        return Generator.get(content.getContentType()).makeLink(content);
+    }
+
+    static void display(Element e, StringBuilder result){
+        if(e instanceof Label l){
+            String text = l.getText().toString();
+            if(text.startsWith("$")){
+                text = Core.bundle.get(text.substring(1));
+            }
+            boolean stat = text.contains("[stat]") || text.contains("[lightgray]");
+            if(text.contains("[stat]") && !text.contains("[lightgray]")){
+                text += "**";
+            }
+            text = text.replace("[stat]", "**").replace("[lightgray]", "**");
+            if(stat){
+                result.append("<br> • ");
+            }
+            result.append(text).append(" ");
+        }else if(e instanceof ItemDisplay d){
+            result.append(link(d.item));
+            if(d.amount > 0){
+                result.append("x");
+                result.append(d.amount);
+            }
+            result.append(" ");
+        }else if(e instanceof LiquidDisplay d){
+            result.append(link(d.liquid));
+            if(d.amount > 0){
+                if(d.perSecond){
+                    result.append(Strings.autoFixed(d.amount, 1));
+                    result.append("/sec");
+                }else{
+                    result.append("x");
+                    result.append(Strings.autoFixed(d.amount, 1));
+                }
+            }
+            result.append(" ");
+        }else if(e instanceof Image i){
+            AtlasRegion region = (AtlasRegion)((TextureRegionDrawable)i.getDrawable()).getRegion();
+            result.append(Strings.format("![@](/wiki/images/@.png)", region.name, region.name));
+            result.append(" ");
+        }else if(e instanceof Table t){
+            for(Cell cell : t.getCells()){
+                display(cell.get(), result);
+                if(cell.isEndRow() && e.parent == null){
+                    result.append("<br>");
+                }
+            }
+        }else if(e instanceof Group g){
+            for(Element child : g.getChildren()){
+                display(child, result);
+            }
+        }
     }
 }

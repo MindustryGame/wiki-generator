@@ -1,19 +1,16 @@
-# <img id="spr" src="/wiki/images/item-$internalname.png"></img> $name 
+# <img id="spr" src="/wiki/images/item-$name.png"></img> $localizedName 
 
 
 *"$description"*  
 
 | Property      | Value |
 | ----------- | ----------- |
-|Internal Name|`$internalname`|
+|Internal Name|`$name`|
 |Color|`$color`|
-|Type|$type|
-|Flammability|$flammability|
-|Explosiveness|$explosiveness|
-|Radioactivity|$radioactivity|
 |Naturally Occurring|$drillable|
 |Build Cost|$cost|
 |Hardness|$hardness|
+$stats
 
 --- 
 

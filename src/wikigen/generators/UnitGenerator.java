@@ -1,5 +1,6 @@
 package wikigen.generators;
 
+import arc.struct.*;
 import mindustry.*;
 import mindustry.ctype.*;
 import mindustry.type.*;
@@ -10,23 +11,14 @@ import wikigen.*;
 public class UnitGenerator extends FileGenerator<UnitType>{
 
     @Override
-    public void generate(UnitType content){
-        template(content.name,
-        "icon", linkImage(content),
-        "description", content.description,
-        "name", content.localizedName,
-        "internalname", content.name,
-        "health", content.health,
-        "flying", content.flying,
-        "speed", content.speed,
-        "mass", content.mass,
-        "maxvelocity", content.maxVelocity,
-        "created", links(Vars.content.blocks().select(b -> b instanceof UnitFactory && getPrivate(b, UnitFactory.class, "unitType") == content))
+    public ObjectMap<String, Object> vars(UnitType content){
+        return ObjectMap.of(
+        "created", links(Vars.content.blocks().select(b -> b instanceof UnitFactory u && u.plans.contains(p -> p.unit == content)))
         );
     }
 
     @Override
-    protected String linkImage(UnitType content){
+    public String linkImage(UnitType content){
         String baseName = "unit-icon-" + content.name;
         return Config.imageDirectory.child(baseName+ ".png").exists() ? baseName : content.name;
     }
