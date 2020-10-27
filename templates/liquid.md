@@ -1,12 +1,10 @@
-# <img id="spr" src="/wiki/images/liquid-$name.png"></img> $localizedName 
+# <img id="spr" src="/$repo/images/liquid-$name.png"></img> $localizedName 
 
 *"$description"*
 
-| Property      | Value |
-| ----------- | ----------- |
+$stats
 |Internal Name|`$name`|
 |Color|`$color`|
-$stats
 
 --- 
 

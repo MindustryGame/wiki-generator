@@ -1,4 +1,4 @@
-# <img id="spr" src="/wiki/images/block-$internalname-large.png"></img> $name
+# <img id="spr" src="/$repo/images/block-$name-large.png"></img> $localizedName
 
 *"$description"*
 

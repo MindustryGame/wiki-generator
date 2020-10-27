@@ -1,13 +1,10 @@
-# <img id="spr" src="/wiki/images/$icon.png"></img> $localizedName
+# <img id="spr" src="/$repo/images/unit-$name-xlarge.png"></img> $localizedName
 
 
 *"$description"*  
 
-| Property      | Value |
-| ----------- | ----------- |
-|Internal Name|`$internalname`|
-|Flying|$flying|
 $stats
+|Internal Name|`$internalname`|
 
 --- 
 

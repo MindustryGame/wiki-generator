@@ -10,9 +10,9 @@ public class Splicer{
 
     /** Begins recursively splicing generated files with base, edited files.*/
     public static void splice(){
-        Log.info("Splicing files from @ into @...", Config.tmpDirectory.path(), Config.fileOutDirectory.path());
+        Log.info("Splicing files from @ into @...", Config.outDirectory.path(), Config.fileOutDirectory.path());
         Config.fileOutDirectory.walk(f -> targets.put(f.name(), f));
-        Config.tmpDirectory.walk(file -> {
+        Config.outDirectory.walk(file -> {
             //only look at markdown files.
             if(file.extension().equals("md")){
                 //splice if target is found
@@ -27,11 +27,11 @@ public class Splicer{
                         //everything after the comment is kept, everything before it is replaced
                         String result = genString + "\n" + comment + sourceString.substring(idx + comment.length()).replaceAll("[\r\n]+$", "");;
                         target.writeString(result);
-                        Log.info("> Spliced file @", target.path());
+                        //Log.info("> Spliced file @", target.path());
                     }
                 }else{
                     //else create a new file in the file directory
-                    Fi dest = Config.fileOutDirectory.child(file.path().substring(Config.tmpDirectory.path().length()));
+                    Fi dest = Config.fileOutDirectory.child(file.path().substring(Config.outDirectory.path().length()));
                     file.copyTo(dest);
                     //append comment to end of file so it can be used later
                     dest.writeString("\n" + comment + "\n", true);

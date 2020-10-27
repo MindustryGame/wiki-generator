@@ -53,14 +53,14 @@ public class MockScene{
     }
 
     public static String scrapeStats(UnlockableContent content){
-        StringBuilder stats = new StringBuilder();
+        StringBuilder stats = new StringBuilder("| Property | Value |\n| ----------- | ----------- |\n");
 
         content.checkStats();
 
         //add all in-game stats to block info
         content.stats.toMap().each((category, map) -> {
             if(map.isEmpty()) return;
-            if(content.stats.useCategories) stats.append("\n|").append(category.localized()).append("||\n| --- | --- |\n");
+            if(content.stats.useCategories) stats.append("|**").append(category.localized()).append("**||\n");
 
             map.each((stat, statValues) -> {
                 stats.append("|").append(stat.localized()).append("|");
@@ -72,6 +72,7 @@ public class MockScene{
             });
         });
 
+        if(stats.length() > 0 && stats.charAt(stats.length() - 1) == '\n') return stats.substring(0, stats.length() - 1);
         return stats.toString();
     }
 
@@ -90,7 +91,7 @@ public class MockScene{
     static void display(Element e, StringBuilder result){
         if(e instanceof Label l){
             String text = l.getText().toString();
-            if(text.startsWith("$")){
+            if(text.startsWith("$") || text.startsWith("@")){
                 text = Core.bundle.get(text.substring(1));
             }
             boolean stat = text.contains("[stat]") || text.contains("[lightgray]");
@@ -101,7 +102,7 @@ public class MockScene{
             if(stat){
                 result.append("<br> • ");
             }
-            result.append(text).append(" ");
+            result.append(Strings.stripColors(text)).append(" ");
         }else if(e instanceof ItemDisplay d){
             result.append(link(d.item));
             if(d.amount > 0){
@@ -123,7 +124,7 @@ public class MockScene{
             result.append(" ");
         }else if(e instanceof Image i){
             AtlasRegion region = (AtlasRegion)((TextureRegionDrawable)i.getDrawable()).getRegion();
-            result.append(Strings.format("![@](/wiki/images/@.png)", region.name, region.name));
+            result.append(Strings.format("![@](/@/images/@.png)", region.name, Config.repo, region.name));
             result.append(" ");
         }else if(e instanceof Table t){
             for(Cell cell : t.getCells()){

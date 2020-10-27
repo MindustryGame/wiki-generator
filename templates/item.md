@@ -1,16 +1,14 @@
-# <img id="spr" src="/wiki/images/item-$name.png"></img> $localizedName 
+# <img id="spr" src="/$repo/images/item-$name.png"></img> $localizedName 
 
 
 *"$description"*  
 
-| Property      | Value |
-| ----------- | ----------- |
+$stats
 |Internal Name|`$name`|
 |Color|`$color`|
 |Naturally Occurring|$drillable|
 |Build Cost|$cost|
 |Hardness|$hardness|
-$stats
 
 --- 
 

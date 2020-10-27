@@ -16,10 +16,4 @@ public class UnitGenerator extends FileGenerator<UnitType>{
         "created", links(Vars.content.blocks().select(b -> b instanceof UnitFactory u && u.plans.contains(p -> p.unit == content)))
         );
     }
-
-    @Override
-    public String linkImage(UnitType content){
-        String baseName = "unit-icon-" + content.name;
-        return Config.imageDirectory.child(baseName+ ".png").exists() ? baseName : content.name;
-    }
 }

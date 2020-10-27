@@ -9,6 +9,9 @@ import arc.util.*;
 import mindustry.*;
 import mindustry.core.*;
 import mindustry.ctype.*;
+import mindustry.graphics.*;
+import mindustry.world.*;
+import mindustry.world.meta.*;
 import org.reflections.*;
 import wikigen.image.*;
 
@@ -40,6 +43,9 @@ public class Generator{
                 Vars.logic = new Logic();
                 Vars.content.init();
                 Vars.state = new GameState();
+                Colors.put("accent", Pal.accent);
+                Colors.put("stat", Pal.accent);
+                Colors.put("health", Pal.health);
                 MockScene.init();
                 Vars.content.load();
                 Generator.generate();
@@ -52,7 +58,7 @@ public class Generator{
     public static void generate(){
         try{
 
-            Config.tmpDirectory.deleteDirectory();
+            Config.outDirectory.deleteDirectory();
             new TextureUnpacker().split(Core.files.local("sprites/sprites.atlas"), Config.imageDirectory);
 
             Reflections reflections = new Reflections("wikigen.generators");
@@ -72,21 +78,22 @@ public class Generator{
                     Fi templatef = rootDirectory.child("templates").child(type.name() + ".md");
                     if(templatef.exists()){
                         Log.info("Generating content of type '@'...", type);
-                        FileGenerator generator = get(type);
+                        var generator = get(type);
 
                         for(var content : list.<UnlockableContent>as()){
-                            if(content.isHidden()){
+                            if(content.isHidden() && !(content instanceof Block b && b.buildVisibility != BuildVisibility.hidden)){
                                 continue;
                             }
 
-                            var values = generator.vars(content);
-                            values.put("stats", MockScene.scrapeStats(content));
+                            var values = new ObjectMap<String, Object>();
 
-                            for(Field field : generator.getClass().getDeclaredFields()){
-                                if(field.isAccessible()){
-                                    values.put("" + field.getName(), field.get(content));
-                                }
+                            for(Field field : content.getClass().getFields()){
+                                values.put("" + field.getName(), field.get(content));
                             }
+
+                            values.putAll(generator.vars(content));
+                            values.put("stats", MockScene.scrapeStats(content));
+                            values.put("repo", repo);
 
                             StringBuilder template = new StringBuilder(templatef.readString());
                             values.each((key, val) -> {
@@ -94,7 +101,7 @@ public class Generator{
                                     Strings.replace(template, "$" + key, str(val));
                                 }
                             });
-                            generator.file(content.name).writeString( Strings.join("\n", Seq.with(template.toString().split("\n")).select(s -> !s.contains("$"))));
+                            generator.file(content).writeString(Strings.join("\n", Seq.with(template.toString().split("\n")).select(s -> !s.contains("$"))));
 
                             Log.info("| Generating file for '@'...", content.name);
                         }

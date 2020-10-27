@@ -18,9 +18,9 @@ public class BlockGenerator extends FileGenerator<Block>{
         return "block-" + content.name + "-small";
     }
 
-    @Override
-    public String linkPath(Block content){
-        return content.category + "/" + content.name;
-    }
+    //@Override
+  //  public String linkPath(Block content){
+   //     return content.category + "/" + content.name;
+    //}
 
 }
