@@ -17,7 +17,9 @@ allprojects{
         jcenter()
     }
 
-    tasks.withType(JavaCompile).each{it.options.compilerArgs.add('--enable-preview')}
+    tasks.withType(JavaCompile){
+        options.compilerArgs.add('--enable-preview')
+    }
 }
 
 task run(dependsOn: classes, type: JavaExec){
@@ -28,9 +30,6 @@ task run(dependsOn: classes, type: JavaExec){
 }
 
 dependencies{
-    implementation project(":Arc:arc-core")
-    implementation project(":Arc:backends:backend-headless")
-    implementation project(":Arc:natives:natives-desktop")
-    implementation "org.reflections:reflections:0.9.11"
     implementation files("../Mindustry/desktop/build/libs/Mindustry.jar")
+    implementation "org.reflections:reflections:0.9.11"
 }

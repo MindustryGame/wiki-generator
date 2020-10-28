@@ -1,9 +1,9 @@
 package wikigen;
 
 import arc.*;
-import arc.backend.headless.*;
 import arc.files.*;
 import arc.graphics.*;
+import arc.mock.*;
 import arc.struct.*;
 import arc.util.*;
 import mindustry.*;
@@ -24,34 +24,37 @@ public class Generator{
     private static ObjectMap<ContentType, FileGenerator<?>> generators = new ObjectMap<>();
 
     public static void main(String[] args){
-        new HeadlessApplication(new ApplicationListener(){}){
-            @Override
-            protected void initialize(){
-                //generate locale file manually
-                if(!Core.files.local("locales").exists()){
-                    Core.files.local("locales").writeString("en");
-                }
+        Core.settings = new MockSettings();
+        Core.app = new MockApplication();
+        Core.files = new MockFiles();
+        Core.net = new Net();
+        Core.audio = new MockAudio();
+        Core.graphics = new MockGraphics();
+        Core.input = new MockInput();
 
-                ArcNativesLoader.load();
+        //generate locale file manually
+        if(!Core.files.local("locales").exists()){
+            Core.files.local("locales").writeString("en");
+        }
 
-                Version.enabled = false;
-                Vars.headless = true;
-                Vars.loadSettings();
-                Vars.init();
-                Vars.content.createBaseContent();
-                Vars.world = new World();
-                Vars.logic = new Logic();
-                Vars.content.init();
-                Vars.state = new GameState();
-                Colors.put("accent", Pal.accent);
-                Colors.put("stat", Pal.accent);
-                Colors.put("health", Pal.health);
-                MockScene.init();
-                Vars.content.load();
-                Generator.generate();
-                Splicer.splice();
-            }
-        };
+        ArcNativesLoader.load();
+
+        Version.enabled = false;
+        Vars.headless = true;
+        Vars.loadSettings();
+        Vars.init();
+        Vars.content.createBaseContent();
+        Vars.world = new World();
+        Vars.logic = new Logic();
+        Vars.content.init();
+        Vars.state = new GameState();
+        Colors.put("accent", Pal.accent);
+        Colors.put("stat", Pal.accent);
+        Colors.put("health", Pal.health);
+        MockScene.init();
+        Vars.content.load();
+        Generator.generate();
+        Splicer.splice();
     }
 
     /** Generates all the pages, loads the classes. */

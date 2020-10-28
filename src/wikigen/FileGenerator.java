@@ -49,7 +49,7 @@ public class FileGenerator<T extends UnlockableContent>{
 
     /** @return the file name of this content in its folder, without the `type/` prefix or extension.*/
     public String linkPath(T content){
-        return content.name;
+        return content.id + "-" + content.name;
     }
 
     /** @return a markdown image link to this content.*/
