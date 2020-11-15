@@ -13,7 +13,7 @@ public class VarGenerator{
     public ObjectMap<String, Object> makeVariables(){
         var out = new ObjectMap<String, Object>();
 
-        out.put("sounds", Seq.with(Sounds.class.getFields()).toString(", ", Field::getName));
+        out.put("sounds", "`" + Seq.with(Sounds.class.getFields()).toString(" ", Field::getName) + "`");
 
         return out;
     }
