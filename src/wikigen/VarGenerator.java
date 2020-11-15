@@ -14,7 +14,7 @@ public class VarGenerator{
         var out = new ObjectMap<String, Object>();
 
         out.put("sounds", Seq.with(Sounds.class.getFields()).toString(", ", f -> "`" + f.getName() + "`"));
-        out.put("contentTypes", Seq.with(ContentType.all).select(c -> c.name().contains("UNUSED")).toString(" ", c -> "`" + c.name() + "`"));
+        out.put("contentTypes", Seq.with(ContentType.all).select(c -> !c.name().contains("UNUSED")).toString(" ", c -> "`" + c.name() + "`"));
         out.put("bundles", Seq.with(Core.files.local("locales").readString().split("\n")).toString(" ", c -> "`" + c + "`"));
 
         return out;
