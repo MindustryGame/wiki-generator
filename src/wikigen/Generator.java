@@ -68,7 +68,7 @@ public class Generator{
             reflections.getTypesAnnotatedWith(Generates.class).forEach(type -> {
                 try{
                     ContentType content = type.getAnnotation(Generates.class).value();
-                    FileGenerator<?> generator = (FileGenerator)type.newInstance();
+                    var generator = (FileGenerator<?>)type.getDeclaredConstructor().newInstance();
                     generators.put(content, generator);
                 }catch(Exception e){
                     throw new RuntimeException(e);
@@ -76,6 +76,9 @@ public class Generator{
             });
 
             for(ContentType type : ContentType.all){
+                //ignore sectors
+                if(type == ContentType.sector) continue;
+
                 var list = Vars.content.getBy(type);
                 if(list.any() && list.first() instanceof UnlockableContent){
                     Fi templatef = rootDirectory.child("templates").child(type.name() + ".md");
@@ -111,6 +114,8 @@ public class Generator{
                     }
                 }
             }
+
+            new VarGenerator().generate();
 
         }catch(Exception e){
             throw new RuntimeException(e);
