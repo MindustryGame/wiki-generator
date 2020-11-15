@@ -1,11 +1,11 @@
 package wikigen;
 
+import arc.*;
 import arc.files.*;
 import arc.struct.*;
 import arc.util.*;
+import mindustry.ctype.*;
 import mindustry.gen.*;
-
-import java.lang.reflect.*;
 
 /** Generates and replaces variables in markdown files. */
 public class VarGenerator{
@@ -13,7 +13,9 @@ public class VarGenerator{
     public ObjectMap<String, Object> makeVariables(){
         var out = new ObjectMap<String, Object>();
 
-        out.put("sounds", "`" + Seq.with(Sounds.class.getFields()).toString(" ", Field::getName) + "`");
+        out.put("sounds", Seq.with(Sounds.class.getFields()).toString(", ", f -> "`" + f.getName() + "`"));
+        out.put("contentTypes", Seq.with(ContentType.all).select(c -> c.name().contains("UNUSED")).toString(" ", c -> "`" + c.name() + "`"));
+        out.put("bundles", Seq.with(Core.files.local("locales").readString().split("\n")).toString(" ", c -> "`" + c + "`"));
 
         return out;
     }
