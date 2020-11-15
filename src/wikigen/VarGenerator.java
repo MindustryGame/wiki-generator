@@ -22,6 +22,8 @@ public class VarGenerator{
         var values = makeVariables();
 
         Config.docsOutDirectory.deleteDirectory();
+        Config.docsOutDirectory.delete();
+        Config.docsOutDirectory.mkdirs();
 
         for(Fi file : Config.docsDirectory.list()){
             file.copyTo(Config.docsOutDirectory);
