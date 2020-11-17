@@ -30,6 +30,8 @@ task run(dependsOn: classes, type: JavaExec){
 }
 
 dependencies{
+    //desktop files required for natives, server required for command list
     implementation files("../Mindustry/desktop/build/libs/Mindustry.jar")
+    implementation files("../Mindustry/server/build/libs/server-release.jar")
     implementation "org.reflections:reflections:0.9.11"
 }
