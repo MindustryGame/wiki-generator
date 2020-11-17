@@ -1,9 +1,11 @@
 package wikigen;
 
 import arc.*;
+import arc.Net.*;
 import arc.files.*;
 import arc.struct.*;
 import arc.util.*;
+import arc.util.serialization.*;
 import mindustry.ctype.*;
 import mindustry.gen.*;
 import mindustry.net.*;
@@ -11,6 +13,11 @@ import mindustry.server.*;
 
 /** Generates and replaces variables in markdown files. */
 public class VarGenerator{
+    private static NetJavaImpl net = new NetJavaImpl();
+
+    static{
+        net.setBlock(true);
+    }
 
     public ObjectMap<String, Object> makeVariables(){
         var out = new ObjectMap<String, Object>();
@@ -29,6 +36,14 @@ public class VarGenerator{
 
         out.put("serverCommands", cont.handler.getCommandList().toString("\n", command -> "- `" + command.text + (command.paramText.isEmpty() ? "" : " ") + command.paramText + "`: *" + command.description + "*"));
         out.put("serverConfigs", Seq.with(Administration.Config.all).toString("\n", conf -> "- `" + conf.name() + "`: *" + conf.description + "*"));
+
+        net.http(new HttpRequest().method(HttpMethod.GET).url("https://api.github.com/repos/Anuken/Mindustry/releases").header("Accept", "application/vnd.github.v3+json"), response -> {
+            if(response.getStatus() == HttpStatus.OK){
+                Jval json = Jval.read(response.getResultAsString());
+                String latestRelease = json.asArray().first().getString("tag_name").substring(1);
+                out.put("latestRelease", latestRelease);
+            }
+        }, Log::err);
 
         return out;
     }

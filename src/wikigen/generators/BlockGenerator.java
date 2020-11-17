@@ -17,10 +17,4 @@ public class BlockGenerator extends FileGenerator<Block>{
     public String linkImage(Block content){
         return "block-" + content.name + "-small";
     }
-
-    //@Override
-  //  public String linkPath(Block content){
-   //     return content.category + "/" + content.name;
-    //}
-
 }
