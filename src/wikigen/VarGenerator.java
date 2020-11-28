@@ -13,7 +13,7 @@ import mindustry.server.*;
 
 /** Generates and replaces variables in markdown files. */
 public class VarGenerator{
-    private static NetJavaImpl net = new NetJavaImpl();
+    private static final NetJavaImpl net = new NetJavaImpl();
 
     static{
         net.setBlock(true);

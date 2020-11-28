@@ -11,5 +11,5 @@ public class Config{
     public static final Fi docsDirectory = Core.files.local("../../../" + repo + "/docs");
     public static final Fi docsOutDirectory = Core.files.local("../../../" + repo + "/docs_out");
     public static final Fi imageDirectory = outDirectory.child("images");
-    public static final Fi fileOutDirectory = Core.files.local("../../../wiki-testing/docs/");
+    public static final Fi fileOutDirectory = docsOutDirectory;
 }
