@@ -3,6 +3,8 @@ package wikigen;
 import arc.*;
 import arc.Net.*;
 import arc.files.*;
+import arc.graphics.*;
+import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
 import arc.util.serialization.*;
@@ -94,6 +96,7 @@ public class VarGenerator{
             |---|---|---|---|
             """);
 
+            //skip non-string constructors
             try{
                 c.getConstructor(String.class);
             }catch(Exception ignored){
@@ -112,6 +115,11 @@ public class VarGenerator{
                             var baseField = c.getField(variable.getNameAsString());
                             var value = baseField.get(instance);
                             var initValue = variable.getInitializer().isEmpty() ? null : variable.getInitializer().get().toString();
+
+                            //special overrides
+                            if(value instanceof Color || value instanceof Vec2){
+                                initValue = String.valueOf(value);
+                            }
 
                             //remove f suffix
                             if(variable.getTypeAsString().equals("float") && initValue != null && initValue.endsWith("f")){
@@ -135,8 +143,6 @@ public class VarGenerator{
 
             out.append("\n\n");
         }
-
-        Log.info(out.toString());
 
         return out.toString();
     }
