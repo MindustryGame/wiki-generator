@@ -117,7 +117,7 @@ public class VarGenerator{
                             var initValue = variable.getInitializer().isEmpty() ? null : variable.getInitializer().get().toString();
 
                             //special overrides
-                            if(value instanceof Color || value instanceof Vec2){
+                            if(value instanceof Color || value instanceof Vec2 || value instanceof Number){
                                 initValue = String.valueOf(value);
                             }
 
