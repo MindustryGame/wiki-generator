@@ -132,12 +132,14 @@ public class VarGenerator{
 
         for(var ref : refs){
             if(!ref.type.equals(lastType)){
-                out.append("\n# ").append(Strings.capitalize(ref.type.replace("zzz_", ""))).append("\n\n");
+                out.append("\n# ").append(Strings.capitalize(ref.type.replace("zzz_", ""))).append("\n");
                 lastType = ref.type;
 
                 if(builtIns.containsKey(ref.type)){
-                    out.append("Built-in constants:  \n\n").append(builtIns.get(ref.type)).append("\n\n");
+                    out.append("Built-in constants:  \n\n").append(builtIns.get(ref.type));
                 }
+
+                out.append("\n");
             }
 
             var c = ref.c;
@@ -190,7 +192,7 @@ public class VarGenerator{
                             }
 
                             if(initValue != null && initValue.contains("->") && initValue.contains("{")){
-                                initValue = "<code>";
+                                initValue = "{code}";
                             }
 
                             anyFields = true;
