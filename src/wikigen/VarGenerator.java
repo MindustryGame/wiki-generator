@@ -136,7 +136,7 @@ public class VarGenerator{
                 lastType = ref.type;
 
                 if(builtIns.containsKey(ref.type)){
-                    out.append("Built-in constants: \n").append(builtIns.get(ref.type)).append("\n\n");
+                    out.append("Built-in constants:  \n\n").append(builtIns.get(ref.type)).append("\n\n");
                 }
             }
 
@@ -187,6 +187,10 @@ public class VarGenerator{
                             //remove f suffix
                             if(variable.getTypeAsString().equals("float") && initValue != null && initValue.endsWith("f")){
                                 initValue = initValue.substring(0, initValue.length() - 1);
+                            }
+
+                            if(initValue != null && initValue.contains("->") && initValue.contains("{")){
+                                initValue = "<code>";
                             }
 
                             anyFields = true;
