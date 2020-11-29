@@ -11,15 +11,17 @@ import arc.util.serialization.*;
 import com.github.javaparser.*;
 import com.github.javaparser.ast.body.*;
 import mindustry.ctype.*;
+import mindustry.entities.*;
 import mindustry.gen.*;
 import mindustry.net.*;
 import mindustry.server.*;
-import mindustry.world.*;
 import org.reflections.*;
 
 import java.lang.reflect.*;
+import java.util.*;
 
 /** Generates and replaces variables in markdown files. */
+@SuppressWarnings("unchecked")
 public class VarGenerator{
     private static final NetJavaImpl net = new NetJavaImpl();
 
@@ -53,23 +55,78 @@ public class VarGenerator{
             }
         }, Log::err);
 
-        out.put("blockTypes", genTypes());
+        out.put("allTypes", genTypes());
 
         return out;
     }
 
+    Set<Class> fetchTypes(String pack, Class sub){
+        var reflections = new Reflections(pack);
+        var allClasses = reflections.getSubTypesOf(sub);
+        allClasses.add(sub);
+        return allClasses;
+    }
+
     public String genTypes() throws Exception{
         var out = new StringBuilder();
-        var reflections = new Reflections("mindustry.world.blocks");
-        var allClasses = reflections.getSubTypesOf(Block.class);
-        allClasses.add(Block.class);
+        var allClasses = fetchTypes("mindustry", UnlockableContent.class);
+        //allClasses.addAll(fetchTypes("mindustry.entities.bullet", BulletType.class));
+        allClasses.addAll(fetchTypes("mindustry.entities.effect", Effect.class));
+        //allClasses.addAll(fetchTypes("mindustry.entities.abilities", Ability.class));
+        //allClasses.add(Item.class);
+        //allClasses.add(Liquid.class);
+        //allClasses.add(Planet.class);
         var parser = new JavaParser();
 
-        var sorted = Seq.with(allClasses).sortComparing(Class::getSimpleName);
+        class Ref{
+            Class c;
+            String type;
+            Object instance;
 
-        for(var c : sorted){
-            if(Modifier.isAbstract(c.getModifiers())) continue;
+            Ref(Class c, String type, Object instance){
+                this.c = c;
+                this.type = type;
+                this.instance = instance;
+            }
+        }
 
+        var refs = new Seq<Ref>();
+
+        for(var c : allClasses){
+            if(Modifier.isAbstract(c.getModifiers()) || c.isAnonymousClass()) continue;
+
+            Constructor cons;
+            Object instance;
+
+            //skip non-string constructors
+            try{
+                cons = c.getConstructor(String.class);
+                instance = cons.newInstance("__typeof" + c.getSimpleName());
+            }catch(Exception ignored){
+                try{
+                    cons = c.getConstructor();
+                    instance = cons.newInstance();
+                }catch(Exception ignored2){
+                    continue;
+                }
+            }
+
+            String type = instance instanceof Content cont ? cont.getContentType().toString() : instance instanceof Effect ? "effect" : "unknown";
+
+            refs.add(new Ref(c, Strings.capitalize(type), instance));
+        }
+
+        refs.sort(Comparator.<Ref, String>comparing(r -> r.type).thenComparing(f -> f.getClass().getSimpleName()));
+
+        String lastType = null;
+
+        for(var ref : refs){
+            if(!ref.type.equals(lastType)){
+                out.append("\n# ").append(ref.type).append("\n\n");
+                lastType = ref.type;
+            }
+
+            var c = ref.c;
             var path = c.getCanonicalName().replace('.', '/') + ".java";
             var supclass = c.getSuperclass().getSimpleName();
 
@@ -101,15 +158,6 @@ public class VarGenerator{
             |---|---|---|---|
             """);
 
-            //skip non-string constructors
-            try{
-                c.getConstructor(String.class);
-            }catch(Exception ignored){
-                continue;
-            }
-
-            var instance = c.getConstructor(String.class).newInstance("__typeof" + c.getSimpleName());
-
             var members = typeDec.getMembers();
             if(members != null){
                 for(var member : members){
@@ -118,7 +166,7 @@ public class VarGenerator{
 
                         for(var variable : field.getVariables()){
                             var baseField = c.getField(variable.getNameAsString());
-                            var value = baseField.get(instance);
+                            var value = baseField.get(ref.instance);
                             var initValue = variable.getInitializer().isEmpty() ? null : variable.getInitializer().get().toString();
 
                             //special overrides
