@@ -115,7 +115,7 @@ public class VarGenerator{
             refs.add(new Ref(c, Strings.capitalize(type), instance));
         }
 
-        refs.sort(Comparator.<Ref, String>comparing(r -> r.type).thenComparing(f -> f.getClass().getSimpleName()));
+        refs.sort(((Comparator<Ref>)((a, b) -> -Boolean.compare(a.c.isAssignableFrom(b.c), b.c.isAssignableFrom(a.c)))).thenComparing(r -> r.type).thenComparing(f -> f.c.getSimpleName()));
 
         String lastType = null;
 
@@ -137,13 +137,7 @@ public class VarGenerator{
 
             out.append("*extends ").append("[").append(supclass).append("](#").append(supclass.toLowerCase()).append(")*\n\n");
 
-            var result = parser.parse(Config.srcDirectory.child(path).file());
-
-            if(result.getProblems().size() > 0){
-                Log.info(result.getProblems().toString());
-            }
-
-            var cu = result.getResult().orElseThrow();
+            var cu = parser.parse(Config.srcDirectory.child(path).file()).getResult().orElseThrow();
             var typeDec = cu.getTypes().getFirst().orElseThrow();
 
             if(typeDec.getJavadoc().isPresent()){
