@@ -88,6 +88,7 @@ public class VarGenerator{
         }
 
         var refs = new Seq<Ref>();
+        var counts = new ObjectIntMap<String>();
 
         for(var c : allClasses){
             if(Modifier.isAbstract(c.getModifiers()) || c.isAnonymousClass()) continue;
@@ -109,6 +110,7 @@ public class VarGenerator{
             }
 
             String type = instance instanceof Content cont ? cont.getContentType().toString() : instance instanceof Effect ? "effect" : "other";
+            counts.increment(type);
 
             refs.add(new Ref(c, Strings.capitalize(type), instance));
         }
@@ -129,7 +131,9 @@ public class VarGenerator{
 
             Log.info("Parse @", path);
 
-            out.append("## ").append(c.getSimpleName()).append("\n\n");
+            if(counts.get(ref.type) > 1){
+                out.append("## ").append(c.getSimpleName()).append("\n\n");
+            }
 
             out.append("*extends ").append("[").append(supclass).append("](#").append(supclass.toLowerCase()).append(")*\n\n");
 
