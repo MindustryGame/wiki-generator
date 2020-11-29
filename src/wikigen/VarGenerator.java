@@ -136,7 +136,7 @@ public class VarGenerator{
                 lastType = ref.type;
 
                 if(builtIns.containsKey(ref.type)){
-                    out.append("Built-in constants:  \n\n").append(builtIns.get(ref.type));
+                    out.append("Built-in constants:  \n\n").append(builtIns.get(ref.type)).append("  \n  ");
                 }
 
                 out.append("\n");
@@ -148,7 +148,7 @@ public class VarGenerator{
 
             Log.info("Parsing @", path);
 
-            if(counts.get(ref.type) > 1){
+            if(counts.get(ref.type) > 1 || ref.type.contains("zzz_")){
                 out.append("## ").append(c.getSimpleName()).append("\n\n");
             }
 
@@ -191,7 +191,7 @@ public class VarGenerator{
                                 initValue = initValue.substring(0, initValue.length() - 1);
                             }
 
-                            if(initValue != null && initValue.contains("->") && initValue.contains("{")){
+                            if(initValue != null && initValue.contains("->") && (initValue.contains("{") || initValue.contains("()"))){
                                 initValue = "{code}";
                             }
 
