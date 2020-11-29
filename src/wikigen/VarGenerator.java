@@ -6,10 +6,14 @@ import arc.files.*;
 import arc.struct.*;
 import arc.util.*;
 import arc.util.serialization.*;
+import com.github.javaparser.*;
+import com.github.javaparser.ast.body.*;
 import mindustry.ctype.*;
 import mindustry.gen.*;
 import mindustry.net.*;
 import mindustry.server.*;
+import mindustry.world.*;
+import org.reflections.*;
 
 /** Generates and replaces variables in markdown files. */
 public class VarGenerator{
@@ -19,7 +23,7 @@ public class VarGenerator{
         net.setBlock(true);
     }
 
-    public ObjectMap<String, Object> makeVariables(){
+    public ObjectMap<String, Object> makeVariables() throws Exception{
         var out = new ObjectMap<String, Object>();
 
         out.put("sounds", Seq.with(Sounds.class.getFields()).toString(" ", f -> "`" + f.getName() + "`"));
@@ -45,10 +49,75 @@ public class VarGenerator{
             }
         }, Log::err);
 
+        out.put("blockTypes", genTypes());
+
         return out;
     }
 
-    public void generate(){
+    public String genTypes() throws Exception{
+        var out = new StringBuilder();
+        var reflections = new Reflections("mindustry.world.blocks");
+        var allClasses = reflections.getSubTypesOf(Block.class);
+        var parser = new JavaParser();
+
+        for(var c : allClasses){
+            var path = c.getCanonicalName().replace('.', '/') + ".java";
+            Log.info("Parse @", path);
+
+            out.append("## ").append(c.getSimpleName()).append("\n\n");
+
+            out.append("*extends ").append(c.getSuperclass().getSimpleName()).append("*\n\n");
+
+            var result = parser.parse(Config.srcDirectory.child(path).file());
+
+            if(result.getProblems().size() > 0){
+                Log.info(result.getProblems().toString());
+            }
+
+            var cu = result.getResult().orElseThrow();
+            var typeDec = cu.getTypes().getFirst().orElseThrow();
+
+            if(typeDec.getJavadoc().isPresent()){
+                out.append(typeDec.getJavadoc().get().toText()).append("\n");
+            }
+
+            boolean anyFields = false;
+
+            var outf = new StringBuilder();
+
+            outf.append("""
+            |field|type|default|notes|
+            |---|---|---|---|
+            """);
+
+            var members = typeDec.getMembers();
+            if(members != null){
+                for(var member : members){
+                    if(member instanceof FieldDeclaration field){
+                        for(var variable : field.getVariables()){
+                            anyFields = true;
+                            outf.append("|").append(variable.getName())
+                            .append("|").append(variable.getTypeAsString())
+                            .append("|").append(variable.getInitializer().isEmpty() ? "  " : variable.getInitializer().get().toFieldAccessExpr().toString())
+                            .append("|").append(field.getJavadoc().isPresent() ? field.getJavadoc().get().toText().replace("\n", " ") : " ").append("|\n");
+                        }
+                    }
+                }
+            }
+
+            if(anyFields){
+                out.append(outf);
+            }
+
+            out.append("\n\n");
+        }
+
+        //Log.info(out.toString());
+
+        return out.toString();
+    }
+
+    public void generate() throws Exception{
         var values = makeVariables();
 
         Config.docsOutDirectory.deleteDirectory();
