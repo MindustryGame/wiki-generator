@@ -181,6 +181,12 @@ public class VarGenerator{
                             var value = baseField.get(ref.instance);
                             var initValue = variable.getInitializer().isEmpty() ? null : variable.getInitializer().get().toString();
 
+                            //assign to last, making sure it's not a number
+                            if(initValue != null && initValue.contains(".")){
+                                var split = initValue.split("\\.");
+                                initValue = split[split.length - 1];
+                            }
+
                             //special overrides
                             if(value instanceof Color || value instanceof Vec2 || value instanceof Number){
                                 initValue = String.valueOf(value);
@@ -194,12 +200,6 @@ public class VarGenerator{
                             //remove lambdas
                             if(initValue != null && initValue.contains("->")){
                                 initValue = "{code}";
-                            }
-
-                            //assign to last
-                            if(initValue != null && initValue.contains(".")){
-                                var split = initValue.split("\\.");
-                                initValue = split[split.length - 1];
                             }
 
                             anyFields = true;
