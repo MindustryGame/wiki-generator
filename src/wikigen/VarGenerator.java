@@ -62,6 +62,7 @@ public class VarGenerator{
         var out = new StringBuilder();
         var reflections = new Reflections("mindustry.world.blocks");
         var allClasses = reflections.getSubTypesOf(Block.class);
+        allClasses.add(Block.class);
         var parser = new JavaParser();
 
         for(var c : allClasses){
