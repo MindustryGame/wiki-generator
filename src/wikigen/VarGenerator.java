@@ -181,6 +181,16 @@ public class VarGenerator{
                             var value = baseField.get(ref.instance);
                             var initValue = variable.getInitializer().isEmpty() ? null : variable.getInitializer().get().toString();
 
+                            //array init
+                            if(initValue != null && initValue.equals("{}")){
+                                initValue = "[]";
+                            }
+
+                            //special array init
+                            if(initValue != null && initValue.contains("new") && initValue.contains("[") && initValue.contains("]")){
+                                initValue = "[...]";
+                            }
+
                             //assign to last, making sure it's not a number
                             if(initValue != null && initValue.contains(".")){
                                 var split = initValue.split("\\.");
