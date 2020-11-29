@@ -77,7 +77,7 @@ public class VarGenerator{
 
             out.append("## ").append(c.getSimpleName()).append("\n\n");
 
-            out.append("*extends ").append("[").append(supclass).append("](#").append(supclass).append(")*\n\n");
+            out.append("*extends ").append("[").append(supclass).append("](#").append(supclass.toLowerCase()).append(")*\n\n");
 
             var result = parser.parse(Config.srcDirectory.child(path).file());
 
