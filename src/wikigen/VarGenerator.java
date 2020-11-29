@@ -15,6 +15,7 @@ import mindustry.entities.*;
 import mindustry.gen.*;
 import mindustry.net.*;
 import mindustry.server.*;
+import mindustry.type.*;
 import org.reflections.*;
 
 import java.lang.reflect.*;
@@ -70,12 +71,8 @@ public class VarGenerator{
     public String genTypes() throws Exception{
         var out = new StringBuilder();
         var allClasses = fetchTypes("mindustry", UnlockableContent.class);
-        //allClasses.addAll(fetchTypes("mindustry.entities.bullet", BulletType.class));
         allClasses.addAll(fetchTypes("mindustry.entities.effect", Effect.class));
-        //allClasses.addAll(fetchTypes("mindustry.entities.abilities", Ability.class));
-        //allClasses.add(Item.class);
-        //allClasses.add(Liquid.class);
-        //allClasses.add(Planet.class);
+        allClasses.add(Weapon.class);
         var parser = new JavaParser();
 
         class Ref{
@@ -111,7 +108,7 @@ public class VarGenerator{
                 }
             }
 
-            String type = instance instanceof Content cont ? cont.getContentType().toString() : instance instanceof Effect ? "effect" : "unknown";
+            String type = instance instanceof Content cont ? cont.getContentType().toString() : instance instanceof Effect ? "effect" : "other";
 
             refs.add(new Ref(c, Strings.capitalize(type), instance));
         }
@@ -122,7 +119,7 @@ public class VarGenerator{
 
         for(var ref : refs){
             if(!ref.type.equals(lastType)){
-                out.append("\n# ").append(ref.type).append("\n\n");
+                out.append("\n# ").append(Strings.capitalize(ref.type)).append("\n\n");
                 lastType = ref.type;
             }
 
