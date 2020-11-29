@@ -188,7 +188,7 @@ public class VarGenerator{
 
                             //special array init
                             if(initValue != null && initValue.contains("new") && initValue.contains("[") && initValue.contains("]")){
-                                initValue = "[...]";
+                                initValue = "[]";
                             }
 
                             //assign to last, making sure it's not a number
