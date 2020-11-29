@@ -75,9 +75,10 @@ public class VarGenerator{
 
     public String genTypes() throws Exception{
         var out = new StringBuilder();
-        var allClasses = fetchTypes("mindustry", UnlockableContent.class);
+        var allClasses = fetchTypes("mindustry", MappableContent.class);
         allClasses.addAll(fetchTypes("mindustry.entities.effect", Effect.class));
         allClasses.add(Weapon.class);
+
         var parser = new JavaParser();
         var builtIns = StringMap.of(
         "effect", fetchFields(Fx.class),
