@@ -191,8 +191,15 @@ public class VarGenerator{
                                 initValue = initValue.substring(0, initValue.length() - 1);
                             }
 
-                            if(initValue != null && initValue.contains("->") && (initValue.contains("{") || initValue.contains("()"))){
+                            //remove lambdas
+                            if(initValue != null && initValue.contains("->")){
                                 initValue = "{code}";
+                            }
+
+                            //assign to last
+                            if(initValue != null && initValue.contains(".")){
+                                var split = initValue.split("\\.");
+                                initValue = split[split.length - 1];
                             }
 
                             anyFields = true;
