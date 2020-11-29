@@ -65,6 +65,8 @@ public class VarGenerator{
         allClasses.add(Block.class);
         var parser = new JavaParser();
 
+        var sorted = Seq.with(allClasses).sortComparing(Class::getSimpleName);
+
         for(var c : allClasses){
             if(Modifier.isAbstract(c.getModifiers())) continue;
 
