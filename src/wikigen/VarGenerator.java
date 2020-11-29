@@ -119,7 +119,7 @@ public class VarGenerator{
                 }
             }
 
-            String type = instance instanceof Content cont ? cont.getContentType().toString() : instance instanceof Effect ? "effect" : "other";
+            String type = instance instanceof Content cont ? cont.getContentType().toString() : instance instanceof Effect ? "effect" : "zzz_other";
             counts.increment(type);
 
             refs.add(new Ref(c, type, instance));
@@ -131,7 +131,7 @@ public class VarGenerator{
 
         for(var ref : refs){
             if(!ref.type.equals(lastType)){
-                out.append("\n# ").append(Strings.capitalize(ref.type)).append("\n\n");
+                out.append("\n# ").append(Strings.capitalize(ref.type.replace("zzz_", ""))).append("\n\n");
                 lastType = ref.type;
 
                 if(builtIns.containsKey(ref.type)){
