@@ -15,6 +15,8 @@ import mindustry.server.*;
 import mindustry.world.*;
 import org.reflections.*;
 
+import java.lang.reflect.*;
+
 /** Generates and replaces variables in markdown files. */
 public class VarGenerator{
     private static final NetJavaImpl net = new NetJavaImpl();
@@ -61,6 +63,8 @@ public class VarGenerator{
         var parser = new JavaParser();
 
         for(var c : allClasses){
+            if(Modifier.isAbstract(c.getModifiers())) continue;
+
             var path = c.getCanonicalName().replace('.', '/') + ".java";
             Log.info("Parse @", path);
 
@@ -90,15 +94,35 @@ public class VarGenerator{
             |---|---|---|---|
             """);
 
+            try{
+                c.getConstructor(String.class);
+            }catch(Exception ignored){
+                continue;
+            }
+
+            var instance = c.getConstructor(String.class).newInstance("__typeof" + c.getSimpleName());
+
             var members = typeDec.getMembers();
             if(members != null){
                 for(var member : members){
                     if(member instanceof FieldDeclaration field){
+                        if(field.isStatic() || !field.isPublic()) continue;
+
                         for(var variable : field.getVariables()){
+                            var baseField = c.getField(variable.getNameAsString());
+                            var value = baseField.get(instance);
+                            var initValue = variable.getInitializer().isEmpty() ? null : variable.getInitializer().get().toString();
+
+                            //remove f suffix
+                            if(variable.getTypeAsString().equals("float") && initValue != null && initValue.endsWith("f")){
+                                initValue = initValue.substring(0, initValue.length() - 1);
+                            }
+
                             anyFields = true;
-                            outf.append("|").append(variable.getName())
+                            outf
+                            .append("|").append(variable.getName())
                             .append("|").append(variable.getTypeAsString())
-                            .append("|").append(variable.getInitializer().isEmpty() ? "  " : variable.getInitializer().get().toFieldAccessExpr().toString())
+                            .append("|").append(initValue == null ? value : initValue)
                             .append("|").append(field.getJavadoc().isPresent() ? field.getJavadoc().get().toText().replace("\n", " ") : " ").append("|\n");
                         }
                     }
@@ -112,7 +136,7 @@ public class VarGenerator{
             out.append("\n\n");
         }
 
-        //Log.info(out.toString());
+        Log.info(out.toString());
 
         return out.toString();
     }
