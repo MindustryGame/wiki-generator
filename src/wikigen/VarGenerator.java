@@ -10,6 +10,7 @@ import arc.util.*;
 import arc.util.serialization.*;
 import com.github.javaparser.*;
 import com.github.javaparser.ast.body.*;
+import mindustry.content.*;
 import mindustry.ctype.*;
 import mindustry.entities.*;
 import mindustry.gen.*;
@@ -68,12 +69,21 @@ public class VarGenerator{
         return allClasses;
     }
 
+    String fetchFields(Class type){
+        return Seq.with(type.getFields()).toString(" ", f -> "`" + f.getName() + "`");
+    }
+
     public String genTypes() throws Exception{
         var out = new StringBuilder();
         var allClasses = fetchTypes("mindustry", UnlockableContent.class);
         allClasses.addAll(fetchTypes("mindustry.entities.effect", Effect.class));
         allClasses.add(Weapon.class);
         var parser = new JavaParser();
+        var builtIns = StringMap.of(
+        "effect", fetchFields(Fx.class),
+        "bullet", fetchFields(Bullet.class),
+        "status", fetchFields(StatusEffects.class)
+        );
 
         class Ref{
             Class c;
@@ -112,7 +122,7 @@ public class VarGenerator{
             String type = instance instanceof Content cont ? cont.getContentType().toString() : instance instanceof Effect ? "effect" : "other";
             counts.increment(type);
 
-            refs.add(new Ref(c, Strings.capitalize(type), instance));
+            refs.add(new Ref(c, type, instance));
         }
 
         refs.sort(((Comparator<Ref>)((a, b) -> -Boolean.compare(a.c.isAssignableFrom(b.c), b.c.isAssignableFrom(a.c)))).thenComparing(r -> r.type).thenComparing(f -> f.c.getSimpleName()));
@@ -123,13 +133,17 @@ public class VarGenerator{
             if(!ref.type.equals(lastType)){
                 out.append("\n# ").append(Strings.capitalize(ref.type)).append("\n\n");
                 lastType = ref.type;
+
+                if(builtIns.containsKey(ref.type)){
+                    out.append("Built-in constants: \n").append(builtIns.get(ref.type)).append("\n\n");
+                }
             }
 
             var c = ref.c;
             var path = c.getCanonicalName().replace('.', '/') + ".java";
             var supclass = c.getSuperclass().getSimpleName();
 
-            Log.info("Parse @", path);
+            Log.info("Parsing @", path);
 
             if(counts.get(ref.type) > 1){
                 out.append("## ").append(c.getSimpleName()).append("\n\n");
