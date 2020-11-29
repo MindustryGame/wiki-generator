@@ -67,7 +67,7 @@ public class VarGenerator{
 
         var sorted = Seq.with(allClasses).sortComparing(Class::getSimpleName);
 
-        for(var c : allClasses){
+        for(var c : sorted){
             if(Modifier.isAbstract(c.getModifiers())) continue;
 
             var path = c.getCanonicalName().replace('.', '/') + ".java";
