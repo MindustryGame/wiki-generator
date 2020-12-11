@@ -18,9 +18,10 @@ public class LiquidGenerator extends FileGenerator<Liquid>{
         boolean pumpable = Vars.content.blocks().contains(b -> b instanceof Floor f && f.liquidDrop == liquid);
 
         return ObjectMap.of(
-            "produced", links(Vars.content.blocks().select(b -> (pumpable && b instanceof Pump) || (b instanceof GenericCrafter g && g.outputLiquid != null && g.outputLiquid.liquid == liquid))),
+            "produced", links(Vars.content.blocks().select(b -> (pumpable && b instanceof Pump && !(b instanceof SolidPump))
+                || (b instanceof GenericCrafter g && g.outputLiquid != null && g.outputLiquid.liquid == liquid))),
             "crafting", links(Vars.content.blocks().select(b -> b.consumes.all() != null && Structs.contains(b.consumes.all(), c -> (c instanceof ConsumeLiquidFilter f && f.filter.get(liquid))
-                                                                                || (c instanceof ConsumeLiquid l && l.liquid == liquid))))
+                || (c instanceof ConsumeLiquid l && l.liquid == liquid))))
         );
     }
 
