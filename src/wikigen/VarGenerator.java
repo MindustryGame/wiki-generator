@@ -54,6 +54,8 @@ public class VarGenerator{
                 Jval json = Jval.read(response.getResultAsString());
                 String latestRelease = json.asArray().first().getString("tag_name").substring(1);
                 out.put("latestRelease", latestRelease);
+                String latestReleaseLink = json.asArray().first().getString("html_url");
+                out.put("latestReleaseLink", latestReleaseLink);
             }
         }, Log::err);
 
