@@ -2,7 +2,7 @@ package wikigen.image;
 
 import arc.files.Fi;
 import arc.graphics.g2d.TextureAtlas.TextureAtlasData;
-import arc.graphics.g2d.TextureAtlas.TextureAtlasData.Page;
+import arc.graphics.g2d.TextureAtlas.TextureAtlasData.AtlasPage;
 import arc.graphics.g2d.TextureAtlas.TextureAtlasData.Region;
 
 import javax.imageio.ImageIO;
@@ -34,7 +34,7 @@ public class TextureUnpacker{
             outputDirFile.mkdirs();
         }
 
-        for(Page page : atlas.getPages()){
+        for(AtlasPage page : atlas.getPages()){
             // load the image file belonging to this page as a Buffered Image
             File file = page.textureFile.file();
             if(!file.exists()) throw new RuntimeException("Unable to find atlas image: " + file.getAbsolutePath());
