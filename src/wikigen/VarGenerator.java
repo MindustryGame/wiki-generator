@@ -117,7 +117,8 @@ public class VarGenerator{
                 instance = cons.newInstance("__typeof" + c.getSimpleName());
             }catch(Exception ignored){
                 try{
-                    cons = c.getConstructor();
+                    cons = c.getDeclaredConstructor();
+                    cons.setAccessible(true);
                     instance = cons.newInstance();
                 }catch(Exception ignored2){
                     continue;
