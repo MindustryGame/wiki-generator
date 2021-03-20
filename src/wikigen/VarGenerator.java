@@ -10,17 +10,20 @@ import arc.util.*;
 import arc.util.serialization.*;
 import com.github.javaparser.*;
 import com.github.javaparser.ast.body.*;
+import com.github.javaparser.utils.Log;
+import com.google.common.base.Strings;
 import mindustry.content.*;
 import mindustry.ctype.*;
 import mindustry.entities.*;
 import mindustry.entities.abilities.*;
+import mindustry.entities.bullet.*;
 import mindustry.gen.*;
 import mindustry.net.*;
 import mindustry.server.*;
 import mindustry.type.*;
 import org.reflections.*;
 
-import java.lang.reflect.*;
+import java.net.http.HttpRequest;
 import java.util.*;
 
 /** Generates and replaces variables in markdown files. */
@@ -58,7 +61,7 @@ public class VarGenerator{
                 String latestReleaseLink = json.asArray().first().getString("html_url");
                 out.put("latestReleaseLink", latestReleaseLink);
             }
-        }, Log::err);
+        }, com.github.javaparser.utils.Log::err);
 
         out.put("allTypes", genTypes());
 
@@ -81,6 +84,7 @@ public class VarGenerator{
         var allClasses = fetchTypes("mindustry", MappableContent.class);
         allClasses.addAll(fetchTypes("mindustry.entities.effect", Effect.class));
         allClasses.addAll(fetchTypes("mindustry.entities.abilities", Ability.class));
+        allClasses.addAll(fetchTypes("mindustry.entities.bullet", BulletType.class));
         allClasses.add(Weapon.class);
 
         var parser = new JavaParser();
@@ -106,22 +110,25 @@ public class VarGenerator{
         var counts = new ObjectIntMap<String>();
 
         for(var c : allClasses){
-            if(Modifier.isAbstract(c.getModifiers()) || c.isAnonymousClass()) continue;
+            if(c.isAnonymousClass()) continue;
 
-            Constructor cons;
-            Object instance;
+            Object instance = null;
 
-            //skip non-string constructors
-            try{
-                cons = c.getConstructor(String.class);
-                instance = cons.newInstance("__typeof" + c.getSimpleName());
-            }catch(Exception ignored){
+            if(c == BulletType.class) instance = new BulletType(){};
+            if(c == Ability.class) instance = new Ability(){};
+
+            if(instance == null){
+                //skip non-string constructors
                 try{
-                    cons = c.getDeclaredConstructor();
-                    cons.setAccessible(true);
-                    instance = cons.newInstance();
-                }catch(Exception ignored2){
-                    continue;
+                    instance = c.getConstructor(String.class).newInstance("__typeof" + c.getSimpleName());
+                }catch(Exception ignored){
+                    try{
+                        var cons = c.getDeclaredConstructor();
+                        cons.setAccessible(true);
+                        instance = cons.newInstance();
+                    }catch(Exception ignored2){
+                        continue;
+                    }
                 }
             }
 
@@ -137,7 +144,7 @@ public class VarGenerator{
 
         for(var ref : refs){
             if(!ref.type.equals(lastType)){
-                out.append("\n# ").append(Strings.capitalize(ref.type.replace("zzz_", ""))).append("\n");
+                out.append("\n# ").append(com.google.common.base.Strings.capitalize(ref.type.replace("zzz_", ""))).append("\n");
                 lastType = ref.type;
 
                 if(builtIns.containsKey(ref.type)){
@@ -254,7 +261,7 @@ public class VarGenerator{
                 StringBuilder template = new StringBuilder(f.readString());
                 values.each((key, val) -> {
                     if(!Generator.str(val).isEmpty()){
-                        Strings.replace(template, "$" + key, Generator.str(val));
+                        com.google.common.base.Strings.replace(template, "$" + key, Generator.str(val));
                     }
                 });
                 f.writeString(Strings.join("\n", Seq.with(template.toString().split("\n")).select(s -> !s.contains("$"))));
