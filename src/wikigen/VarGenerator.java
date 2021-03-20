@@ -208,8 +208,12 @@ public class VarGenerator{
                                 initValue = split[split.length - 1];
                             }
 
-                            if(initValue != null && value instanceof Object[]){
-                                initValue = Arrays.toString((Object[])value);
+                            if(initValue != null && value instanceof Object[] o){
+                                initValue = Arrays.toString(o);
+                            }
+
+                            if(initValue != null && value instanceof float[] f){
+                                initValue = Arrays.toString(f);
                             }
 
                             //special overrides
