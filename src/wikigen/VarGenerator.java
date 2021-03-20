@@ -208,8 +208,7 @@ public class VarGenerator{
                                 initValue = split[split.length - 1];
                             }
 
-                            if(baseField.getType().isArray()){
-                                assert initValue != null;
+                            if(initValue != null && baseField.getType().isArray()){
                                 initValue = initValue.replace("{", "[").replace('}', ']');
                             }
 
