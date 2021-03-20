@@ -10,8 +10,6 @@ import arc.util.*;
 import arc.util.serialization.*;
 import com.github.javaparser.*;
 import com.github.javaparser.ast.body.*;
-import com.github.javaparser.utils.Log;
-import com.google.common.base.Strings;
 import mindustry.content.*;
 import mindustry.ctype.*;
 import mindustry.entities.*;
@@ -23,8 +21,9 @@ import mindustry.server.*;
 import mindustry.type.*;
 import org.reflections.*;
 
-import java.net.http.HttpRequest;
 import java.util.*;
+
+import static arc.util.Log.*;
 
 /** Generates and replaces variables in markdown files. */
 @SuppressWarnings("unchecked")
@@ -61,7 +60,7 @@ public class VarGenerator{
                 String latestReleaseLink = json.asArray().first().getString("html_url");
                 out.put("latestReleaseLink", latestReleaseLink);
             }
-        }, com.github.javaparser.utils.Log::err);
+        }, Log::err);
 
         out.put("allTypes", genTypes());
 
@@ -144,7 +143,7 @@ public class VarGenerator{
 
         for(var ref : refs){
             if(!ref.type.equals(lastType)){
-                out.append("\n# ").append(com.google.common.base.Strings.capitalize(ref.type.replace("zzz_", ""))).append("\n");
+                out.append("\n# ").append(Strings.capitalize(ref.type.replace("zzz_", ""))).append("\n");
                 lastType = ref.type;
 
                 if(builtIns.containsKey(ref.type)){
@@ -158,7 +157,7 @@ public class VarGenerator{
             var path = c.getCanonicalName().replace('.', '/') + ".java";
             var supclass = c.getSuperclass().getSimpleName();
 
-            Log.info("Parsing @", path);
+            info("Parsing @", path);
 
             if(counts.get(ref.type) > 1 || ref.type.contains("zzz_")){
                 out.append("## ").append(c.getSimpleName()).append("\n\n");
@@ -261,7 +260,7 @@ public class VarGenerator{
                 StringBuilder template = new StringBuilder(f.readString());
                 values.each((key, val) -> {
                     if(!Generator.str(val).isEmpty()){
-                        com.google.common.base.Strings.replace(template, "$" + key, Generator.str(val));
+                        Strings.replace(template, "$" + key, Generator.str(val));
                     }
                 });
                 f.writeString(Strings.join("\n", Seq.with(template.toString().split("\n")).select(s -> !s.contains("$"))));
