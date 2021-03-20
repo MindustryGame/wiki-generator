@@ -203,9 +203,14 @@ public class VarGenerator{
                             }
 
                             //assign to last, making sure it's not a number
-                            if(initValue != null && initValue.contains(".")){
+                            if(initValue != null && initValue.contains(".") && !(baseField.getType().isArray())){
                                 var split = initValue.split("\\.");
                                 initValue = split[split.length - 1];
+                            }
+
+                            if(baseField.getType().isArray()){
+                                assert initValue != null;
+                                initValue = initValue.replace("{", "[").replace('}', ']');
                             }
 
                             //special overrides
