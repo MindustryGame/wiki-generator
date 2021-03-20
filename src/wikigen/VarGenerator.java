@@ -89,7 +89,7 @@ public class VarGenerator{
         var parser = new JavaParser();
         var builtIns = StringMap.of(
         "effect", fetchFields(Fx.class),
-        "bullet", fetchFields(Bullet.class),
+        "bullet", fetchFields(Bullets.class),
         "status", fetchFields(StatusEffects.class)
         );
 
