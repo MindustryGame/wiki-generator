@@ -15,10 +15,6 @@ allprojects{
         maven{ url 'https://jitpack.io' }
         jcenter()
     }
-
-    tasks.withType(JavaCompile){
-        options.compilerArgs.add('--enable-preview')
-    }
 }
 
 task run(dependsOn: classes, type: JavaExec){
