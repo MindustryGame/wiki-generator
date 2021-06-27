@@ -15,6 +15,6 @@ public class BlockGenerator extends FileGenerator<Block>{
 
     @Override
     public String linkImage(Block content){
-        return "block-" + content.name + "-small";
+        return "block-" + content.name + "-ui";
     }
 }
