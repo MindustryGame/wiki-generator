@@ -1,8 +1,7 @@
 apply plugin: 'java'
-apply plugin: 'maven'
 
-sourceCompatibility = 14
-targetCompatibility = 14
+sourceCompatibility = 16
+targetCompatibility = 16
 version = '1.0'
 
 sourceSets.main.java.srcDirs = ["src/"]
@@ -26,7 +25,6 @@ task run(dependsOn: classes, type: JavaExec){
     main = "wikigen.Generator"
     workingDir = new File("../Mindustry/core/assets")
     classpath = sourceSets.main.runtimeClasspath
-    jvmArgs += "--enable-preview"
 }
 
 dependencies{

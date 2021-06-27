@@ -21,7 +21,7 @@ import static wikigen.Config.*;
 
 @SuppressWarnings("unchecked")
 public class Generator{
-    private static ObjectMap<ContentType, FileGenerator<?>> generators = new ObjectMap<>();
+    private static final ObjectMap<ContentType, FileGenerator<?>> generators = new ObjectMap<>();
 
     public static void main(String[] args){
         Core.settings = new MockSettings();
@@ -62,7 +62,10 @@ public class Generator{
         try{
 
             Config.outDirectory.deleteDirectory();
-            new TextureUnpacker().split(Core.files.local("sprites/sprites.atlas"), Config.imageDirectory);
+            //copy over generated sprites.
+            Core.files.local("../assets-raw/sprites_out").walk(file -> {
+                file.copyTo(imageDirectory.child(file.name()));
+            });
 
             Reflections reflections = new Reflections("wikigen.generators");
             reflections.getTypesAnnotatedWith(Generates.class).forEach(type -> {

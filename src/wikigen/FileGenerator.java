@@ -5,7 +5,6 @@ import arc.graphics.g2d.TextureAtlas.*;
 import arc.struct.*;
 import arc.util.*;
 import mindustry.ctype.*;
-import mindustry.ui.*;
 
 /** Represents a generator for a type of content.
  * Each subclass should be placed in generators/ and annotated with {@link Generates} to indicate its content type.*/
@@ -30,7 +29,11 @@ public class FileGenerator<T extends UnlockableContent>{
     /** Returns a markdown file with this name in the output directory with this generator's type name.*/
     public Fi file(T t){
         Config.outDirectory.mkdirs();
-        return Config.outDirectory.child(type().name() + "s").child(linkPath(t) + ".md");
+        return Config.outDirectory.child(plural()).child(linkPath(t) + ".md");
+    }
+
+    public String plural(){
+        return type().name().endsWith("s") ? type().name() + "es" : type().name() + "s";
     }
 
     /** @return an image link for this content with a correct icon and path. */
@@ -44,7 +47,7 @@ public class FileGenerator<T extends UnlockableContent>{
 
     /** @return the name of the image this content should use in links without an extension or additional paths.*/
     public String linkImage(T content){
-        return ((AtlasRegion)content.icon(Cicon.medium)).name;
+        return ((AtlasRegion)content.uiIcon).name;
     }
 
     /** @return the file name of this content in its folder, without the `type/` prefix or extension.*/
