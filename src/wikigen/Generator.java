@@ -37,6 +37,12 @@ public class Generator{
             Core.files.local("locales").writeString("en");
         }
 
+        Config.outDirectory.deleteDirectory();
+        //copy over generated sprites.
+        Core.files.local("../assets-raw/sprites_out").walk(file -> {
+            file.copyTo(imageDirectory.child(file.name()));
+        });
+
         ArcNativesLoader.load();
 
         Version.enabled = false;
@@ -60,12 +66,6 @@ public class Generator{
     /** Generates all the pages, loads the classes. */
     public static void generate(){
         try{
-
-            Config.outDirectory.deleteDirectory();
-            //copy over generated sprites.
-            Core.files.local("../assets-raw/sprites_out").walk(file -> {
-                file.copyTo(imageDirectory.child(file.name()));
-            });
 
             Reflections reflections = new Reflections("wikigen.generators");
             reflections.getTypesAnnotatedWith(Generates.class).forEach(type -> {
