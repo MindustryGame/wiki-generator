@@ -18,7 +18,7 @@ allprojects{
 }
 
 task run(dependsOn: classes, type: JavaExec){
-    main = "wikigen.Generator"
+    mainClass = "wikigen.Generator"
     workingDir = new File("../Mindustry/core/assets")
     classpath = sourceSets.main.runtimeClasspath
 }
