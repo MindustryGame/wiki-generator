@@ -1,4 +1,4 @@
-# <img id="spr" src="/$repo/images/unit-$name-full.png"></img> $localizedName
+# <img id="spr" src="/$repo/images/unit-$name-ui.png"></img> $localizedName
 
 
 *"$description"*  
