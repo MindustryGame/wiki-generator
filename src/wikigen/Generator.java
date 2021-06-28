@@ -3,6 +3,8 @@ package wikigen;
 import arc.*;
 import arc.files.*;
 import arc.graphics.*;
+import arc.graphics.g2d.*;
+import arc.graphics.g2d.TextureAtlas.*;
 import arc.mock.*;
 import arc.struct.*;
 import arc.util.*;
@@ -22,6 +24,7 @@ import static wikigen.Config.*;
 @SuppressWarnings("unchecked")
 public class Generator{
     private static final ObjectMap<ContentType, FileGenerator<?>> generators = new ObjectMap<>();
+    private static final ObjectMap<String, UnlockableContent> regionToContent = new ObjectMap<>();
 
     public static void main(String[] args){
         Core.settings = new MockSettings();
@@ -66,6 +69,15 @@ public class Generator{
     /** Generates all the pages, loads the classes. */
     public static void generate(){
         try{
+            for(var t : ContentType.all){
+                for(var c : Vars.content.getBy(t)){
+                    if(c instanceof UnlockableContent u){
+                        if(u.uiIcon == null) continue;
+                        regionToContent.put(((AtlasRegion)u.uiIcon).name, u);
+                        regionToContent.put(((AtlasRegion)u.fullIcon).name, u);
+                    }
+                }
+            }
 
             Reflections reflections = new Reflections("wikigen.generators");
             reflections.getTypesAnnotatedWith(Generates.class).forEach(type -> {
@@ -123,6 +135,13 @@ public class Generator{
         }catch(Exception e){
             throw new RuntimeException(e);
         }
+    }
+
+    public static @Nullable UnlockableContent getByRegion(TextureRegion region){
+        if(region instanceof AtlasRegion a){
+            return regionToContent.get(a.name);
+        }
+        return null;
     }
 
     /** Stringifies an object for display.*/

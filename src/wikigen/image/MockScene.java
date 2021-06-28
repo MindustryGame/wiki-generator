@@ -121,7 +121,13 @@ public class MockScene{
             result.append(" ");
         }else if(e instanceof Image i){
             AtlasRegion region = (AtlasRegion)((TextureRegionDrawable)i.getDrawable()).getRegion();
-            result.append(Strings.format("![@](/@/images/@.png)", region.name, Config.repo, region.name));
+            var unlock = Generator.getByRegion(region);
+            if(unlock != null){
+                result.append(link(unlock));
+            }else{
+                result.append(Strings.format("![@](/@/images/@.png)", region.name, Config.repo, region.name));
+            }
+
             result.append(" ");
         }else if(e instanceof Table t){
             for(Cell cell : t.getCells()){
