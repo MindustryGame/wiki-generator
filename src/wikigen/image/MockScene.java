@@ -95,10 +95,7 @@ public class MockScene{
                 text = Core.bundle.get(text.substring(1));
             }
             boolean stat = text.contains("[stat]") || text.contains("[lightgray]");
-            if(text.contains("[stat]") && !text.contains("[lightgray]")){
-                text += "**";
-            }
-            text = text.replace("[stat]", "**").replace("[lightgray]", "**");
+            text = text.replace("[stat]", "").replace("[lightgray]", "");
             if(stat){
                 result.append("<br> • ");
             }
