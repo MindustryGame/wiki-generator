@@ -109,7 +109,7 @@ public class VarGenerator{
         var counts = new ObjectIntMap<String>();
 
         for(var c : allClasses){
-            if(c.isAnonymousClass()) continue;
+            if(c.isAnonymousClass() || c.isAnnotationPresent(Deprecated.class)) continue;
 
             Object instance = null;
 
