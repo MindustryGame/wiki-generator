@@ -22,6 +22,15 @@ public class FileGenerator<T extends UnlockableContent>{
         return ObjectMap.of();
     }
 
+    /** Generate additional pages here. */
+    public void onGenerate(T content){
+
+    }
+
+    public boolean enabled(){
+        return true;
+    }
+
     public ContentType type(){
         return otype != null ? otype : getClass().getAnnotation(Generates.class).value();
     }

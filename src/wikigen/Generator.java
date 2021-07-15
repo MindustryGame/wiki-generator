@@ -30,7 +30,6 @@ public class Generator{
         Core.settings = new MockSettings();
         Core.app = new MockApplication();
         Core.files = new MockFiles();
-        Core.net = new Net();
         Core.audio = new MockAudio();
         Core.graphics = new MockGraphics();
         Core.input = new MockInput();
@@ -101,6 +100,8 @@ public class Generator{
                         Log.info("Generating content of type '@'...", type);
                         var generator = get(type);
 
+                        if(!generator.enabled()) continue;
+
                         for(var content : list.<UnlockableContent>as()){
                             if(content.isHidden() && !(content instanceof Block b && b.buildVisibility != BuildVisibility.hidden)){
                                 continue;
@@ -123,6 +124,7 @@ public class Generator{
                                 }
                             });
                             generator.file(content).writeString(Strings.join("\n", Seq.with(template.toString().split("\n")).select(s -> !s.contains("$"))));
+                            generator.onGenerate(content);
 
                             Log.info("| Generating file for '@'...", content.name);
                         }
