@@ -52,11 +52,13 @@ public class Generator{
         Vars.headless = true;
         Vars.loadSettings();
         Vars.init();
+        Vars.bases.load();
         Vars.content.createBaseContent();
         Vars.world = new World();
         Vars.logic = new Logic();
         Vars.content.init();
         Vars.state = new GameState();
+
         Vars.net = new Net(null);
         Colors.put("accent", Pal.accent);
         Colors.put("stat", Pal.accent);

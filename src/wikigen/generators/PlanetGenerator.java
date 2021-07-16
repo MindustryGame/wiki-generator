@@ -66,6 +66,9 @@ public class PlanetGenerator extends FileGenerator<Planet>{
                     if(tile.floor().itemDrop != null){
                         drops.add(tile.floor().itemDrop);
                     }
+                    if(tile.overlay().itemDrop != null){
+                        drops.add(tile.overlay().itemDrop);
+                    }
                 }
             }
 
@@ -88,7 +91,7 @@ public class PlanetGenerator extends FileGenerator<Planet>{
             }
 
             if(sector.preset != null){
-                vars.put("description", sector.preset.description);
+                vars.put("description", Strings.stripColors(sector.preset.description));
             }
 
             file.writeString(format(template, vars));
