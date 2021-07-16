@@ -1,5 +1,6 @@
 package wikigen.generators;
 
+import arc.*;
 import arc.files.*;
 import arc.graphics.*;
 import arc.math.*;
@@ -7,6 +8,7 @@ import arc.struct.*;
 import arc.util.*;
 import mindustry.*;
 import mindustry.ctype.*;
+import mindustry.game.EventType.*;
 import mindustry.io.*;
 import mindustry.type.*;
 import mindustry.world.*;
@@ -36,6 +38,12 @@ public class PlanetGenerator extends FileGenerator<Planet>{
     public ObjectMap<String, Object> vars(Planet planet){
         Fi folder = Config.outDirectory.child(planet.localizedName);
         var planetDrops = new ObjectSet<UnlockableContent>();
+
+        //may or may not fix a crash
+        world.tiles = new Tiles(1, 1);
+        world.tiles.set(0, 0, new Tile(0, 0));
+
+        Events.fire(new WorldLoadEvent());
 
         for(Sector sector : planet.sectors){
             Fi file = folder.child((sector.preset == null ? sector.id + "" : sector.preset.localizedName) + ".md");
