@@ -5,7 +5,9 @@ import arc.struct.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
 import mindustry.world.*;
+import mindustry.world.blocks.*;
 import mindustry.world.blocks.environment.*;
+import mindustry.world.blocks.legacy.*;
 import wikigen.*;
 
 @Generates(ContentType.block)
@@ -29,7 +31,7 @@ public class BlockGenerator extends FileGenerator<Block>{
 
     @Override
     public boolean enabled(Block b){
-        return b != Blocks.air && b.uiIcon.found() && b.inEditor;
+        return b != Blocks.air && b.uiIcon.found() && b.inEditor && !(b instanceof ConstructBlock) && !(b instanceof LegacyBlock);
     }
 
     @Override
