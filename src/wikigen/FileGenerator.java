@@ -6,6 +6,8 @@ import arc.struct.*;
 import arc.util.*;
 import mindustry.ctype.*;
 
+import static wikigen.Config.*;
+
 /** Represents a generator for a type of content.
  * Each subclass should be placed in generators/ and annotated with {@link Generates} to indicate its content type.*/
 public class FileGenerator<T extends UnlockableContent>{
@@ -35,6 +37,18 @@ public class FileGenerator<T extends UnlockableContent>{
         return otype != null ? otype : getClass().getAnnotation(Generates.class).value();
     }
 
+    public String format(String temp, ObjectMap<String, Object> vars){
+        StringBuilder template = new StringBuilder(temp);
+        vars.put("repo", repo);
+        vars.each((key, val) -> {
+            if(!Generator.str(val).isEmpty()){
+                Strings.replace(template, "$" + key, Generator.str(val));
+            }
+        });
+
+        return Strings.join("\n", Seq.with(template.toString().split("\n")).select(s -> !s.contains("$")));
+    }
+
     /** Returns a markdown file with this name in the output directory with this generator's type name.*/
     public Fi file(T t){
         Config.outDirectory.mkdirs();
@@ -48,6 +62,10 @@ public class FileGenerator<T extends UnlockableContent>{
     /** @return an image link for this content with a correct icon and path. */
     public final String makeLink(T content){
         return Strings.format("<a href=\"/@/@\"><img id=\"@\" src=\"/@/images/@.png\"/></a>", Config.repo, displayType(content.getContentType()) + "/" + linkPath(content), imageStyle(), Config.repo, linkImage(content));
+    }
+
+    public final String makeImageLink(String imageFolderPath){
+        return Strings.format("<img src=\"/@/images/@.png\"/>", Config.repo, imageFolderPath);
     }
 
     public String imageStyle(){

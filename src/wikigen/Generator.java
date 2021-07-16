@@ -12,6 +12,8 @@ import mindustry.*;
 import mindustry.core.*;
 import mindustry.ctype.*;
 import mindustry.graphics.*;
+import mindustry.net.*;
+import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.meta.*;
 import org.reflections.*;
@@ -56,11 +58,13 @@ public class Generator{
         Vars.logic = new Logic();
         Vars.content.init();
         Vars.state = new GameState();
+        Vars.net = new Net(null);
         Colors.put("accent", Pal.accent);
         Colors.put("stat", Pal.accent);
         Colors.put("health", Pal.health);
         MockScene.init();
         Vars.content.load();
+        Vars.content.loadColors();
         Generator.generate();
         Splicer.splice();
     }
@@ -103,7 +107,7 @@ public class Generator{
                         if(!generator.enabled()) continue;
 
                         for(var content : list.<UnlockableContent>as()){
-                            if(content.isHidden() && !(content instanceof Block b && b.buildVisibility != BuildVisibility.hidden)){
+                            if(!(content instanceof Planet p && p.sectors != null && p.sectors.size > 0) && content.isHidden() && !(content instanceof Block b && b.buildVisibility != BuildVisibility.hidden)){
                                 continue;
                             }
 
@@ -115,18 +119,11 @@ public class Generator{
 
                             values.putAll(generator.vars(content));
                             values.put("stats", MockScene.scrapeStats(content));
-                            values.put("repo", repo);
-
-                            StringBuilder template = new StringBuilder(templatef.readString());
-                            values.each((key, val) -> {
-                                if(!str(val).isEmpty()){
-                                    Strings.replace(template, "$" + key, str(val));
-                                }
-                            });
-                            generator.file(content).writeString(Strings.join("\n", Seq.with(template.toString().split("\n")).select(s -> !s.contains("$"))));
-                            generator.onGenerate(content);
 
                             Log.info("| Generating file for '@'...", content.name);
+
+                            generator.file(content).writeString(generator.format(templatef.readString(), values));
+                            generator.onGenerate(content);
                         }
                     }
                 }
