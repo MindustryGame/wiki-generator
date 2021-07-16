@@ -33,7 +33,7 @@ public class PlanetGenerator extends FileGenerator<Planet>{
         var planetDrops = new ObjectSet<UnlockableContent>();
 
         for(Sector sector : planet.sectors){
-            Fi file = folder.child(sector.preset == null ? sector.id + "" : sector.preset.localizedName);
+            Fi file = folder.child((sector.preset == null ? sector.id + "" : sector.preset.localizedName) + ".md");
 
             Log.info("| | Sector: @/@", sector.id, planet.sectors.size);
 

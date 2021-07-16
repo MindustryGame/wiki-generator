@@ -2,6 +2,7 @@
 
 $image
 
+| Property | Value |
 |Mode|$mode|
 |Resources|$resources|
 |Difficulty|$difficulty|
