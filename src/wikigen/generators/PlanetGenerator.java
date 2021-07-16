@@ -105,9 +105,11 @@ public class PlanetGenerator extends FileGenerator<Planet>{
             file.writeString(format(template, vars));
         }
 
+        var pd = planetDrops.asArray().sort(Structs.comparing(Content::getContentType).thenComparing(c -> c.id));
+
         return ObjectMap.of(
             "sectors", planet.sectors.size,
-            "resources", links(planetDrops)
+            "resources", links(pd)
         );
     }
 }

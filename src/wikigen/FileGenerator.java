@@ -41,10 +41,12 @@ public class FileGenerator<T extends UnlockableContent>{
     public String format(String temp, ObjectMap<String, Object> vars){
         StringBuilder template = new StringBuilder(temp);
         vars.put("repo", repo);
-        vars.each((key, val) -> {
-            if(!Generator.str(val).isEmpty()){
-                Strings.replace(template, "$" + key, Generator.str(val));
-            }
+        //sort keys by length so longer variables get replaced with invalid symbols first
+        Seq<String> keys = vars.keys().toSeq().sort(s -> -s.length());
+        keys.each(key -> {
+            var val = vars.get(key);
+            var str = Generator.str(val);
+            Strings.replace(template, "$" + key, str.isEmpty() ? "$INVALID!" : str);
         });
 
         return Strings.join("\n", Seq.with(template.toString().split("\n")).select(s -> !s.contains("$")));
