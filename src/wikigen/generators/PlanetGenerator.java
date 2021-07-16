@@ -50,7 +50,7 @@ public class PlanetGenerator extends FileGenerator<Planet>{
 
             Fi imgFile = Config.imageDirectory.child("sector-" + planet.name + "-" + sector.id + ".png"),
             smallImg = Config.imageDirectory.child("sector-" + planet.name + "-" + sector.id + "-small.png");
-            var small = new Pixmap(64, 64);
+            var small = new Pixmap(50, 50);
             small.draw(pix, 0, 0, small.width, small.height, true);
 
             imgFile.writePng(pix);

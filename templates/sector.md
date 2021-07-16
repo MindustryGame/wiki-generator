@@ -2,7 +2,7 @@
 
 <img id="zone" src="/$repo/images/sector-$planet-$id.png"></img>
 
-*"$description"*
+$description
 
 | Property | Value |
 | ----------- | ----------- |
