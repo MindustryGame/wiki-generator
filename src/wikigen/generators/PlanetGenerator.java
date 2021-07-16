@@ -58,8 +58,6 @@ public class PlanetGenerator extends FileGenerator<Planet>{
 
             var drops = new ObjectSet<UnlockableContent>();
 
-            planetDrops.addAll(drops);
-
             for(Tile tile : Vars.world.tiles){
                 if(!tile.block().solid){
                     if(tile.floor().liquidDrop != null){
@@ -70,6 +68,8 @@ public class PlanetGenerator extends FileGenerator<Planet>{
                     }
                 }
             }
+
+            planetDrops.addAll(drops);
 
             var u = drops.asArray().sort(Structs.comparing(Content::getContentType).thenComparing(c -> c.id));
 
