@@ -52,7 +52,6 @@ public class Generator{
         Vars.headless = true;
         Vars.loadSettings();
         Vars.init();
-        Vars.bases.load();
         Vars.content.createBaseContent();
         Vars.world = new World();
         Vars.logic = new Logic();
@@ -66,6 +65,7 @@ public class Generator{
         MockScene.init();
         Vars.content.load();
         Vars.content.loadColors();
+        Vars.bases.load();
         Generator.generate();
         Splicer.splice();
     }

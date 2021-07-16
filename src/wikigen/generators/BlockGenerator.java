@@ -42,7 +42,7 @@ public class BlockGenerator extends FileGenerator<Block>{
     }
 
     @Override
-    public String plural(Block b){
+    public String folder(Block b){
         return b.synthetic() ? "blocks" : "Environment Blocks";
     }
 

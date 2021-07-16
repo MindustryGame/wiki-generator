@@ -52,16 +52,16 @@ public class FileGenerator<T extends UnlockableContent>{
 
     /** Returns a markdown file with this name in the output directory with this generator's type name.*/
     public Fi file(T t){
-        return Config.outDirectory.child(plural(t)).child(linkPath(t) + ".md");
+        return Config.outDirectory.child(folder(t)).child(linkPath(t) + ".md");
     }
 
-    public String plural(T content){
+    public String folder(T content){
         return type().name().endsWith("s") ? type().name() + "es" : type().name() + "s";
     }
 
     /** @return an image link for this content with a correct icon and path. */
     public final String makeLink(T content){
-        return Strings.format("<a href=\"/@/@\"><img id=\"@\" src=\"/@/images/@.png\"/></a>", Config.repo, plural(content) + "/" + linkPath(content), imageStyle(), Config.repo, linkImage(content));
+        return Strings.format("<a href=\"/@/@\"><img id=\"@\" src=\"/@/images/@.png\"/></a>", Config.repo, folder(content) + "/" + linkPath(content), imageStyle(), Config.repo, linkImage(content));
     }
 
     public final String makeImageLink(String imageFolderPath){
