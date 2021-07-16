@@ -28,6 +28,11 @@ public class PlanetGenerator extends FileGenerator<Planet>{
     }
 
     @Override
+    public boolean enabled(Planet content){
+        return content.sectors.size > 0;
+    }
+
+    @Override
     public ObjectMap<String, Object> vars(Planet planet){
         Fi folder = Config.outDirectory.child(planet.localizedName);
         var planetDrops = new ObjectSet<UnlockableContent>();
@@ -41,9 +46,7 @@ public class PlanetGenerator extends FileGenerator<Planet>{
             Vars.world.loadSector(sector);
 
             var pix = new Pixmap(world.width(), world.height());
-            world.tiles.eachTile(t -> {
-                pix.set(t.x, world.height() - 1 - t.y, colorFor(t));
-            });
+            world.tiles.eachTile(t -> pix.set(t.x, world.height() - 1 - t.y, colorFor(t)));
 
             Fi imgFile = Config.imageDirectory.child("sector-" + planet.name + "-" + sector.id + ".png"),
             smallImg = Config.imageDirectory.child("sector-" + planet.name + "-" + sector.id + "-small.png");
@@ -72,17 +75,20 @@ public class PlanetGenerator extends FileGenerator<Planet>{
 
             var template = rootDirectory.child("templates").child("sector.md").readString();
             var vars = ObjectMap.<String, Object>of(
-            "localizedName", sector.name() + (sector.preset == null ? "" : " (" + sector.id + ")"),
+            "localizedName", sector.preset == null ? "Sector " + sector.id : sector.name() + " (" + sector.id + ")",
             "resources", links(u),
             "planet", planet.name,
             "id", sector.id,
             "mode", state.rules.mode(),
-            "image", makeImageLink(imgFile.nameWithoutExtension()),
             "difficulty", Strings.stripColors(sector.displayThreat())
             );
 
-            if(state.rules.waves){
+            if(state.rules.winWave > 0 && !state.rules.attackMode){
                 vars.put("captureWaves", state.rules.winWave);
+            }
+
+            if(sector.preset != null){
+                vars.put("description", sector.preset.description);
             }
 
             file.writeString(format(template, vars));

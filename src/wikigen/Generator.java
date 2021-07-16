@@ -3,8 +3,8 @@ package wikigen;
 import arc.*;
 import arc.files.*;
 import arc.graphics.*;
-import arc.graphics.g2d.*;
 import arc.graphics.g2d.TextureAtlas.*;
+import arc.graphics.g2d.*;
 import arc.mock.*;
 import arc.struct.*;
 import arc.util.*;
@@ -13,9 +13,6 @@ import mindustry.core.*;
 import mindustry.ctype.*;
 import mindustry.graphics.*;
 import mindustry.net.*;
-import mindustry.type.*;
-import mindustry.world.*;
-import mindustry.world.meta.*;
 import org.reflections.*;
 import wikigen.image.*;
 
@@ -46,6 +43,8 @@ public class Generator{
         Core.files.local("../assets-raw/sprites_out").walk(file -> {
             file.copyTo(imageDirectory.child(file.name()));
         });
+
+        Config.outDirectory.mkdirs();
 
         ArcNativesLoader.load();
 
@@ -104,12 +103,8 @@ public class Generator{
                         Log.info("Generating content of type '@'...", type);
                         var generator = get(type);
 
-                        if(!generator.enabled()) continue;
-
                         for(var content : list.<UnlockableContent>as()){
-                            if(!(content instanceof Planet p && p.sectors != null && p.sectors.size > 0) && content.isHidden() && !(content instanceof Block b && b.buildVisibility != BuildVisibility.hidden)){
-                                continue;
-                            }
+                            if(!generator.enabled(content)) continue;
 
                             var values = new ObjectMap<String, Object>();
 
@@ -152,7 +147,9 @@ public class Generator{
         }else if(obj instanceof Color c){
             return c.toString();
         }else if(obj == null){
-            return "Unknown...";
+            return "";
+        }else if(obj instanceof UnlockableContent c && generators.containsKey(c.getContentType())){
+            return generators.get(c.getContentType()).link(c);
         }
         return obj + "";
     }

@@ -1,7 +1,8 @@
 # $localizedName
 
-| Property | Value |__
-|Sectors|`$sectors`|
-|Resources|`$resources`|
+| Property | Value |
+| ----------- | ----------- |
+|Sectors|$sectors|
+|Resources|$resources|
 
 --- 
