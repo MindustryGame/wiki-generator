@@ -9,6 +9,8 @@ import arc.util.*;
 import mindustry.*;
 import mindustry.ctype.*;
 import mindustry.game.EventType.*;
+import mindustry.game.*;
+import mindustry.gen.*;
 import mindustry.io.*;
 import mindustry.type.*;
 import mindustry.world.*;
@@ -55,6 +57,12 @@ public class PlanetGenerator extends FileGenerator<Planet>{
 
             var pix = new Pixmap(world.width(), world.height());
             world.tiles.eachTile(t -> pix.set(t.x, world.height() - 1 - t.y, colorFor(t)));
+
+            for(Tile spawn : spawner.getSpawns()){
+                pix.fillCircle(spawn.x, pix.height - 1 - spawn.y, 3, Team.crux.color.rgba());
+            }
+            Building core = Team.sharded.core();
+            pix.fillCircle(core.tileX(), pix.height - 1 - core.tileY(), 4, Team.sharded.color.rgba());
 
             Fi imgFile = Config.imageDirectory.child("sector-" + planet.name + "-" + sector.id + ".png"),
             smallImg = Config.imageDirectory.child("sector-" + planet.name + "-" + sector.id + "-small.png");
