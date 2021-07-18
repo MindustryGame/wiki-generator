@@ -60,9 +60,10 @@ public class PlanetGenerator extends FileGenerator<Planet>{
 
             for(Tile spawn : spawner.getSpawns()){
                 pix.fillCircle(spawn.x, pix.height - 1 - spawn.y, 3, Team.crux.color.rgba());
+                pix.drawCircle(spawn.x, pix.height - 1 - spawn.y, 5, Team.crux.color.rgba());
             }
             Building core = Team.sharded.core();
-            pix.fillCircle(core.tileX(), pix.height - 1 - core.tileY(), 4, Team.sharded.color.rgba());
+            pix.drawCircle(core.tileX(), pix.height - 1 - core.tileY(), 6, Team.sharded.color.rgba());
 
             Fi imgFile = Config.imageDirectory.child("sector-" + planet.name + "-" + sector.id + ".png"),
             smallImg = Config.imageDirectory.child("sector-" + planet.name + "-" + sector.id + "-small.png");
