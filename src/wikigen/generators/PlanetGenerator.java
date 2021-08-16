@@ -7,6 +7,7 @@ import arc.math.*;
 import arc.struct.*;
 import arc.util.*;
 import mindustry.*;
+import mindustry.content.*;
 import mindustry.ctype.*;
 import mindustry.game.EventType.*;
 import mindustry.game.*;
@@ -91,6 +92,40 @@ public class PlanetGenerator extends FileGenerator<Planet>{
 
             planetDrops.addAll(drops);
 
+            var waves = new StringBuilder();
+            int waveCount = 50;
+
+            for(int i = 0; i < waveCount; i++){
+                int[] counts = new int[content.units().size];
+                boolean[] boss = new boolean[content.units().size];
+                for(var entry : state.rules.spawns){
+                    counts[entry.type.id] += entry.getSpawned(i) * (entry.type.flying ? spawner.countFlyerSpawns() : spawner.countGroundSpawns());
+                    boss[entry.type.id] |= entry.effect == StatusEffects.boss;
+                }
+
+                waves.append("|").append(i + 1).append("|");
+
+                boolean any = false;
+                for(var type : content.units()){
+                    if(counts[type.id] > 0){
+                        any = true;
+                        waves.append(Generator.str(type));
+
+                        if(boss[type.id]){
+                            waves.append("** (Guardian) **");
+                        }
+
+                        waves.append("x").append(counts[type.id]).append(" ");
+                    }
+                }
+
+                if(!any){
+                    waves.append("*(none)*");
+                }
+
+                waves.append("|\n");
+            }
+
             var u = drops.asArray().sort(Structs.comparing(Content::getContentType).thenComparing(c -> c.id));
 
             var template = rootDirectory.child("templates").child("sector.md").readString();
@@ -100,7 +135,8 @@ public class PlanetGenerator extends FileGenerator<Planet>{
             "planet", planet.name,
             "id", sector.id,
             "mode", state.rules.mode(),
-            "difficulty", Strings.stripColors(sector.displayThreat())
+            "difficulty", Strings.stripColors(sector.displayThreat()),
+            "waves", waves.toString()
             );
 
             if(state.rules.winWave > 0 && !state.rules.attackMode){

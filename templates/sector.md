@@ -11,4 +11,10 @@ $description
 |Difficulty|$difficulty|
 |Capture Wave|$captureWaves|
 
+## Waves
+
+| Wave | Spawned |
+| ----------- | ----------- |
+$waves
+
 --- 
