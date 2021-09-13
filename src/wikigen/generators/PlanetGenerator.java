@@ -143,7 +143,7 @@ public class PlanetGenerator extends FileGenerator<Planet>{
                 vars.put("captureWaves", state.rules.winWave);
             }
 
-            if(sector.preset != null){
+            if(sector.preset != null && sector.preset.description != null){
                 vars.put("description", Strings.stripColors(sector.preset.description));
             }
 
