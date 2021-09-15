@@ -6,8 +6,8 @@ import arc.graphics.*;
 import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
-import arc.util.serialization.*;
 import arc.util.serialization.JsonWriter.*;
+import arc.util.serialization.*;
 import arc.util.serialization.Jval.*;
 import com.github.javaparser.*;
 import com.github.javaparser.ast.body.*;
@@ -22,6 +22,7 @@ import mindustry.net.*;
 import mindustry.server.*;
 import mindustry.type.*;
 import mindustry.world.blocks.legacy.*;
+import mindustry.world.draw.*;
 import mindustry.world.meta.*;
 import org.reflections.*;
 import wikigen.Generator.*;
@@ -86,6 +87,7 @@ public class VarGenerator{
         allClasses.addAll(fetchTypes("mindustry.entities.bullet", BulletType.class));
         allClasses.addAll(fetchTypes("mindustry.type.weapons", Weapon.class));
         allClasses.addAll(fetchTypes("mindustry.type.weather", Weather.class));
+        allClasses.addAll(fetchTypes("mindustry.world.draw", DrawBlock.class));
         allClasses.add(Weapon.class);
 
         var parser = new JavaParser();
@@ -261,18 +263,22 @@ public class VarGenerator{
 
                 //a single string is a terrible example.
                 if(read.isObject()){
-                    outf.append("\n#### Example");
-                    if(example instanceof UnlockableContent cont){
-                        Log.info(cont.minfo.sourceFile.path());
-                        String realPath = "https://github.com/BlueWolf3682/Exotic-Mod/tree/master" + cont.minfo.sourceFile.path().replace("Exotic-Mod-master", "");
-                        outf.append(" ").append(" [(\"").append(cont.localizedName).append("\")](").append(realPath).append(")");
+                    String json = Jval.read(exampleJson).toString(Jformat.hjson);
+
+                    if(!json.trim().isEmpty()){
+                        outf.append("\n#### Example");
+                        if(example instanceof UnlockableContent cont){
+                            Log.info(cont.minfo.sourceFile.path());
+                            String realPath = "https://github.com/BlueWolf3682/Exotic-Mod/tree/master" + cont.minfo.sourceFile.path().replace("Exotic-Mod-master", "");
+                            outf.append(" ").append(" [(\"").append(cont.localizedName).append("\")](").append(realPath).append(")");
+                        }
+                        outf.append("\n");
+                        outf.append("```\n");
+
+                        outf.append(json);
+
+                        outf.append("```\n");
                     }
-                    outf.append("\n");
-                    outf.append("```\n");
-
-                    outf.append(Jval.read(exampleJson).toString(Jformat.hjson));
-
-                    outf.append("```\n");
                 }
             }
 
