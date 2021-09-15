@@ -22,6 +22,7 @@ import mindustry.net.*;
 import mindustry.server.*;
 import mindustry.type.*;
 import mindustry.world.blocks.legacy.*;
+import mindustry.world.meta.*;
 import org.reflections.*;
 import wikigen.Generator.*;
 
@@ -39,6 +40,8 @@ public class VarGenerator{
         out.put("sounds", Seq.with(Sounds.class.getFields()).toString(" ", f -> "`" + f.getName() + "`"));
         out.put("contentTypes", Seq.with(ContentType.all).select(c -> !c.name().contains("UNUSED")).toString(" ", c -> "`" + c.name() + "`"));
         out.put("bundles", Seq.with(Core.files.local("locales").readString().split("\n")).toString(" ", c -> "`" + c + "`"));
+        out.put("blockGroups", Seq.with(BlockGroup.values()).toString("\n", g -> "- `" + g.name() + "`"));
+        out.put("buildVisibilities", Seq.with(BuildVisibility.values()).toString("\n", g -> "- `" + g.name() + "`"));
 
         //create dummy server to scrape its commands
         var cont = new ServerControl(null){
