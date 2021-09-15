@@ -48,8 +48,14 @@ public class PlanetGenerator extends FileGenerator<Planet>{
 
         Events.fire(new WorldLoadEvent());
 
+        if(false)
         for(Sector sector : planet.sectors){
             Fi file = folder.child((sector.preset == null ? sector.id + "" : sector.preset.localizedName) + ".md");
+
+            //strip away modded sectors
+            if(sector.preset != null && sector.preset.minfo.mod != null){
+                sector.preset = null;
+            }
 
             Log.info("| | Sector: @/@", sector.id, planet.sectors.size);
 

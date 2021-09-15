@@ -7,8 +7,11 @@ import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
 import arc.util.serialization.*;
+import arc.util.serialization.JsonWriter.*;
+import arc.util.serialization.Jval.*;
 import com.github.javaparser.*;
 import com.github.javaparser.ast.body.*;
+import mindustry.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
 import mindustry.entities.*;
@@ -18,7 +21,9 @@ import mindustry.gen.*;
 import mindustry.net.*;
 import mindustry.server.*;
 import mindustry.type.*;
+import mindustry.world.blocks.legacy.*;
 import org.reflections.*;
+import wikigen.Generator.*;
 
 import java.util.*;
 
@@ -76,6 +81,8 @@ public class VarGenerator{
         allClasses.addAll(fetchTypes("mindustry.entities.effect", Effect.class));
         allClasses.addAll(fetchTypes("mindustry.entities.abilities", Ability.class));
         allClasses.addAll(fetchTypes("mindustry.entities.bullet", BulletType.class));
+        allClasses.addAll(fetchTypes("mindustry.type.weapons", Weapon.class));
+        allClasses.addAll(fetchTypes("mindustry.type.weather", Weather.class));
         allClasses.add(Weapon.class);
 
         var parser = new JavaParser();
@@ -99,9 +106,10 @@ public class VarGenerator{
 
         var refs = new Seq<Ref>();
         var counts = new ObjectIntMap<String>();
+        var allContent = Seq.with(Vars.content.getContentMap()).<Content>flatten().select(o -> o.minfo.mod != null);
 
         for(var c : allClasses){
-            if(c.isAnonymousClass() || c.isAnnotationPresent(Deprecated.class)) continue;
+            if(c.isAnonymousClass() || c.isAnnotationPresent(Deprecated.class) || LegacyBlock.class.isAssignableFrom(c)) continue;
 
             Object instance = null;
 
@@ -149,7 +157,18 @@ public class VarGenerator{
             var path = c.getCanonicalName().replace('.', '/') + ".java";
             var supclass = c.getSuperclass().getSimpleName();
 
-            info("Parsing @", path);
+            //pick JSON objects of approximately average length; long files are not used, as those tend to have too many long particle effects.
+            //TODO better selection criteria
+            float complexity = 0.5f;
+
+            Object example = allContent.select(cont -> cont.getClass() == c).sort(cont -> cont.minfo.mod.file.length()).getFrac(complexity);
+            if(example == null){
+                example = Generator.parsed.select(p -> p.object != null && p.object.getClass() == c).sort(p -> p.json.toJson(OutputType.json).length()).getFrac(complexity);
+            }
+
+            String exampleJson = example == null ? null : example instanceof Content cont ? cont.minfo.sourceFile.readString() : ((ParseRecord)example).json.toJson(OutputType.json);
+
+            info("Parsing @@", path, example == null ? "" : " &lb(found example)&fr");
 
             if(counts.get(ref.type) > 1 || ref.type.contains("zzz_")){
                 out.append("## ").append(c.getSimpleName()).append("\n\n");
@@ -231,6 +250,26 @@ public class VarGenerator{
                             .append("|").append(field.getJavadoc().isPresent() ? field.getJavadoc().get().toText().replace("\n", " ") : " ").append("|\n");
                         }
                     }
+                }
+            }
+
+            if(example != null){
+                var read = Jval.read(exampleJson);
+
+                //a single string is a terrible example.
+                if(read.isObject()){
+                    outf.append("\n#### Example");
+                    if(example instanceof UnlockableContent cont){
+                        Log.info(cont.minfo.sourceFile.path());
+                        String realPath = "https://github.com/BlueWolf3682/Exotic-Mod/tree/master" + cont.minfo.sourceFile.path().replace("Exotic-Mod-master", "");
+                        outf.append(" ").append(" [(\"").append(cont.localizedName).append("\")](").append(realPath).append(")");
+                    }
+                    outf.append("\n");
+                    outf.append("```\n");
+
+                    outf.append(Jval.read(exampleJson).toString(Jformat.hjson));
+
+                    outf.append("```\n");
                 }
             }
 

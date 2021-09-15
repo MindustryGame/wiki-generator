@@ -22,9 +22,9 @@ public class ItemGenerator extends FileGenerator<Item>{
             "hardness", item.hardness,
             "drillable", drillable,
             "color", item.color.toString().substring(0, 6),
-            "produced", links(Vars.content.blocks().select(b -> (drillable && b instanceof Drill d && d.tier >= item.hardness) || (b instanceof GenericCrafter g && g.outputItem != null && g.outputItem.item == item))),
-            "used", links(Vars.content.blocks().select(b -> b.requirements != null && Structs.contains(b.requirements, i -> i.item == item))),
-            "crafting", links(Vars.content.blocks().select(b -> b.consumes.all() != null && Structs.contains(b.consumes.all(), c -> (c instanceof ConsumeItemFilter i && i.filter.get(item))
+            "produced", links(Vars.content.blocks().select(b -> b.minfo.mod == null && (drillable && b instanceof Drill d && d.tier >= item.hardness) || (b instanceof GenericCrafter g && g.outputItem != null && g.outputItem.item == item))),
+            "used", links(Vars.content.blocks().select(b -> b.minfo.mod == null && b.requirements != null && Structs.contains(b.requirements, i -> i.item == item))),
+            "crafting", links(Vars.content.blocks().select(b -> b.minfo.mod == null && b.consumes.all() != null && Structs.contains(b.consumes.all(), c -> (c instanceof ConsumeItemFilter i && i.filter.get(item))
                                                                                 || (c instanceof ConsumeItems h && Structs.contains(h.items, s -> s.item == item)))))
         );
     }

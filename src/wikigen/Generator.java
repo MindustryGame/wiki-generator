@@ -8,6 +8,9 @@ import arc.graphics.g2d.*;
 import arc.mock.*;
 import arc.struct.*;
 import arc.util.*;
+import arc.util.io.*;
+import arc.util.serialization.*;
+import arc.util.serialization.JsonWriter.*;
 import mindustry.*;
 import mindustry.core.*;
 import mindustry.ctype.*;
@@ -25,13 +28,25 @@ public class Generator{
     private static final ObjectMap<ContentType, FileGenerator<?>> generators = new ObjectMap<>();
     private static final ObjectMap<String, UnlockableContent> regionToContent = new ObjectMap<>();
 
+    public static Seq<ParseRecord> parsed = new Seq<>();
+
     public static void main(String[] args){
+
         Core.settings = new MockSettings();
         Core.app = new MockApplication();
         Core.files = new MockFiles();
         Core.audio = new MockAudio();
         Core.graphics = new MockGraphics();
         Core.input = new MockInput();
+
+        Core.settings.setAppName("Mindustry");
+
+        Http.get("https://github.com/BlueWolf3682/Exotic-Mod/archive/refs/heads/master.zip")
+        .error(e -> {throw new RuntimeException(e);})
+        .timeout(20_000)
+        .block(response -> {
+            Core.settings.getDataDirectory().child("mods/").child("exotic.zip").writeBytes(Streams.copyBytes(response.getResultAsStream()));
+        });
 
         //generate locale file manually
         if(!Core.files.local("locales").exists()){
@@ -53,6 +68,8 @@ public class Generator{
         Vars.loadSettings();
         Vars.init();
         Vars.content.createBaseContent();
+        Vars.mods.addParseListener((type, data, object) -> parsed.add(new ParseRecord(object, data)));
+        Vars.content.createModContent();
         Vars.world = new World();
         Vars.logic = new Logic();
         Vars.content.init();
@@ -75,7 +92,7 @@ public class Generator{
         try{
             for(var t : ContentType.all){
                 for(var c : Vars.content.getBy(t)){
-                    if(c instanceof UnlockableContent u){
+                    if(c.minfo.mod == null && c instanceof UnlockableContent u){
                         if(u.uiIcon == null) continue;
                         regionToContent.put(((AtlasRegion)u.uiIcon).name, u);
                         regionToContent.put(((AtlasRegion)u.fullIcon).name, u);
@@ -98,7 +115,7 @@ public class Generator{
                 //ignore sectors
                 if(type == ContentType.sector) continue;
 
-                var list = Vars.content.getBy(type);
+                var list = Vars.content.getBy(type).select(c -> c.minfo.mod == null);
                 if(list.any() && list.first() instanceof UnlockableContent){
                     Fi templatef = rootDirectory.child("templates").child(type.name() + ".md");
                     if(templatef.exists()){
@@ -159,5 +176,20 @@ public class Generator{
     /** Returns a generator instance by type.*/
     public static FileGenerator get(ContentType type){
         return generators.get(type, () -> new FileGenerator<>(type));
+    }
+
+    public static class ParseRecord{
+        public Object object;
+        public JsonValue json;
+
+        public ParseRecord(Object object, JsonValue json){
+            this.object = object;
+            this.json = json;
+        }
+
+        @Override
+        public String toString(){
+            return object + ": " + json.toJson(OutputType.json);
+        }
     }
 }
