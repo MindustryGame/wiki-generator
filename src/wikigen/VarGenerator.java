@@ -166,7 +166,7 @@ public class VarGenerator{
             //TODO better selection criteria
             float complexity = 0.5f;
 
-            Object example = allContent.select(cont -> cont.getClass() == c && cont.minfo.mod.file.length() < 1024 * 3).sort(cont -> cont.minfo.mod.file.length()).getFrac(complexity);
+            Object example = allContent.select(cont -> cont.getClass() == c && cont.minfo.sourceFile.length() < 1024 * 5).sort(cont -> cont.minfo.mod.file.length()).getFrac(complexity);
             if(example == null){
                 example = Generator.parsed.select(p -> p.object != null && p.object.getClass() == c).sort(p -> p.json.toJson(OutputType.json).length()).getFrac(complexity);
             }
