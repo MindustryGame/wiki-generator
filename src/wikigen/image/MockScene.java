@@ -8,7 +8,9 @@ import arc.scene.*;
 import arc.scene.style.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
+import arc.struct.*;
 import arc.util.*;
+import mindustry.*;
 import mindustry.ctype.*;
 import mindustry.ui.*;
 import mindustry.world.meta.*;
@@ -53,6 +55,14 @@ public class MockScene{
     }
 
     public static String scrapeStats(UnlockableContent content){
+        //act like modded stuff doesn't exist
+        var cmap = Vars.content.getContentMap();
+        var cmapOld = (Seq<Content>[])cmap.clone();
+
+        for(int i = 0; i < cmap.length; i ++){
+            cmap[i] = cmap[i].select(c -> c.minfo.mod == null);
+        }
+
         StringBuilder stats = new StringBuilder("| Property | Value |\n| ----------- | ----------- |\n");
 
         content.checkStats();
@@ -71,6 +81,10 @@ public class MockScene{
                 stats.append("|\n");
             });
         });
+
+        for(int i = 0; i < cmap.length; i++){
+            cmap[i] = cmapOld[i];
+        }
 
         if(stats.length() > 0 && stats.charAt(stats.length() - 1) == '\n') return stats.substring(0, stats.length() - 1);
         return stats.toString();
@@ -101,6 +115,7 @@ public class MockScene{
             }
             result.append(Strings.stripColors(text)).append(" ");
         }else if(e instanceof ItemDisplay d){
+            if(d.item.minfo.mod != null) return;
             result.append(link(d.item));
             if(d.amount > 0){
                 result.append("x");
@@ -108,9 +123,11 @@ public class MockScene{
             }
             result.append(" ");
         }else if(e instanceof LiquidDisplay d){
+            if(d.liquid.minfo.mod != null) return;
             result.append(link(d.liquid));
             if(d.amount > 0){
                 if(d.perSecond){
+                    result.append(Strings.autoFixed(d.amount, 1));
                     result.append(Strings.autoFixed(d.amount, 1));
                     result.append("/sec");
                 }else{
@@ -122,6 +139,8 @@ public class MockScene{
         }else if(e instanceof Image i){
             AtlasRegion region = (AtlasRegion)((TextureRegionDrawable)i.getDrawable()).getRegion();
             var unlock = Generator.getByRegion(region);
+            if(unlock != null && unlock.minfo.mod != null) return;
+
             if(unlock != null){
                 result.append(link(unlock));
             }else{
