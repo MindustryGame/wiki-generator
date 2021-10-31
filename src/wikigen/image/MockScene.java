@@ -128,7 +128,6 @@ public class MockScene{
             if(d.amount > 0){
                 if(d.perSecond){
                     result.append(Strings.autoFixed(d.amount, 1));
-                    result.append(Strings.autoFixed(d.amount, 1));
                     result.append("/sec");
                 }else{
                     result.append("x");
