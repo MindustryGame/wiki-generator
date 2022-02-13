@@ -1,7 +1,9 @@
 # <img id="spr" src="/$repo/images/item-$name.png"></img> $localizedName 
 
 
-*"$description"*  
+*"$description"*
+
+*"$details"*
 
 $stats
 |Internal Name|`$name`|
