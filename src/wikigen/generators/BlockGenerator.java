@@ -16,11 +16,11 @@ public class BlockGenerator extends FileGenerator<Block>{
     @Override
     public ObjectMap<String, Object> vars(Block block){
         return ObjectMap.of(
-        "itemDrop", block.itemDrop,
-        "liquidDrop", block instanceof Floor f ? f.liquidDrop : null,
-        "speedMultiplier", block instanceof Floor f && f.speedMultiplier != 1f ? (int)(f.speedMultiplier * 100) + "%" : null,
-        "dragMultiplier", block instanceof Floor f && f.dragMultiplier != 1f ? (int)(f.dragMultiplier * 100) + "%" : null,
-        "status", block instanceof Floor f && f.status != StatusEffects.none ? f.status : null
+            "itemDrop", block.itemDrop,
+            "liquidDrop", block instanceof Floor f ? f.liquidDrop : null,
+            "speedMultiplier", block instanceof Floor f && f.speedMultiplier != 1f ? (int)(f.speedMultiplier * 100) + "%" : null,
+            "dragMultiplier", block instanceof Floor f && f.dragMultiplier != 1f ? (int)(f.dragMultiplier * 100) + "%" : null,
+            "status", block instanceof Floor f && f.status != StatusEffects.none ? f.status : null
         );
     }
 
