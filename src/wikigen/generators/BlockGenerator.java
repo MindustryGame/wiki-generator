@@ -23,11 +23,11 @@ public class BlockGenerator extends FileGenerator<Block>{
             "speedMultiplier", block instanceof Floor f && f.speedMultiplier != 1f ? (int)(f.speedMultiplier * 100) + "%" : null,
             "dragMultiplier", block instanceof Floor f && f.dragMultiplier != 1f ? (int)(f.dragMultiplier * 100) + "%" : null,
             "status", block instanceof Floor f && f.status != StatusEffects.none ? f.status : null,
-            "affinities", scrapeAttributes(block)
+            "attributes", getAttributes(block)
         );
     }
 
-    public String scrapeAttributes(Block block){
+    public String getAttributes(Block block){
         StringBuilder s = new StringBuilder();
         for(Attribute a : Attribute.all){
             if(block.attributes.get(a) != 0){
@@ -39,6 +39,7 @@ public class BlockGenerator extends FileGenerator<Block>{
                 }
             }
         }
+        if(s.isEmpty()) return null;
         return s.toString();
     }
 
