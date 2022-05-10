@@ -132,7 +132,7 @@ public class PlanetGenerator extends FileGenerator<Planet>{
                 waves.append("|\n");
             }
 
-            var u = drops.asArray().sort(Structs.comparing(Content::getContentType).thenComparing(c -> c.id));
+            var u = drops.toSeq().sort(Structs.comparing(Content::getContentType).thenComparing(c -> c.id));
 
             var template = rootDirectory.child("templates").child("sector.md").readString();
             var vars = ObjectMap.<String, Object>of(
@@ -156,7 +156,7 @@ public class PlanetGenerator extends FileGenerator<Planet>{
             file.writeString(format(template, vars));
         }
 
-        var pd = planetDrops.asArray().sort(Structs.comparing(Content::getContentType).thenComparing(c -> c.id));
+        var pd = planetDrops.toSeq().sort(Structs.comparing(Content::getContentType).thenComparing(c -> c.id));
 
         return ObjectMap.of(
             "sectors", planet.sectors.size,

@@ -8,7 +8,6 @@ import arc.graphics.g2d.*;
 import arc.mock.*;
 import arc.struct.*;
 import arc.util.*;
-import arc.util.io.*;
 import arc.util.serialization.*;
 import arc.util.serialization.JsonWriter.*;
 import mindustry.*;
@@ -41,12 +40,14 @@ public class Generator{
 
         Core.settings.setAppName("Mindustry");
 
+        //TODO exotic doesn't work anymore.
+        /*
         Http.get("https://github.com/BlueWolf3682/Exotic-Mod/archive/refs/heads/master.zip")
         .error(e -> {throw new RuntimeException(e);})
         .timeout(20_000)
         .block(response -> {
             Core.settings.getDataDirectory().child("mods/").child("exotic.zip").writeBytes(Streams.copyBytes(response.getResultAsStream()));
-        });
+        });*/
 
         //generate locale file manually
         if(!Core.files.local("locales").exists()){
