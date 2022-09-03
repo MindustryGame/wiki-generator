@@ -63,6 +63,7 @@ public class VarGenerator{
             out.put("latestReleaseLink", latestReleaseLink);
         });
 
+        //TODO wrong
         out.put("allTypes", genTypes());
 
         return out;
@@ -80,7 +81,6 @@ public class VarGenerator{
     }
 
     public String genTypes() throws Exception{
-        var out = new StringBuilder();
         var allClasses = fetchTypes("mindustry", MappableContent.class);
         allClasses.addAll(fetchTypes("mindustry.entities.effect", Effect.class));
         allClasses.addAll(fetchTypes("mindustry.entities.abilities", Ability.class));
@@ -118,7 +118,7 @@ public class VarGenerator{
 
             Object instance = null;
 
-            if(c == BulletType.class) instance = new BulletType(){};
+            if(c == BulletType.class) instance = new BulletType();
             if(c == Ability.class) instance = new Ability(){};
 
             if(instance == null){
@@ -136,6 +136,7 @@ public class VarGenerator{
                 }
             }
 
+            //TODO garbage code?? need to list subclasses as well...
             String type = instance instanceof Content cont ? cont.getContentType().toString() : instance instanceof Effect ? "effect" : "zzz_other";
             counts.increment(type);
 
@@ -144,19 +145,15 @@ public class VarGenerator{
 
         refs.sort(((Comparator<Ref>)((a, b) -> -Boolean.compare(a.c.isAssignableFrom(b.c), b.c.isAssignableFrom(a.c)))).thenComparing(r -> r.type).thenComparing(f -> f.c.getSimpleName()));
 
-        String lastType = null;
 
         for(var ref : refs){
-            if(!ref.type.equals(lastType)){
-                out.append("\n# ").append(Strings.capitalize(ref.type.replace("zzz_", ""))).append("\n");
-                lastType = ref.type;
+            var out = new StringBuilder();
 
-                if(builtIns.containsKey(ref.type)){
-                    out.append("Built-in constants:  \n\n").append(builtIns.get(ref.type)).append("  \n  ");
-                }
-
-                out.append("\n");
+            if(builtIns.containsKey(ref.type)){
+                out.append("Built-in constants:  \n\n").append(builtIns.get(ref.type)).append("  \n  ");
             }
+
+            out.append("\n");
 
             var c = ref.c;
             var path = c.getCanonicalName().replace('.', '/') + ".java";
@@ -175,11 +172,10 @@ public class VarGenerator{
 
             info("Parsing @@", path, example == null ? "" : " &lb(found example)&fr");
 
-            if(counts.get(ref.type) > 1 || ref.type.contains("zzz_")){
-                out.append("## ").append(c.getSimpleName()).append("\n\n");
-            }
+            out.append("## ").append(c.getSimpleName()).append("\n\n");
 
-            out.append("*extends ").append("[").append(supclass).append("](#").append(supclass.toLowerCase()).append(")*\n\n");
+            //TODO do not link non-existent stuff
+            out.append("*extends ").append("[").append(supclass).append("](").append(supclass).append(".md)*\n\n");
 
             var cu = parser.parse(Config.srcDirectory.child(path).file()).getResult().orElseThrow();
             var typeDec = cu.getTypes().getFirst().orElseThrow();
@@ -287,9 +283,11 @@ public class VarGenerator{
             }
 
             out.append("\n\n");
+
+            Config.outDirectory.child("Modding Classes").child(c.getSimpleName() + ".md").writeString(out.toString());
         }
 
-        return out.toString();
+        return ""; //TODO remove
     }
 
     public void generate() throws Exception{

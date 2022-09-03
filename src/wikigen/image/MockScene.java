@@ -135,7 +135,7 @@ public class MockScene{
                 }
             }
             result.append(" ");
-        }else if(e instanceof Image i){
+        }else if(e instanceof Image i && i.getDrawable() != null){
             AtlasRegion region = (AtlasRegion)((TextureRegionDrawable)i.getDrawable()).getRegion();
             var unlock = Generator.getByRegion(region);
             if(unlock != null && unlock.minfo.mod != null) return;
