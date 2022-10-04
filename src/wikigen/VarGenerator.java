@@ -42,7 +42,7 @@ public class VarGenerator{
         out.put("contentTypes", Seq.with(ContentType.all).select(c -> !c.name().contains("UNUSED")).toString(" ", c -> "`" + c.name() + "`"));
         out.put("bundles", Seq.with(Core.files.local("locales").readString().split("\n")).toString(" ", c -> "`" + c + "`"));
         out.put("blockGroups", Seq.with(BlockGroup.values()).toString("\n", g -> "- `" + g.name() + "`"));
-        out.put("buildVisibilities", Seq.with(BuildVisibility.values()).toString("\n", g -> "- `" + g.name() + "`"));
+        out.put("buildVisibilities", Seq.with(BuildVisibility.class.getFields()).toString("\n", g -> "- `" + g.getName() + "`"));
 
         //create dummy server to scrape its commands
         var cont = new ServerControl(null){
