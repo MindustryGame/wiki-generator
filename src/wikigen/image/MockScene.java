@@ -104,9 +104,7 @@ public class MockScene{
             });
         });
 
-        for(int i = 0; i < cmap.length; i++){
-            cmap[i] = cmapOld[i];
-        }
+        System.arraycopy(cmapOld, 0, cmap, 0, cmap.length);
 
         if(stats.length() > 0 && stats.charAt(stats.length() - 1) == '\n') return stats.substring(0, stats.length() - 1);
         return stats.toString();
@@ -117,7 +115,7 @@ public class MockScene{
         value.display(dummy);
         StringBuilder result = new StringBuilder();
         display(dummy, result);
-        return result.toString();
+        return result.toString().replace("\uE85C", "").replace("\uE810", "");
     }
 
     static String link(UnlockableContent content){
@@ -131,7 +129,7 @@ public class MockScene{
                 text = Core.bundle.get(text.substring(1));
             }
             boolean stat = text.contains("[stat]") || text.contains("[lightgray]");
-            text = text.replace("[stat]", "").replace("[lightgray]", "").replace("\uE85C ", "").replace("\uE810 ", "");
+            text = text.replace("[stat]", "").replace("[lightgray]", "");
             if(stat){
                 result.append("<br> • ");
             }
