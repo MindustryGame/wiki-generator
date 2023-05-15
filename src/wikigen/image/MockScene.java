@@ -7,13 +7,15 @@ import arc.graphics.g2d.TextureAtlas.*;
 import arc.scene.*;
 import arc.scene.style.*;
 import arc.scene.ui.*;
-import arc.scene.ui.TextButton.*;
+import arc.scene.ui.ImageButton.*;
 import arc.scene.ui.layout.*;
 import arc.struct.*;
 import arc.util.*;
 import mindustry.*;
 import mindustry.ctype.*;
+import mindustry.gen.*;
 import mindustry.ui.*;
+import mindustry.world.blocks.storage.*;
 import mindustry.world.meta.*;
 import wikigen.*;
 
@@ -54,8 +56,16 @@ public class MockScene{
             }
         };
 
-        //needed for mocking buttons
-        Styles.flatBordert = new TextButtonStyle();
+        Styles.emptyi = new ImageButtonStyle(){{
+            up = new BaseDrawable();
+        }};
+
+        Icon.downOpen = Icon.upOpen = new TextureRegionDrawable(new TextureRegion()){
+            @Override
+            public float imageSize(){
+                return 1f;
+            }
+        };
     }
 
     public static String scrapeStats(UnlockableContent content){
@@ -70,6 +80,11 @@ public class MockScene{
         StringBuilder stats = new StringBuilder("| Property | Value |\n| ----------- | ----------- |\n");
 
         content.checkStats();
+
+        //crashes
+        if(content instanceof CoreBlock core){
+            core.stats.remove(Stat.unitType);
+        }
 
         //add all in-game stats to block info
         content.stats.toMap().each((category, map) -> {
