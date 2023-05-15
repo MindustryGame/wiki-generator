@@ -7,6 +7,7 @@ import arc.graphics.g2d.TextureAtlas.*;
 import arc.scene.*;
 import arc.scene.style.*;
 import arc.scene.ui.*;
+import arc.scene.ui.TextButton.*;
 import arc.scene.ui.layout.*;
 import arc.struct.*;
 import arc.util.*;
@@ -52,6 +53,9 @@ public class MockScene{
                 return null;
             }
         };
+
+        //needed for mocking buttons
+        Styles.flatBordert = new TextButtonStyle();
     }
 
     public static String scrapeStats(UnlockableContent content){
@@ -147,6 +151,8 @@ public class MockScene{
             }
 
             result.append(" ");
+        }else if(e instanceof Button b){
+            //ignore
         }else if(e instanceof Table t){
             for(Cell cell : t.getCells()){
                 display(cell.get(), result);
