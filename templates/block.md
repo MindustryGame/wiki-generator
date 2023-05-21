@@ -2,6 +2,8 @@
 
 *"$description"*
 
+*"$details"*
+
 $stats
 |Item Resource|$itemDrop|
 |Liquid Resource|$liquidDrop|
