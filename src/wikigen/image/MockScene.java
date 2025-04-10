@@ -134,7 +134,8 @@ public class MockScene{
                 result.append("<br> • ");
             }
             result.append(Strings.stripColors(text)).append(" ");
-        }else if(e instanceof ItemDisplay d){
+            //TODO fix this later
+        /*}else if(e instanceof ItemDisplay d){
             if(d.item.minfo.mod != null) return;
             result.append(link(d.item));
             if(d.amount > 0){
@@ -154,7 +155,7 @@ public class MockScene{
                     result.append(Strings.autoFixed(d.amount, 1));
                 }
             }
-            result.append(" ");
+            result.append(" ");*/
         }else if(e instanceof Image i && i.getDrawable() != null){
             AtlasRegion region = (AtlasRegion)((TextureRegionDrawable)i.getDrawable()).getRegion();
             var unlock = Generator.getByRegion(region);
