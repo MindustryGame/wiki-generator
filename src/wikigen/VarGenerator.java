@@ -89,6 +89,7 @@ public class VarGenerator{
         allClasses.addAll(fetchTypes("mindustry.type.weather", Weather.class));
         allClasses.addAll(fetchTypes("mindustry.world.draw", DrawBlock.class));
         allClasses.add(Weapon.class);
+        allClasses.add(SectorPreset.class);
 
         var parser = new JavaParser();
         var builtIns = StringMap.of(
