@@ -121,6 +121,7 @@ public class VarGenerator{
 
             if(c == BulletType.class) instance = new BulletType();
             if(c == Ability.class) instance = new Ability(){};
+            if(c == SectorPreset.class) instance = new SectorPreset("sectorName", "groundZero", Planets.serpulo, 5);
 
             if(instance == null){
                 //skip non-string constructors
