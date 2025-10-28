@@ -124,7 +124,7 @@ public class VarGenerator{
             if(instance == null){
                 //skip non-string constructors
                 try{
-                    instance = c.getConstructor(String.class).newInstance("__typeof" + c.getSimpleName());
+                    instance = c.getConstructor(String.class).newInstance(Strings.capitalize(c.getSimpleName()) + " Name");
                 }catch(Exception ignored){
                     try{
                         var cons = c.getDeclaredConstructor();
@@ -163,7 +163,7 @@ public class VarGenerator{
             //TODO better selection criteria
             float complexity = 0.5f;
 
-            Object example = allContent.select(cont -> cont.getClass() == c && cont.minfo.sourceFile.length() < 1024 * 5).sort(cont -> cont.minfo.mod.file.length()).getFrac(complexity);
+            Object example = allContent.select(cont -> cont.getClass() == c && cont.minfo.sourceFile != null && cont.minfo.sourceFile.length() < 1024 * 5).sort(cont -> cont.minfo.mod.file.length()).getFrac(complexity);
             if(example == null){
                 example = Generator.parsed.select(p -> p.object != null && p.object.getClass() == c).sort(p -> p.json.toJson(OutputType.json).length()).getFrac(complexity);
             }
@@ -212,6 +212,10 @@ public class VarGenerator{
                             //special array init
                             if(initValue != null && initValue.contains("new") && initValue.contains("[") && initValue.contains("]")){
                                 initValue = "[]";
+                            }
+
+                            if(value instanceof Seq){
+                                initValue = value + "";
                             }
 
                             //assign to last, making sure it's not a number
