@@ -253,7 +253,7 @@ public class VarGenerator{
                             .append("|").append(variable.getName())
                             .append("|").append(variable.getType().toString().replace("<", " of ").replace(">", ""))
                             .append("|").append(initValue == null ? value : initValue)
-                            .append("|").append(determineJavadoc(field,variable)).append("|\n");
+                            .append("|").append(determineJavadoc(field, variable)).append("|\n");
                         }
                     }
                 }
@@ -295,7 +295,7 @@ public class VarGenerator{
         return ""; //TODO remove
     }
 
-    private String determineJavadoc(FieldDeclaration field, VariableDeclaration variable){
+    private String determineJavadoc(FieldDeclaration field, VariableDeclarator variable){
         if(variable.getComment().isPresent()){
             return variable.getComment().get().getContent().replace("\n", " ");
         }else if(field.getJavadoc().isPresent()){
@@ -303,7 +303,7 @@ public class VarGenerator{
         }else{
             return " ";
         }
-        
+
     }
 
     public void generate() throws Exception{
