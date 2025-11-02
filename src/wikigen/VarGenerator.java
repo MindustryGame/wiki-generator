@@ -147,7 +147,6 @@ public class VarGenerator{
 
         refs.sort(((Comparator<Ref>)((a, b) -> -Boolean.compare(a.c.isAssignableFrom(b.c), b.c.isAssignableFrom(a.c)))).thenComparing(r -> r.type).thenComparing(f -> f.c.getSimpleName()));
 
-
         for(var ref : refs){
             var out = new StringBuilder();
 
@@ -252,7 +251,7 @@ public class VarGenerator{
                             anyFields = true;
                             outf
                             .append("|").append(variable.getName())
-                            .append("|").append(variable.getTypeAsString())
+                            .append("|").append(variable.getType().toString().replace("<", " of ").replace(">", ""))
                             .append("|").append(initValue == null ? value : initValue)
                             .append("|").append(determineJavadoc(field,variable)).append("|\n");
                         }
