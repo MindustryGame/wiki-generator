@@ -41,15 +41,33 @@ public class FileGenerator<T extends UnlockableContent>{
     public String format(String temp, ObjectMap<String, Object> vars){
         StringBuilder template = new StringBuilder(temp);
         vars.put("repo", repo);
-        //sort keys by length so longer variables get replaced with invalid symbols first
+        //sort keys by length and replace full variable tokens so prefixes don't corrupt longer names
         Seq<String> keys = vars.keys().toSeq().sort(s -> -s.length());
         keys.each(key -> {
             var val = vars.get(key);
             var str = Generator.str(val);
-            Strings.replace(template, "$" + key, str.isEmpty() ? "$INVALID!" : str);
+            replaceVariable(template, key, str.isEmpty() ? "$INVALID!" : str);
         });
 
         return Strings.join("\n", Seq.with(template.toString().split("\n")).select(s -> !s.contains("$")));
+    }
+
+    private void replaceVariable(StringBuilder template, String key, String value){
+        String token = "$" + key;
+        int index = 0;
+        while((index = template.indexOf(token, index)) != -1){
+            int end = index + token.length();
+            if(end < template.length()){
+                char next = template.charAt(end);
+                if(Character.isLetterOrDigit(next) || next == '_'){
+                    index = end;
+                    continue;
+                }
+            }
+
+            template.replace(index, end, value);
+            index += value.length();
+        }
     }
 
     /** Returns a markdown file with this name in the output directory with this generator's type name.*/
