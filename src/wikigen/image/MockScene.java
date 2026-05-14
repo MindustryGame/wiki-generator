@@ -119,7 +119,7 @@ public class MockScene{
     }
 
     static String link(UnlockableContent content){
-        return Generator.get(content.getContentType()).makeLink(content);
+        return Generator.get(content.getContentType()).link(content);
     }
 
     static void display(Element e, StringBuilder result){

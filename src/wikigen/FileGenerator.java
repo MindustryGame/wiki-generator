@@ -87,6 +87,7 @@ public class FileGenerator<T extends UnlockableContent>{
     /** @return a markdown image link to this content.*/
     @SuppressWarnings("unchecked")
     public final String link(UnlockableContent content){
+        if(content.isHidden()) return content.localizedName;
         return Generator.get(content.getContentType()).makeLink(content);
     }
 
