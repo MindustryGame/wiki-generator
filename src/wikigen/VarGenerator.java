@@ -81,6 +81,13 @@ public class VarGenerator{
     }
 
     public String genTypes() throws Exception{
+        UnlockableContent ucontent = new UnlockableContent(""){
+            @Override
+            public ContentType getContentType(){
+                return ContentType.item;
+            }
+        };
+
         var allClasses = fetchTypes("mindustry", MappableContent.class);
         allClasses.addAll(fetchTypes("mindustry.entities.effect", Effect.class));
         allClasses.addAll(fetchTypes("mindustry.entities.abilities", Ability.class));
@@ -121,6 +128,7 @@ public class VarGenerator{
 
             if(c == BulletType.class) instance = new BulletType();
             if(c == Ability.class) instance = new Ability(){};
+            if(c == Content.class || c == UnlockableContent.class || c == MappableContent.class) instance = ucontent;
             if(c == SectorPreset.class) instance = new SectorPreset("sectorName", "groundZero", Planets.serpulo, 5);
 
             if(instance == null){
