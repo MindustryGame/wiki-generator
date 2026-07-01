@@ -120,6 +120,7 @@ public class VarGenerator{
         var refs = new Seq<Ref>();
         var counts = new ObjectIntMap<String>();
         var allContent = Seq.with(Vars.content.getContentMap()).<Content>flatten().select(o -> o.minfo.mod != null);
+        allClasses.add(Content.class);
 
         for(var c : allClasses){
             if(c.isAnonymousClass() || c.isAnnotationPresent(Deprecated.class) || LegacyBlock.class.isAssignableFrom(c)) continue;
