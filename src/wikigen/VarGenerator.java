@@ -228,8 +228,8 @@ public class VarGenerator{
                                 initValue = value + "";
                             }
 
-                            if(value instanceof ObjectSet<?>){
-                                initValue = value + "";
+                            if(value instanceof ObjectSet<?> s){
+                                initValue = "[" + s.toString(", ") + "]";
                             }
 
                             if(value instanceof ObjectMap<?,?>){
