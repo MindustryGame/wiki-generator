@@ -120,7 +120,6 @@ public class VarGenerator{
         var refs = new Seq<Ref>();
         var counts = new ObjectIntMap<String>();
         var allContent = Seq.with(Vars.content.getContentMap()).<Content>flatten().select(o -> o.minfo.mod != null);
-        allClasses.add(Content.class);
 
         for(var c : allClasses){
             if(c.isAnonymousClass() || c.isAnnotationPresent(Deprecated.class) || LegacyBlock.class.isAssignableFrom(c)) continue;
@@ -184,8 +183,9 @@ public class VarGenerator{
 
             out.append("## ").append(c.getSimpleName()).append("\n\n");
 
-            //TODO do not link non-existent stuff
-            out.append("*extends ").append("[").append(supclass).append("](").append(supclass).append(".md)*\n\n");
+            if(allClasses.contains(c.getSuperclass())){
+                out.append("*extends ").append("[").append(supclass).append("](").append(supclass).append(".md)*\n\n");
+            }
 
             var cu = parser.parse(Config.srcDirectory.child(path).file()).getResult().orElseThrow();
             var typeDec = cu.getTypes().getFirst().orElseThrow();
