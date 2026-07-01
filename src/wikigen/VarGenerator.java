@@ -228,6 +228,14 @@ public class VarGenerator{
                                 initValue = value + "";
                             }
 
+                            if(value instanceof ObjectSet<?>){
+                                initValue = value + "";
+                            }
+
+                            if(value instanceof ObjectMap<?,?>){
+                                initValue = value + "";
+                            }
+
                             //assign to last, making sure it's not a number
                             if(initValue != null && initValue.contains(".") && !(baseField.getType().isArray())){
                                 var split = initValue.split("\\.");
