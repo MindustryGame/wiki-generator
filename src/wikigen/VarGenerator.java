@@ -153,7 +153,15 @@ public class VarGenerator{
             refs.add(new Ref(c, type, instance));
         }
 
-        refs.sort(((Comparator<Ref>)((a, b) -> -Boolean.compare(a.c.isAssignableFrom(b.c), b.c.isAssignableFrom(a.c)))).thenComparing(r -> r.type).thenComparing(f -> f.c.getSimpleName()));
+        refs.sort(
+        Comparator.comparing((Ref r) -> r.c, (c1, c2) -> {
+            if(c1.equals(c2)) return 0;
+            if(c1.isAssignableFrom(c2)) return -1;
+            if(c2.isAssignableFrom(c1)) return 1;
+            return c1.getName().compareTo(c2.getName());
+        })
+        .thenComparing(r -> r.type)
+        );
 
         for(var ref : refs){
             var out = new StringBuilder();
@@ -320,7 +328,6 @@ public class VarGenerator{
         }else{
             return " ";
         }
-
     }
 
     public void generate() throws Exception{
