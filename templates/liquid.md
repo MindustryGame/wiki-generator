@@ -1,6 +1,3 @@
----
-icon: $navIcon
----
 # <img id="spr" src="/$repo/images/liquid-$name.png"></img> $localizedName 
 
 *"$description"*

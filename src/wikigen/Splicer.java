@@ -45,12 +45,5 @@ public class Splicer{
         for(Fi file : Config.imageDirectory.list()){
             file.copyTo(Config.fileOutDirectory.child("images").child(file.name()));
         }
-
-        //copy nav icons - these live under overrides/, not docs_out, since mkdocs-material
-        //resolves page-nav icons relative to the theme's custom_dir rather than docs_dir.
-        Config.customIconOutDirectory.mkdirs();
-        for(Fi file : Config.iconDirectory.list()){
-            file.copyTo(Config.customIconOutDirectory.child(file.name()));
-        }
     }
 }

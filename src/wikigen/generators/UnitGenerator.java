@@ -24,9 +24,4 @@ public class UnitGenerator extends FileGenerator<UnitType>{
         if(block instanceof UnitAssembler assembler && assembler.plans.contains(plan -> plan.unit == unit)) return true;
         return false;
     }
-
-    @Override
-    public String iconName(UnitType content){
-        return "unit-" + content.name + "-ui";
-    }
 }

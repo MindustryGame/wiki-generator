@@ -136,9 +136,6 @@ public class Generator{
                             values.putAll(generator.vars(content));
                             values.put("stats", MockScene.scrapeStats(content));
 
-                            String navIcon = generator.writeNavIcon(content);
-                            if(navIcon != null) values.put("navIcon", navIcon);
-
                             Log.info("| Generating file for '@'...", content.name);
 
                             generator.file(content).writeString(generator.format(templatef.readString(), values));

@@ -66,9 +66,4 @@ public class ItemGenerator extends FileGenerator<Item>{
     public String linkImage(Item content){
         return "item-" + content.name;
     }
-
-    @Override
-    public String iconName(Item content){
-        return "item-" + content.name;
-    }
 }

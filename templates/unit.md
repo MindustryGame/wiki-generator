@@ -1,6 +1,3 @@
----
-icon: $navIcon
----
 # <img id="spr" src="/$repo/images/unit-$name-ui.png"></img> $localizedName
 
 
