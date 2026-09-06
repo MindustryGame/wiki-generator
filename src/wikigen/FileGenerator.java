@@ -84,10 +84,6 @@ public class FileGenerator<T extends UnlockableContent>{
         return Strings.format("<a href=\"/@/@\"><img id=\"@\" src=\"/@/images/@.png\"/></a>", Config.repo, folder(content) + "/" + linkPath(content), imageStyle(), Config.repo, linkImage(content));
     }
 
-    public final String makeImageLink(String imageFolderPath){
-        return Strings.format("<img src=\"/@/images/@.png\"/>", Config.repo, imageFolderPath);
-    }
-
     public String imageStyle(){
         return "spr";
     }
