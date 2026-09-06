@@ -6,9 +6,7 @@ import arc.graphics.*;
 import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
-import arc.util.serialization.JsonWriter.*;
 import arc.util.serialization.*;
-import arc.util.serialization.Jval.*;
 import com.github.javaparser.*;
 import com.github.javaparser.ast.body.*;
 import mindustry.*;
@@ -25,11 +23,8 @@ import mindustry.world.blocks.legacy.*;
 import mindustry.world.draw.*;
 import mindustry.world.meta.*;
 import org.reflections.*;
-import wikigen.Generator.*;
 
 import java.util.*;
-
-import static arc.util.Log.*;
 
 /** Generates and replaces variables in markdown files. */
 @SuppressWarnings("unchecked")
@@ -176,19 +171,6 @@ public class VarGenerator{
             var path = c.getCanonicalName().replace('.', '/') + ".java";
             var supclass = c.getSuperclass().getSimpleName();
 
-            //pick JSON objects of approximately average length; long files are not used, as those tend to have too many long particle effects.
-            //TODO better selection criteria
-            float complexity = 0.5f;
-
-            Object example = allContent.select(cont -> cont.getClass() == c && cont.minfo.sourceFile != null && cont.minfo.sourceFile.length() < 1024 * 5).sort(cont -> cont.minfo.mod.file.length()).getFrac(complexity);
-            if(example == null){
-                example = Generator.parsed.select(p -> p.object != null && p.object.getClass() == c).sort(p -> p.json.toJson(OutputType.json).length()).getFrac(complexity);
-            }
-
-            String exampleJson = example == null ? null : example instanceof Content cont ? cont.minfo.sourceFile.readString() : ((ParseRecord)example).json.toJson(OutputType.json);
-
-            info("Parsing @@", path, example == null ? "" : " &lb(found example)&fr");
-
             out.append("## ").append(c.getSimpleName()).append("\n\n");
 
             if(allClasses.contains(c.getSuperclass())){
@@ -284,37 +266,13 @@ public class VarGenerator{
                 }
             }
 
-            if(example != null){
-                var read = Jval.read(exampleJson);
-
-                //a single string is a terrible example.
-                if(read.isObject()){
-                    String json = Jval.read(exampleJson).toString(Jformat.hjson);
-
-                    if(!json.trim().isEmpty()){
-                        outf.append("\n#### Example");
-                        if(example instanceof UnlockableContent cont){
-                            Log.info(cont.minfo.sourceFile.path());
-                            String realPath = "https://github.com/BlueWolf3682/Exotic-Mod/tree/master" + cont.minfo.sourceFile.path().replace("Exotic-Mod-master", "");
-                            outf.append(" ").append(" [(\"").append(cont.localizedName).append("\")](").append(realPath).append(")");
-                        }
-                        outf.append("\n");
-                        outf.append("```\n");
-
-                        outf.append(json);
-
-                        outf.append("```\n");
-                    }
-                }
-            }
-
             if(anyFields){
                 out.append(outf);
             }
 
             out.append("\n\n");
 
-            Config.outDirectory.child("content/Modding Classes").child(c.getSimpleName() + ".md").writeString(out.toString());
+            Config.outDirectory.child("Modding Classes").child(c.getSimpleName() + ".md").writeString(out.toString());
         }
 
         return ""; //TODO remove

@@ -113,7 +113,7 @@ public class FileGenerator<T extends UnlockableContent>{
     public String links(Iterable<? extends UnlockableContent> list){
         StringBuilder build = new StringBuilder();
         for(var c : list){
-            if(c == null) continue;
+            if(c == null || c.isHidden()) continue;
             build.append(link(c).replace("\"spr\"", "\"sprlist\"")).append(" ");
         }
         return build.toString();
