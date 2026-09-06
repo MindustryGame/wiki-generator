@@ -29,6 +29,11 @@ public class BlockGenerator extends FileGenerator<Block>{
     }
 
     @Override
+    public String iconName(Block content){
+        return "block-" + content.name + "-ui";
+    }
+
+    @Override
     public boolean enabled(Block b){
         return b != Blocks.air && b.uiIcon.found() && b.inEditor && !(b instanceof ConstructBlock) && !(b instanceof LegacyBlock);
     }

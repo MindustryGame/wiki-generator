@@ -58,4 +58,9 @@ public class LiquidGenerator extends FileGenerator<Liquid>{
     public String linkImage(Liquid content){
         return "liquid-" + content.name;
     }
+
+    @Override
+    public String iconName(Liquid content){
+        return "liquid-" + content.name;
+    }
 }

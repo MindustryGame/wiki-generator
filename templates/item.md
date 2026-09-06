@@ -1,3 +1,6 @@
+---
+icon: $navIcon
+---
 # <img id="spr" src="/$repo/images/item-$name.png"></img> $localizedName 
 
 

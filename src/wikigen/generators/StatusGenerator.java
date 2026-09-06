@@ -12,4 +12,9 @@ public class StatusGenerator extends FileGenerator<StatusEffect>{
     public String linkImage(StatusEffect content){
         return "status-" + content.name + "-ui";
     }
+
+    @Override
+    public String iconName(StatusEffect content){
+        return "status-" + content.name + "-ui";
+    }
 }

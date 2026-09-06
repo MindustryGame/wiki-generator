@@ -13,4 +13,9 @@ public class Config{
     public static final Fi docsOutDirectory = Core.files.local("../../../" + repo + "/docs_out");
     public static final Fi imageDirectory = outDirectory.child("images");
     public static final Fi fileOutDirectory = docsOutDirectory;
+
+    /** Where generated nav-icon SVGs are written during generation, mirroring {@link #imageDirectory}. */
+    public static final Fi iconDirectory = outDirectory.child("icons");
+    /** mkdocs-material looks up page-nav icons relative to the theme's `custom_dir` (see mkdocs.yml), not docs_out. */
+    public static final Fi customIconOutDirectory = Core.files.local("../../../" + repo + "/overrides/.icons/custom/");
 }

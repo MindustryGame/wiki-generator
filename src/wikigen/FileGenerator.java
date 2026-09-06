@@ -97,6 +97,28 @@ public class FileGenerator<T extends UnlockableContent>{
         return ((AtlasRegion)content.uiIcon).name;
     }
 
+    /** @return the icon filename (without extension) that this content's page template uses in its H1, e.g. "block-graphite-press-ui".
+     * Return null (the default) if this content type's template has no icon in its H1 (e.g. planets). */
+    public String iconName(T content){
+        return null;
+    }
+
+    /** Writes a small SVG wrapper around this content's existing PNG icon, for use as a mkdocs-material nav icon. */
+    public final String writeNavIcon(T content){
+        String name = iconName(content);
+        if(name == null) return null;
+
+        String svg = Strings.format(
+            "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" width=\"24\" height=\"24\">\n" +
+            "  <image href=\"/@/images/@.png\" width=\"24\" height=\"24\"/>\n" +
+            "</svg>\n",
+            Config.repo, name
+        );
+
+        Config.iconDirectory.child(name + ".svg").writeString(svg);
+        return "custom/" + name;
+    }
+
     /** @return the file name of this content in its folder, without the `type/` prefix or extension.*/
     public String linkPath(T content){
         return content.id + "-" + content.name;
