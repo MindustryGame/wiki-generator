@@ -46,10 +46,10 @@ public class VarGenerator{
 
         //create dummy server to scrape its commands
         var cont = new ServerControl(null){
-           @Override
-           public void setup(String[] args){
-               registerCommands();
-           }
+            @Override
+            public void setup(String[] args){
+                registerCommands();
+            }
         };
 
         out.put("serverCommands", cont.handler.getCommandList().toString("\n", command -> "- `" + command.text + (command.paramText.isEmpty() ? "" : " ") + command.paramText + "`: *" + command.description + "*"));
@@ -314,7 +314,7 @@ public class VarGenerator{
 
             out.append("\n\n");
 
-            Config.outDirectory.child("Modding Classes").child(c.getSimpleName() + ".md").writeString(out.toString());
+            Config.outDirectory.child("content/Modding Classes").child(c.getSimpleName() + ".md").writeString(out.toString());
         }
 
         return ""; //TODO remove

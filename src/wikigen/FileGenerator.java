@@ -76,7 +76,7 @@ public class FileGenerator<T extends UnlockableContent>{
     }
 
     public String folder(T content){
-        return type().name().endsWith("s") ? type().name() + "es" : type().name() + "s";
+        return "content/" + (type().name().endsWith("s") ? type().name() + "es" : type().name() + "s");
     }
 
     /** @return an image link for this content with a correct icon and path. */

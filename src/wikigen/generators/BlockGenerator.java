@@ -1,6 +1,5 @@
 package wikigen.generators;
 
-import arc.files.*;
 import arc.struct.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
@@ -35,15 +34,8 @@ public class BlockGenerator extends FileGenerator<Block>{
     }
 
     @Override
-    public Fi file(Block b){
-        return Config.outDirectory
-        .child(b.synthetic() ? "blocks" : "Environment Blocks")
-        .child(linkPath(b) + ".md");
-    }
-
-    @Override
     public String folder(Block b){
-        return b.synthetic() ? "blocks" : "Environment Blocks";
+        return b.synthetic() ? "content/blocks/" + b.category.name() : "content/blocks/environment";
     }
 
 }
