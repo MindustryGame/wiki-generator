@@ -13,4 +13,6 @@ public class Config{
     public static final Fi docsOutDirectory = Core.files.local("../../../" + repo + "/docs_out");
     public static final Fi imageDirectory = outDirectory.child("images");
     public static final Fi fileOutDirectory = docsOutDirectory;
+    /** Where per-content nav icons (see {@link wikigen.FileGenerator#iconSvg}) are written.*/
+    public static final Fi iconsOutDirectory = Core.files.local("../../../" + repo + "/overrides/.icons/custom/");
 }

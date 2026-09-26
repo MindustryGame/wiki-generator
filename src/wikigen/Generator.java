@@ -61,6 +61,7 @@ public class Generator{
         });
 
         Config.outDirectory.mkdirs();
+        Config.iconsOutDirectory.mkdirs();
 
         ArcNativesLoader.load();
 
@@ -138,7 +139,10 @@ public class Generator{
 
                             Log.info("| Generating file for '@'...", content.name);
 
-                            generator.file(content).writeString(generator.format(templatef.readString(), values));
+                            //write a tiny SVG wrapping this content's sprite so mkdocs-material can inline it as a nav icon
+                            Config.iconsOutDirectory.child(generator.linkImage(content) + ".svg").writeString(generator.iconSvg(content));
+
+                            generator.file(content).writeString(generator.frontMatter(content) + generator.format(templatef.readString(), values));
                             generator.onGenerate(content);
                         }
                     }

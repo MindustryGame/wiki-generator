@@ -93,6 +93,24 @@ public class FileGenerator<T extends UnlockableContent>{
         return ((AtlasRegion)content.uiIcon).name;
     }
 
+    /** @return the mkdocs-material icon shortcode for this content */
+    public String iconId(T content){
+        return "custom/" + linkImage(content);
+    }
+
+    /** @return raw SVG markup, written to {@link Config#iconsOutDirectory} and referenced via {@link #iconId} */
+    public String iconSvg(T content){
+        String url = Strings.format("/@/images/@.png", repo, linkImage(content));
+        return Strings.format(
+        "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 32 32\">" +
+        "<image width=\"32\" height=\"32\" href=\"@\" xlink:href=\"@\"/></svg>", url, url);
+    }
+
+    /** @return the YAML front matter block prepended to this content's generated page, setting its nav icon. */
+    public String frontMatter(T content){
+        return "---\nicon: " + iconId(content) + "\n---\n\n";
+    }
+
     /** @return the file name of this content in its folder, without the `type/` prefix or extension.*/
     public String linkPath(T content){
         return content.id + "-" + content.name;
